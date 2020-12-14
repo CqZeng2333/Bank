@@ -1,4 +1,7 @@
+package Banksrc;
+
 public class Collateral {
+
     private String item;
     private String price;
 
@@ -15,10 +18,10 @@ public class Collateral {
     public Collateral() {
     }
 
-    public Collateral(String item, String price,String currencyType) {
+    public Collateral(String item, String price, String currencyType) {
         this.item = item;
         this.price = price;
-        this.currencyType=currencyType;
+        this.currencyType = currencyType;
     }
 
     public String getItem() {
@@ -39,10 +42,10 @@ public class Collateral {
 
     @Override
     public String toString() {
-        return "Collateral information:" + '\n' +
-                "item = " + item + ' ' +
-                "currencyType = "+currencyType+
-                " price = " + price+'\n';
+        return "Collateral information:" + '\n'
+               + "item = " + item + ' '
+               + "currencyType = " + currencyType
+               + " price = " + price + '\n';
     }
 
 //    public static void main(String[] args) {

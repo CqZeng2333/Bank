@@ -1,11 +1,15 @@
+package Banksrc;
+
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class Time {
+
     private LocalDate date;
     private LocalTime time;
-    private final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
+    private final static DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern(
+            "HH:mm:ss");
 
     // default: the current time
     public Time() {
