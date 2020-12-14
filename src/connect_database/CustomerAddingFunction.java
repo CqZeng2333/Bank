@@ -226,7 +226,6 @@ public class CustomerAddingFunction {
     /*
     Add a loan record for dollar for a customer into the database
     Input customer's ID, the money amount to borrow, the Collateral object
-    Also add to the loan amount in the loan account
     Return 0 if success, -1 not success(no customer or no loan account)
     */
     public int addLoan(int customerID, BigDecimal loan_amount, Collateral cltr) {
@@ -284,7 +283,6 @@ public class CustomerAddingFunction {
     
     /*
     Add a stock owning record for dollar for a customer into the database
-    Also minus the money from the stocking account
     Input customer's ID, the stock ID to buy, the buy-in price for 1 stock, the buy-in number of stock
     Return 0 if success, -1 not success(no customer or no loan account)
     */
@@ -336,7 +334,7 @@ public class CustomerAddingFunction {
         current balance, and Time object. 
     Return 0 if success, -1 not success(no customer or no account or wrong account_type)
     */
-    public int addTransaction(int customerID, String account_type, String currency_type, BigDecimal money_changed, BigDecimal current_balance, Time time) {
+    public int addTransaction(int customerID, String account_type, String currency_type, double money_changed, double current_balance, Time time) {
         try {
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
             ResultSet rset;
@@ -346,9 +344,9 @@ public class CustomerAddingFunction {
             String[] accountTypes = {"SAVING", "CHECKING", "LOAN", "STOCK"};
             for (String s : accountTypes) {
                 if (account_type.equals(s)) {
-                    rset = stmt.executeQuery("SELECT * FROM CUSTOMER WHERE ID = "+customerID+";");
+                    rset = stmt.executeQuery("SELECT "+s+"_ID FROM CUSTOMER WHERE CUSTOMER_ID = "+customerID+";");
                     
-                    if (!rset.next()) return -1;
+                    if (rset == null) return -1;
                     else {
                         accountID = rset.getInt(s+"_ID");
                         if (accountID == -1) return -1;
@@ -359,16 +357,16 @@ public class CustomerAddingFunction {
             
             // get current max transaction ID
             int transactionID = 0;
-            rset = stmt.executeQuery("SELECT * FROM TRANSACTION ORDER BY ID desc;");
+            rset = stmt.executeQuery("SELECT ID FROM TRANSACTION ORDER BY ID desc;");
             if (rset.next()) {
                 transactionID = rset.getInt("ID");
             }
             
             // add a new transaction
             transactionID += 1;
-            stmt.execute("INSERT INTO TRANSACTION (ID, ACCOUNT_ID, ACCOUNT_TYPE, CURRENCY_TYPE, MONEY_CHANGED, CURRENT_BALANCE, TIME) VALUES ("
+            stmt.executeQuery("INSERT INTO TRANSACTION (ID, ACCOUNT_ID, ACCOUNT_TYPE, CURRENCY_TYPE, MONEY_CHANGED, CURRENT_BALANCE, TIME) VALUES ("
                     +transactionID+", "+accountID+", \'"+account_type+"\', \'"+currency_type+"\', "
-                    +money_changed.toPlainString()+", "+current_balance.toPlainString()+", \'"+time.toString()+"\');");
+                    +money_changed+", "+current_balance+", \'"+time.toString()+"\');");
                     
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -385,6 +383,5 @@ public class CustomerAddingFunction {
         //caf.addStockAccount(2);
         //caf.addLoan(2, new BigDecimal(80), new Collateral("car", new BigDecimal(100), "Dollar"));
         //caf.addStockOwnership(1, 1, new BigDecimal(10), 10);
-        //caf.addTransaction(1, "STOCK", "Dollar", new BigDecimal(-100), new BigDecimal(800), new Time());
     }
 }
