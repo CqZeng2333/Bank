@@ -1,13 +1,35 @@
 /*
- * Select according information from the database
+ * database function for manager
  */
 package connect_database;
+import java.math.BigDecimal;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ManagerFunction {
 	private final static Connection conn = Connector.getConn();
+	
+	/*
+	 * Login for manager
+	 * Input manager name and password(admin 000000)
+	 * Return 0 if successfully login
+	 * Return -1 if fail
+	 */
+	public static int managerLogin(String name, String password) {
+		try {
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            ResultSet rset;
+            
+            rset = stmt.executeQuery("SELECT * FROM MANAGER WHERE NAME = \'"+name+"\' AND PASSWORD = \'"+password+"\';");
+            if (rset.next()) {
+            	return 0;
+            }
+		} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+	}
 	
 	/*
 	 * Get all the customer list for manager
@@ -161,11 +183,64 @@ public class ManagerFunction {
         }
         return null;
 	}
+	
+	/*
+	 * Insert a new stock into the stock list
+	 * Input stock name, stock price
+	 * Return 0 if success, -1 if fail
+	 */
+	public static int addStock(String name, BigDecimal price) {
+		try {
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            ResultSet rset;
+            
+            int stockID = 0;
+            // get current max ID
+            rset = stmt.executeQuery("SELECT * FROM STOCK_LIST ORDER BY ID desc;");
+            if (rset.next()) {
+            	stockID =  rset.getInt("ID");
+            }
+
+            // insert a new stock
+            stockID += 1;
+            stmt.execute("INSERT INTO STOCK_LIST (ID, NAME, PRICE) VALUES ("
+                    +stockID+", \'"+name+"\', "+price.toPlainString()+");");
+            return 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -1;
+        }
+	}
+	
+	/*
+	 * Alter a stock price according to stock_ID
+	 * Input stock_ID, new_price
+	 * Return 0 if success, -1 if fail
+	 */
+	public static int alterStockPrice(int stockID, BigDecimal new_price) {
+		try {
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            ResultSet rset;
+            
+            // get stock with ID
+            rset = stmt.executeQuery("SELECT * FROM STOCK_LIST WHERE ID = "+stockID+";");
+            if (rset.next()) {
+            	stmt.execute("UPDATE STOCK_LIST SET PRICE = "+new_price.toPlainString()+
+                        " WHERE ID = "+stockID+";");
+            }
+            return 0;
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+            return -1;
+        }
+	}
         
     public static void main(String[] args) {
 		//System.out.println(ManagerFunction.searchAllStockList());
     	//ManagerFunction.searchAllCustomer();
     	//ManagerFunction.searchAllLoanCustomer();
     	//ManagerFunction.searchTransactionToday();
+    	//ManagerFunction.addStock("S&P 500", new BigDecimal(15));
+    	//ManagerFunction.alterStockPrice(2, new BigDecimal(18));
 	}
 }
