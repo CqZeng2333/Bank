@@ -382,6 +382,6 @@ public class CustomerAddingFunction {
         //caf.addLoanAccount(2);
         //caf.addStockAccount(2);
         //caf.addLoan(2, new BigDecimal(80), new Collateral("car", new BigDecimal(100), "Dollar"));
-        caf.addStockOwnership(1, 1, new BigDecimal(10), 10);
+        //caf.addStockOwnership(1, 1, new BigDecimal(10), 10);
     }
 }
