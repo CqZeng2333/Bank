@@ -12,6 +12,27 @@ public class CustomerSearchingFunction {
 	private final static Connection conn = Connector.getConn();
 	
 	/*
+	 * Login for old customer
+	 * Return customer_ID if successfully login
+	 * Return -1 if fail
+	 */
+	public static int customerLogin(String name, String password) {
+		try {
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            ResultSet rset;
+            
+            rset = stmt.executeQuery("SELECT * FROM CUSTOMER WHERE NAME = \'"+name+"\' AND PASSWORD = \'"+password+"\';");
+            if (rset.next()) {
+            	int customer_ID = rset.getInt("ID");
+            	return customer_ID;
+            }
+		} catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return -1;
+	}
+	
+	/*
 	 * Get the balance in saving account according to currency type
 	 * Input customer ID, currency_type
 	 * Return BigDecimal object of balance if success, null if not success(no customer or no saving account)
@@ -285,5 +306,6 @@ public class CustomerSearchingFunction {
 		//System.out.println(CustomerSearchingFunction.searchLoanList(2));
 		//System.out.println(CustomerSearchingFunction.searchStockList(1));
 		//System.out.println(CustomerSearchingFunction.searchTransaction(2));
+		//System.out.println(CustomerSearchingFunction.customerLogin("second_customer", "111111"));
 	}
 }
