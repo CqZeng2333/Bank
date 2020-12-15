@@ -153,16 +153,11 @@ public class Bank {
         Scanner choice = new Scanner(System.in);
         String num = choice.nextLine();
 
-        while (!Tool.is_number(num)) {
+        while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>4)){
             System.out.println("Invalid input. Input again.");
-            num = choice.nextLine();
+            num=choice.nextLine();
         }
-        int number = Integer.parseInt(num);
-        while (number < 1 || number > 4) {
-            System.out.println("Invalid input. Input again.");
-            num = choice.nextLine();
-            number = Integer.parseInt(num);
-        }
+        int number=Integer.parseInt(num);
         if (number == 1) {
             int id = createNewCustomer();
             while (userend) {
@@ -233,16 +228,12 @@ public class Bank {
         System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)){
+        while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>5)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
         int number=Integer.parseInt(num);
-        while (number<1||number>5){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
-            number=Integer.parseInt(num);
-        }
+
         int exist;
         switch (number) {
             case 1:
@@ -293,16 +284,11 @@ public class Bank {
         System.out.println("1. check all the customers 2. search for one customer 3. check for debtors 4. transactions records 5. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)){
+        while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>5)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
         int number=Integer.parseInt(num);
-        while (number<1||number>5){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
-            number=Integer.parseInt(num);
-        }
         switch (number){
             case 1:
                 bankManager.printAll();
@@ -311,16 +297,11 @@ public class Bank {
                 System.out.println("1. search by name 2. search by ID");
                 Scanner choice1=new Scanner(System.in);
                 String num1=choice1.nextLine();
-                while(!Tool.is_number(num1)){
+                while(!Tool.is_number(num1)||(Integer.parseInt(num1)<1)||(Integer.parseInt(num1)>2)){
                     System.out.println("Invalid input. Input again.");
                     num1=choice1.nextLine();
                 }
                 int number1=Integer.parseInt(num1);
-                while (number1<1||number1>2){
-                    System.out.println("Invalid input. Input again.");
-                    num1=choice1.nextLine();
-                    number1=Integer.parseInt(num1);
-                }
                 if (number1==1){
                     System.out.println("Input the name:");
                     Scanner username=new Scanner(System.in);

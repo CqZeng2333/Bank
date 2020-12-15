@@ -38,16 +38,11 @@ public class CheckingAccount extends Account {
         System.out.println("1. Check money 2. Check transactions 3. Exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)){
+        while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>3)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
         int number=Integer.parseInt(num);
-        while (number<1||number>3){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
-            number=Integer.parseInt(num);
-         }
         if (number==1){
             checkMoney();
         }else if (number==2){

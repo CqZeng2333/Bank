@@ -72,16 +72,11 @@ public class LoanAccount extends Account {
         System.out.println("1. apply for a loan 2. check loans 3. pay for loans 4. Exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)){
+        while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>4)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
         int number=Integer.parseInt(num);
-        while (number<1||number>4){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
-            number=Integer.parseInt(num);
-        }
         if (number==1){
             applyLoan();
         }else if (number==2){

@@ -41,30 +41,20 @@ public class SavingAccount extends Account {
         System.out.println("1. Save money 2. Withdraw money 3. Exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)){
+        while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>3)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
         int number=Integer.parseInt(num);
-        while (number<1||number>3){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
-            number=Integer.parseInt(num);
-        }
         if (number==1){
             System.out.println("1. Dollar 2. RMB 3. Pound");
             Scanner choice1=new Scanner(System.in);
             String num1=choice1.nextLine();
-            while(!Tool.is_number(num1)){
+            while(!Tool.is_number(num1)||(Integer.parseInt(num1)<1)||(Integer.parseInt(num1)>3)){
                 System.out.println("Invalid input. Input again.");
                 num1=choice1.nextLine();
             }
             int number1=Integer.parseInt(num1);
-            while (number1<1||number1>3){
-                System.out.println("Invalid input. Input again.");
-                num1=choice1.nextLine();
-                number1=Integer.parseInt(num1);
-            }
             if (number1==1){
                 String cash=save("Dollar");
                 CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal(cash));
@@ -82,16 +72,11 @@ public class SavingAccount extends Account {
             System.out.println("1. Dollar 2. RMB 3. Pound");
             Scanner choice1=new Scanner(System.in);
             String num1=choice1.nextLine();
-            while(!Tool.is_number(num1)){
+            while(!Tool.is_number(num1)||(Integer.parseInt(num1)<1)||(Integer.parseInt(num1)>3)){
                 System.out.println("Invalid input. Input again.");
                 num1=choice1.nextLine();
             }
             int number1=Integer.parseInt(num1);
-            while (number1<1||number1>3){
-                System.out.println("Invalid input. Input again.");
-                num1=choice1.nextLine();
-                number1=Integer.parseInt(num1);
-            }
             if (number1==1){
                 String cash=withdraw("Dollar");
                 if (cash.equals("")){
