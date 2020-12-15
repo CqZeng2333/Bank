@@ -123,8 +123,13 @@ public class Customer extends User {
         System.out.println("Dear customer "+name+":");
         if (str.equals("SAVING")){
             SavingAccount savingAccount=new SavingAccount(id,currency);
-            savingAccount.initAccount();
-        accounts.add(savingAccount); }
+            boolean success=savingAccount.initAccount();
+
+            if (!success){
+                return -1;
+            }else {
+                accounts.add(savingAccount);
+            }}
         else if (str.equals("CHECKING")){
             CheckingAccount checkingAccount=new CheckingAccount(id,currency);
             boolean success=checkingAccount.initAccount();

@@ -12,20 +12,29 @@ public class SavingAccount extends Account {
          super(id,currency);
          accountType="SAVING";
     }
-    public void initAccount(){
+    public boolean initAccount(){
         System.out.println("Welcome! You will save and withdraw money here, starting today.");
         System.out.println("Opening this count will charge you 5 dollars.");
         System.out.println("You can use 3 types of currency in our bank(Dollar, RMB and Pound).");
-        System.out.println("To create a checking account, you will have to save at least 5 dollars in our account.");
-        save("Dollar");
+        System.out.println("To create a saving account, you will have to save at least 5 dollars in our account.");
+        String cash=save("Dollar");
         System.out.println("Automatically charge you $5!");
-        currency.sub("Dollar",5,"1");
+        boolean success=currency.sub("Dollar",5,"1");
+        if (success){
         createTransaction("-5","Dollar","Open Saving account.");
         //alter manager
         ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("5"));
         //add saving account in database
         CustomerAddingFunction.addSavingAccount(customerID);
         CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-5"));
+        return true;
+        }else {
+            System.out.println("You don't have 5 dollars!");
+            System.out.println("Fail to open a saving account.");
+            createTransaction("0","Dollar","Failed to open saving account.");
+            currency.sub("Dollar",Double.parseDouble(cash),"1");
+            return false;
+        }
     }
     public void Menu(){
         System.out.println("1. Save money 2. Withdraw money 3. Exit");

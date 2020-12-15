@@ -27,17 +27,11 @@ public class Bank {
 
         //id loop
         for (int i = 0; i < Objects.requireNonNull(existcustomers).size(); i++) {
-            if (customers.size() > 0) {
-                for (int j = 0; j < customers.size(); j++) {
-                    if (customers.get(j).id == Integer.parseInt(existcustomers.get(i)[0])) {
-                        break;
-                    }
                     Customer newCustomer = new Customer(Integer.parseInt(existcustomers.get(i)[0]));
                     newCustomer.name = existcustomers.get(i)[1];
                     customers.add(newCustomer);
                 }
-            }
-        }
+        if (customers.size()>0){
         //account loop
         int sc = 0, cc = 0, lc = 0;
         for (int i = 0; i < customers.size(); i++) {
@@ -107,6 +101,7 @@ public class Bank {
         for (int i = 0; i < customers.size(); i++) {
             List<String[]> collaterallist=CustomerSearchingFunction.searchLoanList(customers.get(i).id);
             // {loan_record_ID, loan_amount, collateral_name}
+            assert collaterallist != null;
             if (collaterallist.size()>0){
                 for (int j=0;j<collaterallist.size();j++){
                     Collateral collateral=new Collateral(collaterallist.get(j)[2],new BigDecimal(collaterallist.get(j)[1]));
@@ -134,6 +129,7 @@ public class Bank {
                 customers.get(i).transactions.add(transaction);
             }
         }
+        }
     }
 
     public static void userMenu(){
@@ -147,7 +143,7 @@ public class Bank {
             num = choice.nextLine();
         }
         int number = Integer.parseInt(num);
-        while (number < 1 || number > 5) {
+        while (number < 1 || number > 4) {
             System.out.println("Invalid input. Input again.");
             num = choice.nextLine();
             number = Integer.parseInt(num);
@@ -157,7 +153,7 @@ public class Bank {
             while (userend) {
                 bankMenu(id);
             }
-        } else if (number == 5) {
+        } else if (number == 4) {
             end = false;
         }
         else if(number==2){
@@ -178,7 +174,6 @@ public class Bank {
             int login = CustomerSearchingFunction.customerLogin(name,pwd);
             if (login==-1){
                 System.out.println("Wrong login!");
-                return;
             }else {
                 bankMenu(login);
             }
@@ -312,7 +307,7 @@ public class Bank {
                     }
                     bankManager.checkCustomer(name);
                 }else {
-                    System.out.println("Input the ID:(start from 0)");
+                    System.out.println("Input the ID:(start from 1)");
                     Scanner id=new Scanner(System.in);
                     String cid=id.nextLine();
                     while (!Tool.is_number(cid)){
@@ -327,7 +322,15 @@ public class Bank {
                 bankManager.printLoan();
                 break;
             case 4:
-                System.out.println(ManagerFunction.searchTransactionToday());
+                //System.out.println(ManagerFunction.searchTransactionToday());
+                List<String[]> records=ManagerFunction.searchTransactionToday();
+                for (int i = 0; i< Objects.requireNonNull(records).size(); i++){
+                    for (int j=0;j<records.get(i).length;j++){
+                        System.out.print(records.get(i)[j]);
+                    }
+                    System.out.print("\n");
+                }
+                break;
             case 5:
                 System.out.println("Bye bye!");
                 userend = false;

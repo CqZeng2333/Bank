@@ -43,7 +43,6 @@ public abstract class Account {
       cash = money.nextLine();
     }
     currency.add(type, Double.parseDouble(cash), "1");
-
     return cash;
   }
 
