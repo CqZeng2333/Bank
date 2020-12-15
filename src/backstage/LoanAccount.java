@@ -25,6 +25,10 @@ public class LoanAccount extends Account {
         super(id,currency,collaterals);
         accountType="LOAN";
     }
+    LoanAccount(int id,Currency currency){
+        super(id,currency);
+        accountType="LOAN";
+    }
     public String toString(){
         String str="Collaterals: "+totalloan;
         return str;

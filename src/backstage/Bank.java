@@ -23,76 +23,75 @@ public class Bank {
     }
     public static void getExistUser(){
         List<String[]> existcustomers = ManagerFunction.searchAllCustomer();
-        //{customer_ID, customer_name, account_type, currency_type, money_amount}
+
 
         //id loop
-        Customer newCustomer=new Customer(Integer.parseInt(existcustomers.get(0)[0]));
-        newCustomer.name = existcustomers.get(0)[1];
-        customers.add(newCustomer);
-
-        for (int i = 1; i < Objects.requireNonNull(existcustomers).size(); i++) {
-            boolean flag=true;
-            for (int j = 0; j < customers.size(); j++) {
-                if (customers.get(j).id==Integer.parseInt(existcustomers.get(i)[0])){
-                    flag=false;
-                    break;
-                }
-            }
-            if (flag){
+        for (int i = 0; i < Objects.requireNonNull(existcustomers).size(); i++) {
                 Customer customer = new Customer(Integer.parseInt(existcustomers.get(i)[0]));
                 customer.name = existcustomers.get(i)[1];
                 customers.add(customer);
-            }
         }
         if (customers.size()>0){
+            //currency loop
+            for (int i = 0; i < customers.size(); i++) {
+                if (CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Dollar")!=null){
+                    customers.get(i).currency.getMoney().put("Dollar",CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Dollar"));
+                }
+                if (CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"RMB")!=null){
+                    customers.get(i).currency.getMoney().put("RMB",CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"RMB"));
+                }
+                if (CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Pound")!=null){
+                    customers.get(i).currency.getMoney().put("Pound",CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Pound"));
+                }
+/*                int index = -1;
+                for (int k = 0; k < customers.get(i).accounts.size(); k++) {
+                    if (customers.get(i).accounts.get(k).accountType.equals("SAVING")) {
+                        index = k;
+                        break;
+                    }
+                }
+                for (int j = 0; j < Objects.requireNonNull(existcustomers).size(); j++) {
+                    if (customers.get(i).id == Integer.parseInt(existcustomers.get(j)[0])) {
+                        if (index >= 0) {
+                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Dollar")) {
+                                customers.get(i).accounts.get(index).currency.getMoney().put("Dollar", new BigDecimal(existcustomers.get(j)[4]));
+                            }
+                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("RMB")) {
+                                customers.get(i).accounts.get(index).currency.getMoney().put("RMB", new BigDecimal(existcustomers.get(j)[4]));
+                            }
+                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Pound")) {
+                                customers.get(i).accounts.get(index).currency.getMoney().put("Pound", new BigDecimal(existcustomers.get(j)[4]));
+                            }
+                        }
+                    }
+                }*/
+            }
         //account loop
-        int sc = 0, cc = 0, lc = 0;
+            List<String[]> existaccounts=ManagerFunction.searchAllCustomerAccount();
+            //{customer_ID, customer_name, account_type, currency_type, money_amount}
         for (int i = 0; i < customers.size(); i++) {
-            for (int j = 0; j < Objects.requireNonNull(existcustomers).size(); j++) {
-                if (customers.get(i).id == Integer.parseInt(existcustomers.get(j)[0])) {
-                    if (existcustomers.get(j)[2].equals("SAVING") && sc == 0) {
+            int sc = 0, cc = 0, lc = 0;
+            for (int j = 0; j < Objects.requireNonNull(existaccounts).size(); j++) {
+                if (customers.get(i).id == Integer.parseInt(existaccounts.get(j)[0])) {
+                    if (existaccounts.get(j)[2].equals("SAVING") && sc == 0) {
                         SavingAccount savingAccount = new SavingAccount(customers.get(i).id, customers.get(i).currency);
                         sc = 1;
                         customers.get(i).accounts.add(savingAccount);
                     }
-                    if (existcustomers.get(j)[2].equals("CHECKING") && cc == 0) {
+                    if (existaccounts.get(j)[2].equals("CHECKING") && cc == 0) {
                         CheckingAccount checkingAccount = new CheckingAccount(customers.get(i).id, customers.get(i).currency);
                         cc = 1;
                         customers.get(i).accounts.add(checkingAccount);
                     }
-                    if (existcustomers.get(j)[2].equals("LOAN") && lc == 0) {
-                        LoanAccount loanAccount = new LoanAccount(customers.get(i).id, customers.get(i).currency,new ArrayList<>());
+                    if (existaccounts.get(j)[2].equals("LOAN") && lc == 0) {
+                        LoanAccount loanAccount = new LoanAccount(customers.get(i).id, customers.get(i).currency);
                         lc = 1;
                         customers.get(i).accounts.add(loanAccount);
                     }
                 }
             }
         }
-        //currency loop
-        for (int i = 0; i < customers.size(); i++) {
-            int index = -1;
-            for (int k = 0; k < customers.get(i).accounts.size(); k++) {
-                if (customers.get(i).accounts.get(k).accountType.equals("SAVING")) {
-                    index = k;
-                    break;
-                }
-            }
-            for (int j = 0; j < Objects.requireNonNull(existcustomers).size(); j++) {
-                if (customers.get(i).id == Integer.parseInt(existcustomers.get(j)[0])) {
-                    if (index >= 0) {
-                        if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Dollar")) {
-                            customers.get(i).accounts.get(index).currency.getMoney().put("Dollar", new BigDecimal(existcustomers.get(j)[4]));
-                        }
-                        if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("RMB")) {
-                            customers.get(i).accounts.get(index).currency.getMoney().put("RMB", new BigDecimal(existcustomers.get(j)[4]));
-                        }
-                        if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Pound")) {
-                            customers.get(i).accounts.get(index).currency.getMoney().put("Pound", new BigDecimal(existcustomers.get(j)[4]));
-                        }
-                    }
-                }
-            }
-        }
+
         //loan amount loop
         List<String[]> loanCustomer = ManagerFunction.searchAllLoanCustomer();
         //{customer_ID, customer_name, "LOAN", "Dollar", money_amount}
@@ -326,7 +325,7 @@ public class Bank {
                     }
                     bankManager.checkCustomer(name);
                 }else {
-                    System.out.println("Input the ID:(start from 1)");
+                    System.out.println("Input the ID:");
                     Scanner id=new Scanner(System.in);
                     String cid=id.nextLine();
                     while (!Tool.is_number(cid)){
