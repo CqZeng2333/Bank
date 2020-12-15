@@ -29,11 +29,16 @@ public class Bank {
         Customer newCustomer=new Customer(Integer.parseInt(existcustomers.get(0)[0]));
         newCustomer.name = existcustomers.get(0)[1];
         customers.add(newCustomer);
+
         for (int i = 1; i < Objects.requireNonNull(existcustomers).size(); i++) {
+            boolean flag=true;
             for (int j = 0; j < customers.size(); j++) {
                 if (customers.get(j).id==Integer.parseInt(existcustomers.get(i)[0])){
+                    flag=false;
                     break;
                 }
+            }
+            if (flag){
                 Customer customer = new Customer(Integer.parseInt(existcustomers.get(i)[0]));
                 customer.name = existcustomers.get(i)[1];
                 customers.add(customer);
@@ -186,7 +191,8 @@ public class Bank {
             if (login==-1){
                 System.out.println("Wrong login!");
             }else {
-                bankMenu(login);
+                while (userend){
+                bankMenu(login);}
             }
         }
         else if (number == 3) {

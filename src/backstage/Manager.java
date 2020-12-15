@@ -39,7 +39,8 @@ public class Manager extends User {
                     System.out.println(customers.get(i));
                     System.out.println((LoanAccount)customers.get(i).accounts.get(j));
                 }
-            }}
+              }
+            }
         }
     }
 
