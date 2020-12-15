@@ -297,7 +297,7 @@ public class Bank {
                 System.out.println("1. search by name 2. search by ID");
                 Scanner choice1=new Scanner(System.in);
                 String num1=choice1.nextLine();
-                while(!Tool.is_number(num1)||!Tool.in_range(num,1,9)||(Integer.parseInt(num1)<1)||(Integer.parseInt(num1)>2)){
+                while(!Tool.is_number(num1)||!Tool.in_range(num1,1,9)||(Integer.parseInt(num1)<1)||(Integer.parseInt(num1)>2)){
                     System.out.println("Invalid input. Input again.");
                     num1=choice1.nextLine();
                 }
@@ -407,7 +407,6 @@ public class Bank {
         customers.add(customer);
         customer.setId(cid);
         //return the index of this customer in arraylist, not its customerID
-        int location=customers.size()-1;
-        return location;
+        return cid;
     }
 }

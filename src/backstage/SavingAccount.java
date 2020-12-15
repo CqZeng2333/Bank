@@ -52,7 +52,7 @@ public class SavingAccount extends Account {
             System.out.println("1. Dollar 2. RMB 3. Pound");
             Scanner choice1 = new Scanner(System.in);
             String num1 = choice1.nextLine();
-            while ((!Tool.is_number(num1)) || !Tool.in_range(num, 1, 9) || (Integer.parseInt(num1) < 1) || (Integer.parseInt(num1) > 3)) {
+            while ((!Tool.is_number(num1)) || !Tool.in_range(num1, 1, 9) || (Integer.parseInt(num1) < 1) || (Integer.parseInt(num1) > 3)) {
                 System.out.println("Invalid input. Input again.");
                 num1 = choice1.nextLine();
             }
@@ -74,7 +74,7 @@ public class SavingAccount extends Account {
             System.out.println("1. Dollar 2. RMB 3. Pound");
             Scanner choice1 = new Scanner(System.in);
             String num1 = choice1.nextLine();
-            while (!Tool.is_number(num1) || !Tool.in_range(num, 1, 9) || (Integer.parseInt(num1) < 1) || (Integer.parseInt(num1) > 3)) {
+            while (!Tool.is_number(num1) || !Tool.in_range(num1, 1, 9) || (Integer.parseInt(num1) < 1) || (Integer.parseInt(num1) > 3)) {
                 System.out.println("Invalid input. Input again.");
                 num1 = choice1.nextLine();
             }
