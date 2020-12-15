@@ -22,7 +22,6 @@ public class SavingAccount extends Account {
         System.out.println("Automatically charge you $5!");
         boolean success=currency.sub("Dollar",5,"1");
         if (success){
-        createTransaction("-5","Dollar","Open Saving account.");
         //alter manager
         ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("5"));
         //add saving account in database
@@ -30,6 +29,7 @@ public class SavingAccount extends Account {
         BigDecimal cs= new BigDecimal(cash);
         cs=cs.subtract(new BigDecimal("5"));
         CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",cs);
+        createTransaction("-5","Dollar","Open Saving account.");
         return true;
         }else {
             System.out.println("You don't have 5 dollars!");
@@ -81,11 +81,12 @@ public class SavingAccount extends Account {
             int number1 = Integer.parseInt(num1);
             if (number1 == 1) {
                 String[] cash = withdraw("Dollar");
-                BigDecimal origin = new BigDecimal(cash[0]);
-                BigDecimal sub = new BigDecimal(cash[1]);
+
                 if (cash[0].equals("")) {
                     createTransaction("0", "Dollar", "Failed to withdraw dollars.");
                 } else {
+                    BigDecimal origin = new BigDecimal(cash[0]);
+                    BigDecimal sub = new BigDecimal(cash[1]);
                     BigDecimal sum = origin.add(sub);
                     createTransaction("-" + sum.toString(), "Dollar", "Withdraw dollars $" + sum.toString() + ".");
                     CustomerAlteringFunction.alterSavingAccount(customerID, "Dollar", new BigDecimal("-" + sum.toString()));
@@ -93,11 +94,11 @@ public class SavingAccount extends Account {
                 }
             } else if (number1 == 2) {
                 String[] cash = withdraw("RMB");
-                BigDecimal origin = new BigDecimal(cash[0]);
-                BigDecimal sub = new BigDecimal(cash[1]);
                 if (cash[0].equals("")) {
                     createTransaction("0", "RMB", "Failed to withdraw RMBs.");
                 } else {
+                    BigDecimal origin = new BigDecimal(cash[0]);
+                    BigDecimal sub = new BigDecimal(cash[1]);
                     BigDecimal sum = origin.add(sub);
                     createTransaction("-" + sum.toString(), "RMB", "Withdraw RMBs ¥" + sum.toString() + ".");
                     CustomerAlteringFunction.alterSavingAccount(customerID, "RMB", new BigDecimal("-" + sum.toString()));
@@ -105,11 +106,11 @@ public class SavingAccount extends Account {
                 }
             } else if (number1 == 3) {
                 String[] cash = withdraw("Pound");
-                BigDecimal origin = new BigDecimal(cash[0]);
-                BigDecimal sub = new BigDecimal(cash[1]);
                 if (cash[0].equals("")) {
                     createTransaction("0", "Pound", "Failed to withdraw Pounds.");
                 } else {
+                    BigDecimal origin = new BigDecimal(cash[0]);
+                    BigDecimal sub = new BigDecimal(cash[1]);
                     BigDecimal sum = origin.add(sub);
                     createTransaction("-" + sum.toString(), "Pound", "Withdraw Pounds ￡" + sum.toString() + ".");
                     CustomerAlteringFunction.alterSavingAccount(customerID, "Pound", new BigDecimal("-" + sum.toString()));

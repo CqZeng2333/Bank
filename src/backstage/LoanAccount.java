@@ -41,18 +41,17 @@ public class LoanAccount extends Account {
             System.out.println("You don't have 8 dollars!");
             System.out.println("Fail to open a loan account.");
             createTransaction("0","Dollar","Failed to open loan account.");
-
             return false;
         }else {
             //withdraw
             currency.sub("Dollar",8,"1");
-            createTransaction("-8","Dollar","Open loan account.");
             //alter saving account
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-8"));
             //new loan account in database
             CustomerAddingFunction.addLoanAccount(customerID);
             //alter manager
             ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("8"));
+            createTransaction("-8","Dollar","Open loan account.");
             return true;
         }
     }
@@ -158,7 +157,7 @@ public class LoanAccount extends Account {
         double priceD = Double.parseDouble(item);
         if (priceD < 250) {
             System.out.println("Your item is too cheap and cannot be a collateral in our bank, sorry.");
-            createTransaction("0","Dollar","Failed to loan cause the collateral is too cheap.");
+            //createTransaction("0","Dollar","Failed to loan cause the collateral is too cheap.");
         } else {
             System.out.println("Ok! We will loan you 90% of this collateral.");
             currency.add("Dollar", priceD, loanRate);
@@ -181,7 +180,7 @@ public class LoanAccount extends Account {
         if (loanlist.size()==0){
               System.out.println("You don't have any loans yet.");
           }else {
-              createTransaction("0","Dollar","Check all the collterals.");
+              //createTransaction("0","Dollar","Check all the collterals.");
             for (String[] strings : loanlist) {
                 System.out.println(Arrays.toString(strings));
             }

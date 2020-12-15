@@ -24,13 +24,13 @@ public class CheckingAccount extends Account {
         }else {
             //withdraw
             currency.sub("Dollar",5,"1");
-            createTransaction("-5","Dollar","Open checking account.");
             //add checking account in database
             CustomerAddingFunction.addCheckingAccount(customerID);
             //alter saving account, sub 5 dollars
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-5"));
             //alter manager
             ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("5"));
+            createTransaction("-5","Dollar","Open checking account.");
             return true;
         }
     }
