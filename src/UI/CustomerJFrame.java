@@ -1,7 +1,7 @@
 package UI;
 
-import Banksrc.Account;
-import Banksrc.Customer;
+import backstage.Account;
+import backstage.Customer;
 import java.util.ArrayList;
 
 /*
