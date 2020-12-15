@@ -228,7 +228,7 @@ public class Bank {
         }
         int exist;
         switch (number) {
-            case 1 -> {
+            case 1:
                 exist = isthereAccount(id, "CHECKING");
                 if (exist < 0) {
                     int accountID = customers.get(id).createAccount("CHECKING");
@@ -239,8 +239,8 @@ public class Bank {
                 } else {
                     ((CheckingAccount) customers.get(id).accounts.get(exist)).Menu(customers.get(id));
                 }
-            }
-            case 2 -> {
+                break;
+            case 2 :
                 exist = isthereAccount(id, "SAVING");
                 if (exist < 0) {
                     int accountID = customers.get(id).createAccount("SAVING");
@@ -249,8 +249,8 @@ public class Bank {
                 } else {
                     ((SavingAccount) customers.get(id).accounts.get(exist)).Menu();
                 }
-            }
-            case 3 -> {
+                break;
+            case 3:
                 exist = isthereAccount(id, "LOAN");
                 if (exist < 0) {
                     int accountID = customers.get(id).createAccount("LOAN");
@@ -258,14 +258,15 @@ public class Bank {
                 } else {
                     ((LoanAccount) customers.get(id).accounts.get(exist)).Menu();
                 }
-            }
-            case 4->{
+                break;
+            case 4:
                 customers.get(id).removeAccount();
-            }
-            case 5 -> {
+                break;
+            case 5:
                 System.out.println("Bye bye!");
                 userend = false;
-            }
+                break;
+
         }
     }
     public static void managerMenu(){

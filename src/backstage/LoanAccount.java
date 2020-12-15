@@ -1,9 +1,6 @@
 package backstage;
 
-import connect_database.CustomerAddingFunction;
-import connect_database.CustomerAlteringFunction;
-import connect_database.CustomerDeletingFunction;
-import connect_database.CustomerSearchingFunction;
+import connect_database.*;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -50,6 +47,8 @@ public class LoanAccount extends Account {
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-8"));
             //new loan account in database
             CustomerAddingFunction.addLoanAccount(customerID);
+            //alter manager
+            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("8"));
             return true;
         }
     }
@@ -118,6 +117,8 @@ public class LoanAccount extends Account {
                     System.out.println("Now you have your "+loanlist.get(index)[2]+" again!");
                     System.out.println("Thank you for using our bank！");
                     createTransaction("-"+loanlist.get(index)[1],"Dollar","Pay for the chosen collateral "+loanlist.get(index)[2]+".");
+                    //alter manager
+                    ManagerFunction.alterManagerAccount("Dollar",price);
                     //alter saving account
                     CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-"+loanlist.get(index)[1]));
                     CustomerDeletingFunction.deleteOneLoan(customerID,Integer.parseInt(loanlist.get(index)[0]));
@@ -167,6 +168,8 @@ public class LoanAccount extends Account {
             createTransaction(money,"Dollar","Apply for a loan. " + collateral);
             //alter saving account
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal(item));
+            //alter manager
+            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("-"+item));
             //new loan in database
             CustomerAddingFunction.addLoan(customerID,new BigDecimal(item),collateral);
         }

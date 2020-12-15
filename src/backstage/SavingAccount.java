@@ -2,6 +2,7 @@ package backstage;
 
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerAlteringFunction;
+import connect_database.ManagerFunction;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -20,6 +21,8 @@ public class SavingAccount extends Account {
         System.out.println("Automatically charge you $5!");
         currency.sub("Dollar",5,"1");
         createTransaction("-5","Dollar","Open Saving account.");
+        //alter manager
+        ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("5"));
         //add saving account in database
         CustomerAddingFunction.addSavingAccount(customerID);
         CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-5"));

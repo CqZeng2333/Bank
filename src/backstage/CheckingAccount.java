@@ -2,6 +2,7 @@ package backstage;
 
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerAlteringFunction;
+import connect_database.ManagerFunction;
 
 import java.math.BigDecimal;
 import java.util.Scanner;
@@ -28,6 +29,8 @@ public class CheckingAccount extends Account {
             CustomerAddingFunction.addCheckingAccount(customerID);
             //alter saving account, sub 5 dollars
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-5"));
+            //alter manager
+            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("5"));
             return true;
         }
     }
@@ -56,6 +59,8 @@ public class CheckingAccount extends Account {
         boolean success= currency.sub("Dollar",(double)1,"1");
         if (success){
         createTransaction("-1","Dollar","Checking money.");
+            //alter manager
+            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("1"));
         //alter saving account
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-1"));}else {
             System.out.println("Failed to check deposit due to lack of dollars.");
@@ -67,6 +72,8 @@ public class CheckingAccount extends Account {
         boolean success= currency.sub("Dollar",(double)2,"1");
         if (success){
             customer.printRecords();
+            //alter manager
+            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("2"));
         createTransaction("-2","Dollar","Checking transactions.");
         //alter saving account
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-2"));}
