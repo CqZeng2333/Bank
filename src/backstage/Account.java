@@ -1,5 +1,6 @@
 package backstage;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -46,7 +47,10 @@ public abstract class Account {
     return cash;
   }
 
-  public String withdraw(String type) {
+  public String[] withdraw(String type) {
+    String[] str=new String[2];
+    str[0]="";
+    str[1]="";
     System.out.println("How much cash would you take this time?");
     System.out.println(
             "Please take care that we will charge you 2% service charges.");
@@ -60,11 +64,15 @@ public abstract class Account {
     }
     boolean success = currency.sub(type, Double.parseDouble(cash),
             "1.02");
+    BigDecimal subsum=new BigDecimal(cash);
+    subsum=subsum.multiply(new BigDecimal("0.02"));
     if (!success) {
-      return "";
+      return str;
     }
     else {
-      return Double.toString(Double.parseDouble(cash));
+      str[0]=cash;
+      str[1]=subsum.toString();
+      return str;
     }
   }
 

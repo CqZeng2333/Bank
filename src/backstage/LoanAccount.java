@@ -72,7 +72,7 @@ public class LoanAccount extends Account {
         System.out.println("1. apply for a loan 2. check loans 3. pay for loans 4. Exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>4)){
+        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>4)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
@@ -97,18 +97,21 @@ public class LoanAccount extends Account {
             for (String[] strings : loanlist) {
                 System.out.println(Arrays.toString(strings));
             }
-            System.out.println("Please enter the name of the collteral you wanna redeem.");
+            System.out.println("Please enter the name of the collteral you want to redeem.");
             Scanner item=new Scanner(System.in);
             String name=item.nextLine();
             int index=-1;
+            boolean flag=false;
             for (int i=0;i<loanlist.size();i++) {
                 if (name.equals(loanlist.get(i)[2])){
                     index=i;
+                    flag=true;
                     break;
-                }
+                }}
+            if (!flag){
                 System.out.println(name+" is not in your collateral list!");
-                return;
-            }
+                return;}
+
             if(index>=0){
                 BigDecimal price=new BigDecimal(loanlist.get(index)[1]);
                 boolean success= currency.sub("Dollar",price.doubleValue(),"1");
@@ -130,7 +133,7 @@ public class LoanAccount extends Account {
 
 
     public void applyLoan(){
-        System.out.println("Input the name and price you have assessed here, we will loan you 80% of your collateral.");
+        System.out.println("Input the name and price you have assessed here, we will loan you 90% of your collateral.");
         Scanner colla=new Scanner(System.in);
         System.out.println("The name of your collateral:");
         String item=colla.nextLine();
@@ -159,18 +162,17 @@ public class LoanAccount extends Account {
         } else {
             System.out.println("Ok! We will loan you 90% of this collateral.");
             currency.add("Dollar", priceD, loanRate);
-            Collateral collateral = new Collateral(name,new BigDecimal(item));
+            BigDecimal p=new BigDecimal(item);
+            p=p.multiply(new BigDecimal("0.9"));
+            Collateral collateral = new Collateral(name,p);
             collaterals.add(collateral);
-            BigDecimal addNum = new BigDecimal(Double.toString(priceD));
-            addNum=addNum.multiply(new BigDecimal(loanRate));
-            String money=addNum.toString();
-            createTransaction(money,"Dollar","Apply for a loan. " + collateral);
+            createTransaction(p.toString(),"Dollar","Apply for a loan. " + collateral);
             //alter saving account
-            CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal(item));
+            CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",p);
             //alter manager
-            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("-"+item));
+            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("-"+p.toString()));
             //new loan in database
-            CustomerAddingFunction.addLoan(customerID,new BigDecimal(item),collateral);
+            CustomerAddingFunction.addLoan(customerID,p,collateral);
         }
     }
     public void checkLoans(){
