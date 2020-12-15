@@ -278,7 +278,7 @@ public class CustomerAddingFunction {
             stmt.execute("UPDATE LOAN_ACCOUNT SET MONEY_AMOUNT = "+total_loan.toPlainString()+
                     " WHERE ID = "+accountID+";");
             
-            CustomerAddingFunction.addTransaction(customerID, "LOAN", "Dollar", loan_amount, total_loan, new Time());
+            //CustomerAddingFunction.addTransaction(customerID, "LOAN", "Dollar", loan_amount, total_loan, new Time());
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());

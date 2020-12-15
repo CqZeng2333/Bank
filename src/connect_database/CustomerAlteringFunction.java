@@ -12,12 +12,11 @@ public class CustomerAlteringFunction {
 	private final static Connection conn = Connector.getConn();
 	
 	/*
-	 * Alter the balance in saving account according to currency type
-	 * Also create according transaction
+	 * Alter the balance with changedAmount in saving account according to currency type
 	 * Input customer ID, currency_type, new money amount
 	 * Return 0 if success, -1 not success(no customer or no saving account)
 	 */
-	public static int alterSavingAccount(int customerID, String currency_type, BigDecimal newAmount) { 
+	public static int alterSavingAccount(int customerID, String currency_type, BigDecimal changedAmount) { 
         try {
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
             ResultSet rset;
@@ -43,10 +42,10 @@ public class CustomerAlteringFunction {
             if (rset.next()) {
             	old_amount = rset.getBigDecimal("MONEY_AMOUNT");
             }
-            stmt.execute("UPDATE SAVING_ACCOUNT SET MONEY_AMOUNT = "+newAmount.toPlainString()+
+            stmt.execute("UPDATE SAVING_ACCOUNT SET MONEY_AMOUNT = "+old_amount.add(changedAmount).toPlainString()+
                     " WHERE ID = "+accountID+";");
             
-            CustomerAddingFunction.addTransaction(customerID, "SAVING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
+            //CustomerAddingFunction.addTransaction(customerID, "SAVING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -59,7 +58,7 @@ public class CustomerAlteringFunction {
 	 * Also create according transaction
 	 * Input customer ID, currency_type, new money amount
 	 * Return 0 if success, -1 not success(no customer or no checking account)
-	 */
+	
 	public static int alterCheckingAccount(int customerID, String currency_type, BigDecimal newAmount) { 
         try {
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
@@ -95,7 +94,8 @@ public class CustomerAlteringFunction {
             System.out.println(e.getMessage());
         }
         return 0;
-	}
+	} 
+	*/
 	
 	/*
 	 * Alter the balance in stock account according to currency type
