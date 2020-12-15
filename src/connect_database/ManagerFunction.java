@@ -165,8 +165,8 @@ public class ManagerFunction {
 					record[4] = rset.getBigDecimal("TRANSACTION.MONEY_CHANGED").toPlainString();
 					record[5] = rset.getBigDecimal("TRANSACTION.CURRENT_BALANCE").toPlainString();
 					record[6] = rset.getTimestamp("TRANSACTION.Time").toString();
-					for (String str : record) System.out.print(str+" "); // 1 first_customer SAVING Dollar -200.00 3800.00 2020-12-15 08:19:43.0
-					System.out.print("\n");
+					//for (String str : record) System.out.print(str+" "); // 1 first_customer SAVING Dollar -200.00 3800.00 2020-12-15 08:19:43.0
+					//System.out.print("\n");
 					all_transaction.add(record);
 				}
 			}
@@ -261,6 +261,14 @@ public class ManagerFunction {
 			System.out.println(e.getMessage());
 			return -1;
 		}
+	}
+	
+	/*
+	 * Update daily 0.01% the interest paid to high-balance customers
+	 * and 0.1% interest charged to loan accounts
+	 */
+	public static int updateDailyInterest() {
+		return 0;
 	}
 
 	public static void main(String[] args) {
