@@ -91,9 +91,11 @@ public class Bank {
                     break;
                 }
             }
-            for (int j = 0; j < Objects.requireNonNull(loanCustomer).size(); j++) {
-                if (customers.get(i).id == Integer.parseInt(loanCustomer.get(j)[0])) {
-                    ((LoanAccount) customers.get(i).accounts.get(index)).setTotalloan(new BigDecimal(loanCustomer.get(j)[-1]));
+            if (index>=0) {
+                for (int j = 0; j < Objects.requireNonNull(loanCustomer).size(); j++) {
+                    if (customers.get(i).id == Integer.parseInt(loanCustomer.get(j)[0])) {
+                        ((LoanAccount) customers.get(i).accounts.get(index)).setTotalloan(new BigDecimal(loanCustomer.get(j)[4]));
+                    }
                 }
             }
         }

@@ -19,7 +19,7 @@ public class LoanAccount extends Account {
         this.totalloan = totalloan;
     }
 
-    BigDecimal totalloan;
+    BigDecimal totalloan=new BigDecimal("0");
     ArrayList<Collateral> collaterals=new ArrayList<>();
     LoanAccount(int id,Currency currency,ArrayList<Collateral> collaterals){
         super(id,currency,collaterals);
