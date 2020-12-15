@@ -32,6 +32,34 @@ public class ManagerFunction {
 	}
 	
 	/*
+	 * Alter the balance with changedAmount in manager account according to currency type
+	 * Input currency_type, changed money amount
+	 * Return 0 if success, -1 not success(no customer or no saving account)
+	 */
+	public static int alterManagerAccount(String currency_type, BigDecimal changedAmount) { 
+        try {
+            Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+            ResultSet rset;
+            
+            // change total currency amount
+            BigDecimal old_amount = null;
+            rset = stmt.executeQuery("SELECT * FROM MANAGER_ACCOUNT WHERE CURRENCY_TYPE = \'"+currency_type+"\';");
+            if (rset.next()) {
+            	old_amount = rset.getBigDecimal("MONEY_AMOUNT");
+            	stmt.execute("UPDATE MANAGER_ACCOUNT SET MONEY_AMOUNT = "+old_amount.add(changedAmount).toPlainString()+
+                        " WHERE CURRENCY_TYPE = \'"+currency_type+"\';");
+            }
+            
+            
+            //CustomerAddingFunction.addTransaction(customerID, "SAVING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
+            
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+        return 0;
+	}
+	
+	/*
 	 * Get all the customer list for manager
 	 * Return List object, each one a String[] {customer_ID, customer_name, account_type, currency_type, money_amount}
 	 * Return a zero-size list if no record
@@ -242,5 +270,6 @@ public class ManagerFunction {
     	//ManagerFunction.searchTransactionToday();
     	//ManagerFunction.addStock("S&P 500", new BigDecimal(15));
     	//ManagerFunction.alterStockPrice(2, new BigDecimal(18));
+    	//ManagerFunction.alterManagerAccount("Dollar", new BigDecimal(100));
 	}
 }
