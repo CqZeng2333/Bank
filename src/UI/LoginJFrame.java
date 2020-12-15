@@ -1,6 +1,6 @@
 package UI;
 
-import Banksrc.Customer;
+import backstage.Customer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.

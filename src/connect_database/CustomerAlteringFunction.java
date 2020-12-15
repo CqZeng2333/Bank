@@ -46,7 +46,7 @@ public class CustomerAlteringFunction {
             stmt.execute("UPDATE SAVING_ACCOUNT SET MONEY_AMOUNT = "+newAmount.toPlainString()+
                     " WHERE ID = "+accountID+";");
             
-            CustomerAddingFunction.addTransaction(customerID, "SAVING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
+            //CustomerAddingFunction.addTransaction(customerID, "SAVING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
@@ -89,7 +89,7 @@ public class CustomerAlteringFunction {
             stmt.execute("UPDATE CHECKING_ACCOUNT SET MONEY_AMOUNT = "+newAmount.toPlainString()+
                     " WHERE ID = "+accountID+";");
             
-            CustomerAddingFunction.addTransaction(customerID, "CHECKING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
+            //CustomerAddingFunction.addTransaction(customerID, "CHECKING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
             
         } catch (SQLException e) {
             System.out.println(e.getMessage());
