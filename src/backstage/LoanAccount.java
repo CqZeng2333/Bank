@@ -115,7 +115,7 @@ public class LoanAccount extends Account {
                 boolean success= currency.sub("Dollar",price.doubleValue(),"1");
                 if (success){
                     System.out.println("Now you have your "+loanlist.get(index)[2]+" again!");
-                    System.out.println("Thank you for using our bank！");
+                    System.out.println("Thank you for using our bank!");
                     createTransaction("-"+loanlist.get(index)[1],"Dollar","Pay for the chosen collateral "+loanlist.get(index)[2]+".");
                     //alter manager
                     ManagerFunction.alterManagerAccount("Dollar",price);
@@ -160,7 +160,7 @@ public class LoanAccount extends Account {
         } else {
             System.out.println("Ok! We will loan you 90% of this collateral.");
             currency.add("Dollar", priceD, loanRate);
-            Collateral collateral = new Collateral(name, new BigDecimal(item));
+            Collateral collateral = new Collateral(name,new BigDecimal(item));
             collaterals.add(collateral);
             BigDecimal addNum = new BigDecimal(Double.toString(priceD));
             addNum=addNum.multiply(new BigDecimal(loanRate));

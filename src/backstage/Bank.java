@@ -103,10 +103,11 @@ public class Bank {
         for (int i = 0; i < customers.size(); i++) {
             List<String[]> collaterallist=CustomerSearchingFunction.searchLoanList(customers.get(i).id);
             // {loan_record_ID, loan_amount, collateral_name}
-            assert collaterallist != null;
-            if (collaterallist.size()>0){
+            if (collaterallist!=null&&collaterallist.size()>0){
                 for (int j=0;j<collaterallist.size();j++){
-                    Collateral collateral=new Collateral(collaterallist.get(j)[2],new BigDecimal(collaterallist.get(j)[1]));
+                    //BigDecimal price=new BigDecimal(collaterallist.get(j)[1]);
+                    //price=price.divide(new BigDecimal("0.9"));
+                    Collateral collateral=new Collateral(collaterallist.get(j)[2]);
                     customers.get(i).collaterals.add(collateral);
                 }
                 int index = -1;

@@ -11,7 +11,6 @@ public class Collateral {
     private String item;
     private BigDecimal price;
 
-
     public String getCurrencyType() {
         return currencyType;
     }
@@ -22,8 +21,11 @@ public class Collateral {
 
     private String currencyType;
 
-    public Collateral() {
+    public Collateral(String item) {
+        this.item = item;
+        this.currencyType="Dollar";
     }
+
 
     public Collateral(String item, BigDecimal price) {
         this.item = item;
