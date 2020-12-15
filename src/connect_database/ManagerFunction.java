@@ -61,11 +61,45 @@ public class ManagerFunction {
 
 	/*
 	 * Get all the customer list for manager
+	 * Return List object, each one a String[] {customer_ID, customer_name}
+	 * Return a zero-size list if no customer record
+	 * Return null if error
+	 */
+	public static List<String[]> searchAllCustomer() {
+		List<String[]> all_customers = new ArrayList<>();
+		try {
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			ResultSet rset;
+			
+			// get all customer record
+			rset = stmt.executeQuery("SELECT * FROM CUSTOMER;");
+			if (rset.next()) {
+				rset.previous();
+				while (rset.next()) {
+					String[] record = new String[2];
+					record[0] = rset.getInt("ID")+"";
+					record[1] = rset.getString("NAME");
+					//for (String str : record) System.out.print(str+" "); // 1 first_customer SAVING Dollar 3600.00
+					//System.out.print("\n");
+					all_customers.add(record);
+				}
+			}
+			return all_customers;
+
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		return null;
+	}
+	
+	
+	/*
+	 * Get all the accounts of customers for manager
 	 * Return List object, each one a String[] {customer_ID, customer_name, account_type, currency_type, money_amount}
 	 * Return a zero-size list if no record
 	 * Return null if error
 	 */
-	public static List<String[]> searchAllCustomer() {
+	public static List<String[]> searchAllCustomerAccount() {
 		List<String[]> all_customer_accounts = new ArrayList<>();
 		try {
 			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
