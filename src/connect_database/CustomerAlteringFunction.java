@@ -13,7 +13,7 @@ public class CustomerAlteringFunction {
 
     /*
      * Alter the balance with changedAmount in saving account according to currency type
-     * Input customer ID, currency_type, new money amount
+     * Input customer ID, currency_type, changed money amount
      * Return 0 if success, -1 not success(no customer or no saving account)
      */
     public static int alterSavingAccount(int customerID, String currency_type, BigDecimal changedAmount) {
@@ -41,9 +41,9 @@ public class CustomerAlteringFunction {
             rset = stmt.executeQuery("SELECT * FROM SAVING_ACCOUNT WHERE ID = "+accountID+";");
             if (rset.next()) {
                 old_amount = rset.getBigDecimal("MONEY_AMOUNT");
+                stmt.execute("UPDATE SAVING_ACCOUNT SET MONEY_AMOUNT = "+old_amount.add(changedAmount).toPlainString()+
+                        " WHERE ID = "+accountID+";");
             }
-            stmt.execute("UPDATE SAVING_ACCOUNT SET MONEY_AMOUNT = "+old_amount.add(changedAmount).toPlainString()+
-                    " WHERE ID = "+accountID+";");
 
             //CustomerAddingFunction.addTransaction(customerID, "SAVING", currency_type, newAmount.subtract(old_amount), newAmount, new Time());
 
@@ -125,7 +125,7 @@ public class CustomerAlteringFunction {
             stmt.execute("UPDATE STOCK_ACCOUNT SET MONEY_AMOUNT = "+newAmount.toPlainString()+
                     " WHERE ID = "+accountID+";");
 
-            CustomerAddingFunction.addTransaction(customerID, "STOCK", "Dollar", newAmount.subtract(old_amount), newAmount, new Time());
+            //CustomerAddingFunction.addTransaction(customerID, "STOCK", "Dollar", newAmount.subtract(old_amount), newAmount, new Time());
 
         } catch (SQLException e) {
             System.out.println(e.getMessage());

@@ -154,7 +154,7 @@ public class CustomerDeletingFunction {
 	            	
 	            	stmt.execute("DELETE FROM STOCK_OWNERSHIP WHERE ID = "+stock_record_id+";");
 	                stmt.execute("UPDATE STOCK_ACCOUNT SET MONEY_AMOUNT = "+total_amount.add(stock_current_price.multiply(new BigDecimal(holdings))).toPlainString()+" WHERE ID = "+customerID+";");
-	                CustomerAddingFunction.addTransaction(customerID, "STOCK", "Dollar", stock_current_price.multiply(new BigDecimal(holdings)), total_amount.add(stock_current_price.multiply(new BigDecimal(holdings))), new Time());
+	                //CustomerAddingFunction.addTransaction(customerID, "STOCK", "Dollar", stock_current_price.multiply(new BigDecimal(holdings)), total_amount.add(stock_current_price.multiply(new BigDecimal(holdings))), new Time());
             	}
                 return 0;
             }
