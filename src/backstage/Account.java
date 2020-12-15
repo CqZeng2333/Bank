@@ -8,11 +8,18 @@ public abstract class Account {
   String accountType;
   int accountID;
   ArrayList<Transaction> transactions = new ArrayList<>();
-  static Currency currency = new Currency();
+  ArrayList<Collateral> collaterals=new ArrayList<>();
   int customerID;
+  Currency currency;
 
-  Account(int id) {
+  Account(int id,Currency currency) {
     customerID = id;
+    this.currency=currency;
+  }
+  Account(int id,Currency currency,ArrayList<Collateral> collaterals) {
+    customerID = id;
+    this.currency=currency;
+    this.collaterals=collaterals;
   }
 
   public String toString() {
@@ -35,7 +42,8 @@ public abstract class Account {
       System.out.println("Invalid input. Please input a number.");
       cash = money.nextLine();
     }
-    Account.currency.add(type, Double.parseDouble(cash), "1");
+    currency.add(type, Double.parseDouble(cash), "1");
+
     return cash;
   }
 
@@ -49,7 +57,7 @@ public abstract class Account {
       System.out.println("Invalid input. Please input a number.");
       cash = money.nextLine();
     }
-    boolean success = Account.currency.sub(type, Double.parseDouble(cash),
+    boolean success = currency.sub(type, Double.parseDouble(cash),
             "1.02");
     if (!success) {
       return "";

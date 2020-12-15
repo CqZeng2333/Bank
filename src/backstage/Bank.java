@@ -1,8 +1,13 @@
 package backstage;
 
 import connect_database.CustomerAddingFunction;
+import connect_database.CustomerSearchingFunction;
+import connect_database.ManagerFunction;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 import java.util.Scanner;
 
 public class Bank {
@@ -12,39 +17,200 @@ public class Bank {
     static boolean userend=true;
     public static void main(String[] args){
         System.out.println("Welcome to the Bank!");
+        getExistUser();
         while (end){
             userMenu();}
     }
+    public static void getExistUser(){
+        List<String[]> existcustomers = ManagerFunction.searchAllCustomer();
+        //{customer_ID, customer_name, account_type, currency_type, money_amount}
 
-    public static void userMenu(){
-        userend=true;
-        System.out.println("You are 1. new customer 2. old customer 3. new manager 4. old manager 5. exit");
-        Scanner choice=new Scanner(System.in);
-        String num=choice.nextLine();
-
-        while(!Tool.is_number(num)){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
+        //id loop
+        for (int i = 0; i < Objects.requireNonNull(existcustomers).size(); i++) {
+            if (customers.size() > 0) {
+                for (int j = 0; j < customers.size(); j++) {
+                    if (customers.get(j).id == Integer.parseInt(existcustomers.get(i)[0])) {
+                        break;
+                    }
+                    Customer newCustomer = new Customer(Integer.parseInt(existcustomers.get(i)[0]));
+                    newCustomer.name = existcustomers.get(i)[1];
+                    customers.add(newCustomer);
+                }
+            }
         }
-        int number=Integer.parseInt(num);
-        while (number<1||number>5){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
-            number=Integer.parseInt(num);
+        //account loop
+        int sc = 0, cc = 0, lc = 0;
+        for (int i = 0; i < customers.size(); i++) {
+            for (int j = 0; j < Objects.requireNonNull(existcustomers).size(); j++) {
+                if (customers.get(i).id == Integer.parseInt(existcustomers.get(j)[0])) {
+                    if (existcustomers.get(j)[2].equals("SAVING") && sc == 0) {
+                        SavingAccount savingAccount = new SavingAccount(customers.get(i).id, customers.get(i).currency);
+                        sc = 1;
+                        customers.get(i).accounts.add(savingAccount);
+                    }
+                    if (existcustomers.get(j)[2].equals("CHECKING") && cc == 0) {
+                        CheckingAccount checkingAccount = new CheckingAccount(customers.get(i).id, customers.get(i).currency);
+                        cc = 1;
+                        customers.get(i).accounts.add(checkingAccount);
+                    }
+                    if (existcustomers.get(j)[2].equals("LOAN") && lc == 0) {
+                        LoanAccount loanAccount = new LoanAccount(customers.get(i).id, customers.get(i).currency,new ArrayList<>());
+                        lc = 1;
+                        customers.get(i).accounts.add(loanAccount);
+                    }
+                }
+            }
         }
-        if (number==1){
-            int id=createNewCustomer();
-            while (userend){
-            bankMenu(id);}
-        }else if (number==5){
-            end=false;
-        }else if (number==3){
-            createNewManager();
-            while (userend){
-                managerMenu();
+        //currency loop
+        for (int i = 0; i < customers.size(); i++) {
+            int index = -1;
+            for (int k = 0; k < customers.get(i).accounts.size(); k++) {
+                if (customers.get(i).accounts.get(k).accountType.equals("SAVING")) {
+                    index = k;
+                    break;
+                }
+            }
+            for (int j = 0; j < Objects.requireNonNull(existcustomers).size(); j++) {
+                if (customers.get(i).id == Integer.parseInt(existcustomers.get(j)[0])) {
+                    if (index >= 0) {
+                        if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Dollar")) {
+                            customers.get(i).accounts.get(index).currency.getMoney().put("Dollar", new BigDecimal(existcustomers.get(j)[4]));
+                        }
+                        if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("RMB")) {
+                            customers.get(i).accounts.get(index).currency.getMoney().put("RMB", new BigDecimal(existcustomers.get(j)[4]));
+                        }
+                        if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Pound")) {
+                            customers.get(i).accounts.get(index).currency.getMoney().put("Pound", new BigDecimal(existcustomers.get(j)[4]));
+                        }
+                    }
+                }
+            }
+        }
+        //loan amount loop
+        List<String[]> loanCustomer = ManagerFunction.searchAllLoanCustomer();
+        //{customer_ID, customer_name, "LOAN", "Dollar", money_amount}
+        for (int i = 0; i < customers.size(); i++) {
+            int index = -1;
+            for (int k = 0; k < customers.get(i).accounts.size(); k++) {
+                if (customers.get(i).accounts.get(k).accountType.equals("LOAN")) {
+                    index = k;
+                    break;
+                }
+            }
+            for (int j = 0; j < Objects.requireNonNull(loanCustomer).size(); j++) {
+                if (customers.get(i).id == Integer.parseInt(loanCustomer.get(j)[0])) {
+                    ((LoanAccount) customers.get(i).accounts.get(index)).setTotalloan(new BigDecimal(loanCustomer.get(j)[-1]));
+                }
+            }
+        }
+        //loan collaterals loop
+        for (int i = 0; i < customers.size(); i++) {
+            List<String[]> collaterallist=CustomerSearchingFunction.searchLoanList(customers.get(i).id);
+            // {loan_record_ID, loan_amount, collateral_name}
+            if (collaterallist.size()>0){
+                for (int j=0;j<collaterallist.size();j++){
+                    Collateral collateral=new Collateral(collaterallist.get(j)[2],new BigDecimal(collaterallist.get(j)[1]));
+                    customers.get(i).collaterals.add(collateral);
+                }
+                int index = -1;
+                for (int k = 0; k < customers.get(i).accounts.size(); k++) {
+                    if (customers.get(i).accounts.get(k).accountType.equals("LOAN")) {
+                        index = k;
+                        break;
+                    }
+                }
+                if (index>=0){
+                    customers.get(i).accounts.get(index).collaterals=customers.get(i).collaterals;
+                }
+            }
+        }
+        //transactions loop
+        //{account_type, currency_type, money_changed, current_balance, time}
+        for (int i = 0; i < customers.size(); i++) {
+            List<String[]> transactionlist=CustomerSearchingFunction.searchTransaction(customers.get(i).id);
+            for (int j = 0; j< Objects.requireNonNull(transactionlist).size(); j++) {
+                Transaction transaction = new Transaction("Details only for today's actions", transactionlist.get(j)[0],
+                        transactionlist.get(j)[1], transactionlist.get(j)[2], transactionlist.get(j)[3], transactionlist.get(j)[4]);
+                customers.get(i).transactions.add(transaction);
             }
         }
     }
+
+    public static void userMenu(){
+        userend = true;
+        System.out.println("You are 1. new customer 2. old customer 3. manager login 4. exit");
+        Scanner choice = new Scanner(System.in);
+        String num = choice.nextLine();
+
+        while (!Tool.is_number(num)) {
+            System.out.println("Invalid input. Input again.");
+            num = choice.nextLine();
+        }
+        int number = Integer.parseInt(num);
+        while (number < 1 || number > 5) {
+            System.out.println("Invalid input. Input again.");
+            num = choice.nextLine();
+            number = Integer.parseInt(num);
+        }
+        if (number == 1) {
+            int id = createNewCustomer();
+            while (userend) {
+                bankMenu(id);
+            }
+        } else if (number == 5) {
+            end = false;
+        }
+        else if(number==2){
+            Scanner username = new Scanner(System.in);
+            System.out.println("Dear customer, please enter your name: ");
+            String name = username.nextLine();
+            while (!Tool.is_alpha(name)) {
+                System.out.println("Invalid name. A name should consist of letters.");
+                name = username.nextLine();
+            }
+            Scanner password = new Scanner(System.in);
+            System.out.println("Dear customer, please enter your password(It should be between 6-16): ");
+            String pwd = password.nextLine();
+            while (!Tool.in_range(pwd, 6, 16)) {
+                System.out.println("Invalid length of password. Input again.");
+                pwd = password.nextLine();
+            }
+            int login = CustomerSearchingFunction.customerLogin(name,pwd);
+            if (login==-1){
+                System.out.println("Wrong login!");
+                return;
+            }else {
+                bankMenu(login);
+            }
+        }
+        else if (number == 3) {
+            Scanner username = new Scanner(System.in);
+            System.out.println("Dear manager, please enter your name: ");
+            String name = username.nextLine();
+            while (!Tool.is_alpha(name)) {
+                System.out.println("Invalid name. A name should consist of letters.");
+                name = username.nextLine();
+            }
+            Scanner password = new Scanner(System.in);
+            System.out.println("Dear manager, please enter your password(It should be between 6-16): ");
+            String pwd = password.nextLine();
+            while (!Tool.in_range(pwd, 6, 16)) {
+                System.out.println("Invalid length of password. Input again.");
+                pwd = password.nextLine();
+            }
+            int login = ManagerFunction.managerLogin(name, pwd);
+            if (login == 0) {
+                bankManager = new Manager(name, pwd);
+                bankManager.setCustomers(customers);
+                while (userend) {
+                    managerMenu();
+                }
+            } else {
+                System.out.println("Wrong name or password.");
+            }
+        }
+    }
+
     public static void bankMenu(int id){
         System.out.println("Choose an action you wanna take: ");
         System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. exit");
@@ -104,7 +270,7 @@ public class Bank {
     }
     public static void managerMenu(){
         System.out.println("Choose an action you wanna take: ");
-        System.out.println("1. check all the customers 2. search for one customer 3. check for debtors 4. exit");
+        System.out.println("1. check all the customers 2. search for one customer 3. check for debtors 4. transactions records 5. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
         while(!Tool.is_number(num)){
@@ -112,7 +278,7 @@ public class Bank {
             num=choice.nextLine();
         }
         int number=Integer.parseInt(num);
-        while (number<1||number>4){
+        while (number<1||number>5){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
             number=Integer.parseInt(num);
@@ -160,6 +326,8 @@ public class Bank {
                 bankManager.printLoan();
                 break;
             case 4:
+                System.out.println(ManagerFunction.searchTransactionToday());
+            case 5:
                 System.out.println("Bye bye!");
                 userend = false;
                 break;
@@ -185,12 +353,6 @@ public class Bank {
         String pwd=initUserPwd();
         Customer customer=new Customer(name,pwd);
         return customer;
-    }
-    public static Manager initManagerInfo(){
-        String name=initUserName();
-        String pwd=initUserPwd();
-        Manager manager=new Manager(name,pwd);
-        return manager;
     }
     public static String initUserName(){
         Scanner username=new Scanner(System.in);
@@ -239,10 +401,4 @@ public class Bank {
         int location=customers.size()-1;
         return location;
     }
-    public static void createNewManager(){
-        bankManager=initManagerInfo();
-        bankManager.setId(0);
-        bankManager.setCustomers(customers);
-    }
-
 }

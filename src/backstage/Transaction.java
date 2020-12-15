@@ -4,6 +4,16 @@ public class Transaction {
      String info;
      String moneyChange;
 
+     public String getBalance() {
+          return balance;
+     }
+
+     public void setBalance(String balance) {
+          this.balance = balance;
+     }
+
+     String balance;
+
      public String getMoneyChange() {
           return moneyChange;
      }
@@ -12,7 +22,14 @@ public class Transaction {
           this.moneyChange = moneyChange;
      }
 
-
+     Transaction(String str,String accountType,String currencyType,String moneychange,String currentBalance,String time){
+          setInfo(str);
+          setAccountType(accountType);
+          setCurrencyType(currencyType);
+          setBalance(currentBalance);
+          setTime(time);
+          setMoneyChange(moneychange);
+     }
 
      public int getCustomerID() {
           return customerID;
@@ -51,15 +68,15 @@ public class Transaction {
      String accountType;
      String currencyType;
 
-     public Time getTime() {
+     public String getTime() {
           return time;
      }
 
-     public void setTime(Time time) {
+     public void setTime(String time) {
           this.time = time;
      }
 
-     Time time;
+     String time;
      Transaction(){
 
      }

@@ -4,6 +4,10 @@ import java.math.BigDecimal;
 import java.util.HashMap;
 
 public class Currency {
+    public HashMap<String, BigDecimal> getMoney() {
+        return money;
+    }
+
     private HashMap<String, BigDecimal> money;
 
     public int getCustomerID() {
@@ -64,7 +68,7 @@ public class Currency {
             this.money.put(key,this.money.get(key).add(addNum));
             System.out.println("Successfully save "+key+" "+addNum+"!");
             System.out.println("Now your deposit: ");
-            Account.currency.print();
+            print();
         }
     }
 
@@ -81,7 +85,7 @@ public class Currency {
                 this.money.put(key,this.money.get(key).subtract(subNum));
                 System.out.println("Successfully withdraw "+key+" "+subNum+"!");
                 System.out.println("Now your deposit: ");
-                Account.currency.print();
+                print();
                 success=true;
                     }
                }

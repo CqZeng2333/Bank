@@ -1,13 +1,16 @@
 package backstage;
 
+import connect_database.CustomerDeletingFunction;
+
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Customer extends User {
-
+    Currency currency = new Currency();
     ArrayList<Account> accounts=new ArrayList<>();
     ArrayList<Transaction> transactions=new ArrayList<>();
-    public Customer(){}
+    ArrayList<Collateral> collaterals=new ArrayList<>();
+    public Customer(int id){super(id);}
     public Customer(String name,String pwd){
         super(name,pwd);
     }
@@ -56,12 +59,13 @@ public class Customer extends User {
             number=Integer.parseInt(num);
         }
         if (accounts.get(number-1).accountType.equals("SAVING")){
-            boolean isempty= Account.currency.is_empty();
+            boolean isempty= accounts.get(number-1).currency.is_empty();
             if (isempty){
-            boolean success= Account.currency.sub("Dollar",5,"1");
+            boolean success= accounts.get(number-1).currency.sub("Dollar",5,"1");
             if (success){
             System.out.println("Successfully delete your saving account!");
-            accounts.get(number-1).createTransaction("5","Dollar","Delete account.");
+            accounts.get(number-1).createTransaction("-5","Dollar","Delete account.");
+            CustomerDeletingFunction.deleteSavingAccount(id);
             accounts.remove(number-1);}else {
                 System.out.println("You don't have enough money.");
                 accounts.get(number-1).createTransaction("0","Dollar","Failed to delete account.");
@@ -71,10 +75,11 @@ public class Customer extends User {
                 accounts.get(number-1).createTransaction("0","Dollar","Failed to delete account.");}
         }
         else if (accounts.get(number-1).accountType.equals("CHECKING")){
-            boolean success= Account.currency.sub("Dollar",5,"1");
+            boolean success= currency.sub("Dollar",5,"1");
             if (success){
                 System.out.println("Successfully delete your checking account!");
-                accounts.get(number-1).createTransaction("5","Dollar","Delete account.");
+                accounts.get(number-1).createTransaction("-5","Dollar","Delete account.");
+                CustomerDeletingFunction.deleteCheckingAccount(id);
                 accounts.remove(number-1);}else {
                 System.out.println("You don't have enough money.");
                 accounts.get(number-1).createTransaction("0","Dollar","Failed to delete account.");
@@ -82,27 +87,46 @@ public class Customer extends User {
 
         }else if (accounts.get(number-1).accountType.equals("LOAN")){
             LoanAccount loanAccount= (LoanAccount) accounts.get(number-1);
+            System.out.println("Please be aware that if you still have collaterals in our bank, deleting this account will make you lose all your collaterals.");
+            System.out.println("Do you want to go back?(y/n)");
+            Scanner exit=new Scanner(System.in);
+            String exitornot=exit.nextLine();
+            while (!Tool.is_alpha(exitornot)){
+                System.out.println("Invalid input. It should be y or n.");
+                exitornot=exit.nextLine();
+            }
+            while ((!exitornot.equals("y"))&&(!exitornot.equals("n"))&&(!exitornot.equals("Y"))&&(!exitornot.equals("N"))){
+                System.out.println("Invalid input. It should be y or n.");
+                exitornot=exit.nextLine();
+            }
+            if (exitornot.equals("y")||exitornot.equals("Y")){
+                return -1;
+            }
             if (loanAccount.is_empty()){
-                boolean success= Account.currency.sub("Dollar",5,"1");
+                boolean success= currency.sub("Dollar",5,"1");
                 if (success){
                     System.out.println("Successfully delete your loan account!");
-                    accounts.get(number-1).createTransaction("5","Dollar","Delete account.");
+                    accounts.get(number-1).createTransaction("-5","Dollar","Delete account.");
+                    CustomerDeletingFunction.deleteLoanAccountWithoutPayback(id);
                     accounts.remove(number-1);}else {
                     System.out.println("You don't have enough money.");
                     accounts.get(number-1).createTransaction("0","Dollar","Failed to delete account.");
                 }
             }else {
-                System.out.println("You have to pay for your loans first.");
-                accounts.get(number-1).createTransaction("0","Dollar","Failed to delete account.");}
+                System.out.println("Your loans are mine now.");
+                accounts.get(number-1).createTransaction("0","Dollar","Delete account without payback.");
+                CustomerDeletingFunction.deleteLoanAccountWithoutPayback(id);}
         }
         return 1;
     }
     public int createAccount(String str){
         System.out.println("Dear customer "+name+":");
         if (str.equals("SAVING")){
-        accounts.add(new SavingAccount(id)); }
+            SavingAccount savingAccount=new SavingAccount(id,currency);
+            savingAccount.initAccount();
+        accounts.add(savingAccount); }
         else if (str.equals("CHECKING")){
-            CheckingAccount checkingAccount=new CheckingAccount(id);
+            CheckingAccount checkingAccount=new CheckingAccount(id,currency);
             boolean success=checkingAccount.initAccount();
             if (!success){
                 return -1;
@@ -110,7 +134,7 @@ public class Customer extends User {
                 accounts.add(checkingAccount);
             }
         }else if (str.equals("LOAN")){
-            LoanAccount loanAccount=new LoanAccount(id);
+            LoanAccount loanAccount=new LoanAccount(id,currency,collaterals);
             boolean success=loanAccount.initAccount();
             if (!success){
                 return -1;

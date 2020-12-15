@@ -113,7 +113,7 @@ public class CustomerDeletingFunction {
 	            	rset.next();
 	            	BigDecimal total_amount = rset.getBigDecimal("MONEY_AMOUNT");
 	                stmt.execute("UPDATE LOAN_ACCOUNT SET MONEY_AMOUNT = "+total_amount.subtract(loan_amount).toPlainString()+" WHERE ID = "+customerID+";");
-	                CustomerAddingFunction.addTransaction(customerID, "LOAN", "Dollar", new BigDecimal(0).subtract(loan_amount), total_amount.subtract(loan_amount), new Time());
+	                //CustomerAddingFunction.addTransaction(customerID, "LOAN", "Dollar", new BigDecimal(0).subtract(loan_amount), total_amount.subtract(loan_amount), new Time());
             	}
                 return 0;
             }

@@ -7,10 +7,9 @@ import java.math.BigDecimal;
 import java.util.Scanner;
 
 public class SavingAccount extends Account {
-    SavingAccount(int id){
-         super(id);
+    SavingAccount(int id,Currency currency){
+         super(id,currency);
          accountType="SAVING";
-         initAccount();
     }
     public void initAccount(){
         System.out.println("Welcome! You will save and withdraw money here, starting today.");
@@ -19,10 +18,11 @@ public class SavingAccount extends Account {
         System.out.println("To create a checking account, you will have to save at least 5 dollars in our account.");
         save("Dollar");
         System.out.println("Automatically charge you $5!");
-        Account.currency.sub("Dollar",5,"1");
+        currency.sub("Dollar",5,"1");
         createTransaction("-5","Dollar","Open Saving account.");
         //add saving account in database
         CustomerAddingFunction.addSavingAccount(customerID);
+        CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-5"));
     }
     public void Menu(){
         System.out.println("1. Save money 2. Withdraw money 3. Exit");
@@ -105,20 +105,13 @@ public class SavingAccount extends Account {
             return;
         }
     }
-
+//String str,String accountType,String currencyType,String moneychange,String currentBalance,Time time
     public void createTransaction(String moneychange,String currencyType,String action){
         Time time=new Time();
         String str=time+ " Customer "+(customerID+1)+" in Saving account: "+action;
-        Transaction transaction=new Transaction();
-        transaction.setInfo(str);
-        transaction.setAccountType(accountType);
-        transaction.setCurrencyType(currencyType);
-        transaction.setCurrentCurrency(Account.currency);
-        transaction.setCustomerID(customerID);
-        transaction.setTime(time);
-        transaction.setMoneyChange(moneychange);
+        Transaction transaction=new Transaction(str,accountType,currencyType,currency.get(currencyType).toString(),moneychange,time.toString());
         transactions.add(transaction);
         //transaction in database
-        CustomerAddingFunction.addTransaction(customerID,accountType,currencyType,new BigDecimal(moneychange),Account.currency.get(currencyType),time);
+        //CustomerAddingFunction.addTransaction(customerID,accountType,currencyType,new BigDecimal(moneychange),Account.currency.get(currencyType),time);
     }
 }

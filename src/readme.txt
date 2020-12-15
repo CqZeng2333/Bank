@@ -34,14 +34,7 @@ loanaccount修改成只能用美元这一种货币，不过currency本身作为�
 collateral类里的price数据成员更改为BigDecimal类型
 
 12-15
-连接数据库（连接位置）：
-CustomerAddingFunction:
-新增顾客-Bank类createNewCustomer()
-新增saving账户-SavingAccount类init函数
-新增checking账户-CheckingAccout类init函数
-新增loan账户-LoanAccount类init函数
-新增loan-LoanAccount类applyLoan函数
-新增transaction-SavingAccount，CheckingAccout，LoanAccount类中的crateTransaction函数
+
 
 
 基本设定：account中，check和save开通要5美元，loan要8美元，注销账户各要5美元，每次取钱要2%手续费，抵押贷款给90%的抵押物价钱，

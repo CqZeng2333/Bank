@@ -2,27 +2,41 @@ package backstage;
 
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerAlteringFunction;
+import connect_database.CustomerDeletingFunction;
+import connect_database.CustomerSearchingFunction;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
 
 public class LoanAccount extends Account {
     public static final String loanRate="0.9";
+
+    public BigDecimal getTotalloan() {
+        return totalloan;
+    }
+
+    public void setTotalloan(BigDecimal totalloan) {
+        this.totalloan = totalloan;
+    }
+
+    BigDecimal totalloan;
     ArrayList<Collateral> collaterals=new ArrayList<>();
-    LoanAccount(int id){
-        super(id);
+    LoanAccount(int id,Currency currency,ArrayList<Collateral> collaterals){
+        super(id,currency,collaterals);
         accountType="LOAN";
     }
     public String toString(){
-        String str="Collaterals: "+printCollaterals();
+        String str="Collaterals: "+totalloan;
         return str;
     }
     public boolean initAccount(){
         System.out.println("Welcome! You will be applying loans and pay for collterals here, starting today.");
         System.out.println("Opening this count will charge you 8 dollars. Make sure you have created the saving count and save at least 8 dollars in it.");
         System.out.println("LOAN account only permits dollars.");
-        if (Account.currency.get("Dollar").compareTo(new BigDecimal(8)) < 0){
+        if (currency.get("Dollar").compareTo(new BigDecimal(8)) < 0){
             System.out.println("You don't have 8 dollars!");
             System.out.println("Fail to open a loan account.");
             createTransaction("0","Dollar","Failed to open loan account.");
@@ -30,7 +44,7 @@ public class LoanAccount extends Account {
             return false;
         }else {
             //withdraw
-            Account.currency.sub("Dollar",8,"1");
+            currency.sub("Dollar",8,"1");
             createTransaction("-8","Dollar","Open loan account.");
             //alter saving account
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-8"));
@@ -75,35 +89,45 @@ public class LoanAccount extends Account {
         }else return;
     }
     public void payLoan(){
-        System.out.println("Please enter the name of the collteral you wanna redeem.");
-        Scanner item=new Scanner(System.in);
-        String name=item.nextLine();
-        int id=-1;
-        if (collaterals.size()==0){
+        List<String[]> loanlist= CustomerSearchingFunction.searchLoanList(customerID);
+        assert loanlist != null;
+        if (loanlist.size()==0){
             System.out.println("You don't have any loans yet.");
+            return;
         }else {
-            for (int i=0;i<collaterals.size();i++){
-                if (collaterals.get(i).getItem().equals(name)){
-                    id=i;
+            //{loan_record_ID, loan_amount, collateral_name}
+            for (String[] strings : loanlist) {
+                System.out.println(Arrays.toString(strings));
+            }
+            System.out.println("Please enter the name of the collteral you wanna redeem.");
+            Scanner item=new Scanner(System.in);
+            String name=item.nextLine();
+            int index=-1;
+            for (int i=0;i<loanlist.size();i++) {
+                if (name.equals(loanlist.get(i)[2])){
+                    index=i;
                     break;
+                }
+                System.out.println(name+" is not in your collateral list!");
+                return;
+            }
+            if(index>=0){
+                BigDecimal price=new BigDecimal(loanlist.get(index)[1]);
+                boolean success= currency.sub("Dollar",price.doubleValue(),"1");
+                if (success){
+                    System.out.println("Now you have your "+loanlist.get(index)[2]+" again!");
+                    System.out.println("Thank you for using our bank！");
+                    createTransaction("-"+loanlist.get(index)[1],"Dollar","Pay for the chosen collateral "+loanlist.get(index)[2]+".");
+                    //alter saving account
+                    CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-"+loanlist.get(index)[1]));
+                    CustomerDeletingFunction.deleteOneLoan(customerID,Integer.parseInt(loanlist.get(index)[0]));
+                }else {
+                    createTransaction("0","Dollar","Failed to pay for the chosen collateral. "+loanlist.get(index)[2]+".");
                 }
             }
         }
-        if (id>=0){
-            BigDecimal price=collaterals.get(id).getPrice();
-            boolean success= Account.currency.sub(collaterals.get(id).getCurrencyType(),price.doubleValue(),"1");
-            if (success){
-                System.out.println("Now you have your "+collaterals.get(id).getItem()+" again!");
-                System.out.println("Thank you for using our bank！");
-                createTransaction("-"+collaterals.get(id).getPrice(),collaterals.get(id).getCurrencyType(),"Pay for the chosen collateral. "+collaterals.get(id));
-                //alter saving account
-                CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-"+collaterals.get(id).getPrice()));
-                collaterals.remove(id);
-            }else {
-                createTransaction("0",collaterals.get(id).getCurrencyType(),"Failed to pay for the chosen collateral. "+collaterals.get(id));
-            }
         }
-    }
+
 
     public void applyLoan(){
         System.out.println("Input the name and price you have assessed here, we will loan you 80% of your collateral.");
@@ -134,8 +158,8 @@ public class LoanAccount extends Account {
             createTransaction("0","Dollar","Failed to loan cause the collateral is too cheap.");
         } else {
             System.out.println("Ok! We will loan you 90% of this collateral.");
-            Account.currency.add("Dollar", priceD, loanRate);
-            Collateral collateral = new Collateral(name, new BigDecimal(item),"Dollar");
+            currency.add("Dollar", priceD, loanRate);
+            Collateral collateral = new Collateral(name, new BigDecimal(item));
             collaterals.add(collateral);
             BigDecimal addNum = new BigDecimal(Double.toString(priceD));
             addNum=addNum.multiply(new BigDecimal(loanRate));
@@ -148,28 +172,23 @@ public class LoanAccount extends Account {
         }
     }
     public void checkLoans(){
-          if (collaterals.size()==0){
+        List<String[]> loanlist= CustomerSearchingFunction.searchLoanList(customerID);
+        assert loanlist != null;
+        if (loanlist.size()==0){
               System.out.println("You don't have any loans yet.");
           }else {
               createTransaction("0","Dollar","Check all the collterals.");
-              for (Collateral collateral : collaterals) {
-                  System.out.println(collateral);
-              }
+            for (String[] strings : loanlist) {
+                System.out.println(Arrays.toString(strings));
+            }
           }
     }
     public void createTransaction(String moneychange,String currencyType,String action){
         Time time=new Time();
         String str=time+ " Customer "+(customerID+1)+" in LOAN account: "+action;
-        Transaction transaction=new Transaction();
-        transaction.setInfo(str);
-        transaction.setAccountType(accountType);
-        transaction.setCurrencyType(currencyType);
-        transaction.setCurrentCurrency(Account.currency);
-        transaction.setCustomerID(customerID);
-        transaction.setTime(time);
-        transaction.setMoneyChange(moneychange);
+        Transaction transaction=new Transaction(str,accountType,currencyType,currency.get(currencyType).toString(),moneychange,time.toString());
         transactions.add(transaction);
         //transaction in database
-        CustomerAddingFunction.addTransaction(customerID,accountType,currencyType,new BigDecimal(moneychange),Account.currency.get(currencyType),time);
+        CustomerAddingFunction.addTransaction(customerID,accountType,currencyType,new BigDecimal(moneychange),currency.get(currencyType),time);
     }
 }

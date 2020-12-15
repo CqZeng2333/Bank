@@ -13,6 +13,8 @@ public class Manager extends User {
 
     private ArrayList<Customer>customers = new ArrayList<>();
 
+    //public ArrayList<Transaction> transactions=new ArrayList<>();
+
     Manager() {
     }
     Manager(String name,String pwd){
