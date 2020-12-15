@@ -55,6 +55,7 @@ public class Manager extends User {
                     for (int j=0;j<customers.get(i).accounts.size();j++){
                         System.out.println((j+1)+" "+customers.get(i).accounts.get(j).accountType);
                     }
+                    customers.get(i).currency.print();
                 }
                 return;
             }
@@ -70,10 +71,11 @@ public class Manager extends User {
                 if (customers.get(i).accounts.size()==0){
                     ;
                 }else {
-                    System.out.println("This customer owns \n");
+                    System.out.println("This customer owns accounts");
                     for (int j=0;j<customers.get(i).accounts.size();j++){
                         System.out.println((j+1)+" "+customers.get(i).accounts.get(j).accountType);
                     }
+                    customers.get(i).currency.print();
                 }
                 return;
             }

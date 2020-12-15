@@ -223,6 +223,12 @@ public class Bank {
     }
 
     public static void bankMenu(int id){
+        int index=-1;
+        for (int i=0;i<customers.size();i++){
+            if (customers.get(i).id==id){
+                index=i;
+            }
+        }
         System.out.println("Choose an action you wanna take: ");
         System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. exit");
         Scanner choice=new Scanner(System.in);
@@ -240,40 +246,40 @@ public class Bank {
         int exist;
         switch (number) {
             case 1:
-                exist = isthereAccount(id, "CHECKING");
+                exist = isthereAccount(index, "CHECKING");
                 if (exist < 0) {
-                    int accountID = customers.get(id).createAccount("CHECKING");
+                    int accountID = customers.get(index).createAccount("CHECKING");
                     if (accountID >= 0) {
                         System.out.println("You can check your money and your transaction records now.");
-                        ((CheckingAccount) customers.get(id).accounts.get(accountID)).Menu(customers.get(id));
+                        ((CheckingAccount) customers.get(index).accounts.get(accountID)).Menu(customers.get(index));
                     }
                 } else {
-                    ((CheckingAccount) customers.get(id).accounts.get(exist)).Menu(customers.get(id));
+                    ((CheckingAccount) customers.get(index).accounts.get(exist)).Menu(customers.get(index));
                 }
                 break;
             case 2 :
-                exist = isthereAccount(id, "SAVING");
+                exist = isthereAccount(index, "SAVING");
                 if (exist < 0) {
-                    int accountID = customers.get(id).createAccount("SAVING");
+                    int accountID = customers.get(index).createAccount("SAVING");
                     if (accountID >= 0) {
                     System.out.println("You can make savings and withdrawals now.");
-                    ((SavingAccount) customers.get(id).accounts.get(accountID)).Menu();}
+                    ((SavingAccount) customers.get(index).accounts.get(accountID)).Menu();}
                 } else {
-                    ((SavingAccount) customers.get(id).accounts.get(exist)).Menu();
+                    ((SavingAccount) customers.get(index).accounts.get(exist)).Menu();
                 }
                 break;
             case 3:
-                exist = isthereAccount(id, "LOAN");
+                exist = isthereAccount(index, "LOAN");
                 if (exist < 0) {
-                    int accountID = customers.get(id).createAccount("LOAN");
+                    int accountID = customers.get(index).createAccount("LOAN");
                     if (accountID >= 0) {
-                    ((LoanAccount) customers.get(id).accounts.get(accountID)).Menu();}
+                    ((LoanAccount) customers.get(index).accounts.get(accountID)).Menu();}
                 } else {
-                    ((LoanAccount) customers.get(id).accounts.get(exist)).Menu();
+                    ((LoanAccount) customers.get(index).accounts.get(exist)).Menu();
                 }
                 break;
             case 4:
-                customers.get(id).removeAccount();
+                customers.get(index).removeAccount();
                 break;
             case 5:
                 System.out.println("Bye bye!");
@@ -366,7 +372,7 @@ public class Bank {
             }
         }
         if (accountID<0){
-            System.out.println("You don't have "+str+" account it. You can create one now.");
+            System.out.println("You don't have "+str+" account. You can create one now.");
         }
         return accountID;
     }

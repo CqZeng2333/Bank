@@ -18,6 +18,7 @@ public class SavingAccount extends Account {
         System.out.println("You can use 3 types of currency in our bank(Dollar, RMB and Pound).");
         System.out.println("To create a saving account, you will have to save at least 5 dollars in our account.");
         String cash=save("Dollar");
+        CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal(cash));
         System.out.println("Automatically charge you $5!");
         boolean success=currency.sub("Dollar",5,"1");
         if (success){
@@ -30,7 +31,7 @@ public class SavingAccount extends Account {
         return true;
         }else {
             System.out.println("You don't have 5 dollars!");
-            System.out.println("Fail to open a saving account.");
+            System.out.println("Fail to open a saving account. Pay your money back.");
             createTransaction("0","Dollar","Failed to open saving account.");
             currency.sub("Dollar",Double.parseDouble(cash),"1");
             return false;
