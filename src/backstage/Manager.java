@@ -33,7 +33,6 @@ public class Manager extends User {
 
     public void printLoan(){
         for (int i = 0; i < this.customers.size(); i++) {
-//            判断是否欠钱
             if (customers.get(i).accounts.size()>0){
             for (int j=0;j<customers.get(i).accounts.size();j++){
                 if (customers.get(i).accounts.get(j).accountType.equals("LOAN")){

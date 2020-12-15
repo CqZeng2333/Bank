@@ -26,11 +26,19 @@ public class Bank {
         //{customer_ID, customer_name, account_type, currency_type, money_amount}
 
         //id loop
-        for (int i = 0; i < Objects.requireNonNull(existcustomers).size(); i++) {
-                    Customer newCustomer = new Customer(Integer.parseInt(existcustomers.get(i)[0]));
-                    newCustomer.name = existcustomers.get(i)[1];
-                    customers.add(newCustomer);
+        Customer newCustomer=new Customer(Integer.parseInt(existcustomers.get(0)[0]));
+        newCustomer.name = existcustomers.get(0)[1];
+        customers.add(newCustomer);
+        for (int i = 1; i < Objects.requireNonNull(existcustomers).size(); i++) {
+            for (int j = 0; j < customers.size(); j++) {
+                if (customers.get(j).id==Integer.parseInt(existcustomers.get(i)[0])){
+                    break;
                 }
+                Customer customer = new Customer(Integer.parseInt(existcustomers.get(i)[0]));
+                customer.name = existcustomers.get(i)[1];
+                customers.add(customer);
+            }
+        }
         if (customers.size()>0){
         //account loop
         int sc = 0, cc = 0, lc = 0;
@@ -242,8 +250,9 @@ public class Bank {
                 exist = isthereAccount(id, "SAVING");
                 if (exist < 0) {
                     int accountID = customers.get(id).createAccount("SAVING");
+                    if (accountID >= 0) {
                     System.out.println("You can make savings and withdrawals now.");
-                    ((SavingAccount) customers.get(id).accounts.get(accountID)).Menu();
+                    ((SavingAccount) customers.get(id).accounts.get(accountID)).Menu();}
                 } else {
                     ((SavingAccount) customers.get(id).accounts.get(exist)).Menu();
                 }
@@ -252,7 +261,8 @@ public class Bank {
                 exist = isthereAccount(id, "LOAN");
                 if (exist < 0) {
                     int accountID = customers.get(id).createAccount("LOAN");
-                    ((LoanAccount) customers.get(id).accounts.get(accountID)).Menu();
+                    if (accountID >= 0) {
+                    ((LoanAccount) customers.get(id).accounts.get(accountID)).Menu();}
                 } else {
                     ((LoanAccount) customers.get(id).accounts.get(exist)).Menu();
                 }
@@ -329,7 +339,7 @@ public class Bank {
                 List<String[]> records=ManagerFunction.searchTransactionToday();
                 for (int i = 0; i< Objects.requireNonNull(records).size(); i++){
                     for (int j=0;j<records.get(i).length;j++){
-                        System.out.print(records.get(i)[j]);
+                        System.out.print(records.get(i)[j]+" ");
                     }
                     System.out.print("\n");
                 }
