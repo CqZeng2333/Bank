@@ -1,7 +1,6 @@
 package backstage;
 
 import connect_database.CustomerAddingFunction;
-import connect_database.CustomerAlteringFunction;
 import connect_database.CustomerSearchingFunction;
 import connect_database.ManagerFunction;
 
@@ -44,6 +43,28 @@ public class Bank {
                 if (CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Pound")!=null){
                     customers.get(i).currency.getMoney().put("Pound",CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Pound"));
                 }
+/*                int index = -1;
+                for (int k = 0; k < customers.get(i).accounts.size(); k++) {
+                    if (customers.get(i).accounts.get(k).accountType.equals("SAVING")) {
+                        index = k;
+                        break;
+                    }
+                }
+                for (int j = 0; j < Objects.requireNonNull(existcustomers).size(); j++) {
+                    if (customers.get(i).id == Integer.parseInt(existcustomers.get(j)[0])) {
+                        if (index >= 0) {
+                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Dollar")) {
+                                customers.get(i).accounts.get(index).currency.getMoney().put("Dollar", new BigDecimal(existcustomers.get(j)[4]));
+                            }
+                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("RMB")) {
+                                customers.get(i).accounts.get(index).currency.getMoney().put("RMB", new BigDecimal(existcustomers.get(j)[4]));
+                            }
+                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Pound")) {
+                                customers.get(i).accounts.get(index).currency.getMoney().put("Pound", new BigDecimal(existcustomers.get(j)[4]));
+                            }
+                        }
+                    }
+                }*/
             }
         //account loop
             List<String[]> existaccounts=ManagerFunction.searchAllCustomerAccount();
@@ -196,7 +217,6 @@ public class Bank {
         }
     }
 
-
     public static void bankMenu(int id){
         int index=-1;
         for (int i=0;i<customers.size();i++){
@@ -205,10 +225,10 @@ public class Bank {
             }
         }
         System.out.println("Choose an action you wanna take: ");
-        System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. review transaction records 6. exit");
+        System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>6)){
+        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>5)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
@@ -253,13 +273,6 @@ public class Bank {
                 customers.get(index).removeAccount();
                 break;
             case 5:
-                //{account_type, currency_type, money_changed, current_balance, time}
-                System.out.println("Here's your transaction records.");
-                for (int i=0;i<customers.get(index).transactions.size();i++){
-                    System.out.println(customers.get(index).transactions.get(i));
-                }
-                break;
-            case 6:
                 System.out.println("Bye bye!");
                 userend = false;
                 break;
