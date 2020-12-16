@@ -52,6 +52,12 @@ public abstract class Account {
         return cash;
     }
 
+    public String save(String type, String cash) {
+        //assert cash is a number
+        currency.add(type, Double.parseDouble(cash), "1");
+        return cash;
+    }
+
     public String[] withdraw(String type) {
         String[] str = new String[2];
         str[0] = "";
@@ -67,6 +73,26 @@ public abstract class Account {
             System.out.println("Invalid input. Please input a number.");
             cash = money.nextLine();
         }
+        boolean success = currency.sub(type, Double.parseDouble(cash),
+                                       "1.02");
+        BigDecimal subsum = new BigDecimal(cash);
+        subsum = subsum.multiply(new BigDecimal("0.02"));
+        if (!success) {
+            return str;
+        }
+        else {
+            str[0] = cash;
+            str[1] = subsum.toString();
+            return str;
+        }
+    }
+
+    public String[] withdraw(String type, String cash) {
+        //assert cash is a number
+        String[] str = new String[2];
+        str[0] = "";
+        str[1] = "";
+        Scanner money = new Scanner(System.in);
         boolean success = currency.sub(type, Double.parseDouble(cash),
                                        "1.02");
         BigDecimal subsum = new BigDecimal(cash);
