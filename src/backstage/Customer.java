@@ -79,26 +79,26 @@ public class Customer extends User {
             boolean isempty = accounts.get(number - 1).currency.is_empty();
             if (isempty) {
                 boolean success = accounts.get(number - 1).currency.sub("Dollar",
-                        5, "1");
+                                                                        5, "1");
                 if (success) {
                     System.out.println(
                             "Successfully delete your saving account!");
                     accounts.get(number - 1).createTransaction("-5", "Dollar",
-                            "Delete account.");
+                                                               "Delete account.");
                     CustomerDeletingFunction.deleteSavingAccount(id);
                     accounts.remove(number - 1);
                 }
                 else {
                     System.out.println("You don't have enough money.");
                     accounts.get(number - 1).createTransaction("0", "Dollar",
-                            "Failed to delete account.");
+                                                               "Failed to delete account.");
                 }
             }
             else {
                 System.out.println(
                         "You have to withdraw all your money first. (Leave 5 dollars for deleting account)");
                 accounts.get(number - 1).createTransaction("0", "Dollar",
-                        "Failed to delete account.");
+                                                           "Failed to delete account.");
             }
         }
         else if (accounts.get(number - 1).accountType.equals("CHECKING")) {
@@ -106,14 +106,14 @@ public class Customer extends User {
             if (success) {
                 System.out.println("Successfully delete your checking account!");
                 accounts.get(number - 1).createTransaction("-5", "Dollar",
-                        "Delete account.");
+                                                           "Delete account.");
                 CustomerDeletingFunction.deleteCheckingAccount(id);
                 accounts.remove(number - 1);
             }
             else {
                 System.out.println("You don't have enough money.");
                 accounts.get(number - 1).createTransaction("0", "Dollar",
-                        "Failed to delete account.");
+                                                           "Failed to delete account.");
             }
 
         }
@@ -129,8 +129,8 @@ public class Customer extends User {
                 exitornot = exit.nextLine();
             }
             while ((!exitornot.equals("y")) && (!exitornot.equals("n")) && (!exitornot.equals(
-                    "Y")) && (!exitornot.equals(
-                    "N"))) {
+                                                                            "Y")) && (!exitornot.equals(
+                                                                                      "N"))) {
                 System.out.println("Invalid input. It should be y or n.");
                 exitornot = exit.nextLine();
             }
@@ -142,20 +142,20 @@ public class Customer extends User {
                 if (success) {
                     System.out.println("Successfully delete your loan account!");
                     accounts.get(number - 1).createTransaction("-5", "Dollar",
-                            "Delete account.");
+                                                               "Delete account.");
                     CustomerDeletingFunction.deleteLoanAccountWithoutPayback(id);
                     accounts.remove(number - 1);
                 }
                 else {
                     System.out.println("You don't have enough money.");
                     accounts.get(number - 1).createTransaction("0", "Dollar",
-                            "Failed to delete account.");
+                                                               "Failed to delete account.");
                 }
             }
             else {
                 System.out.println("Your loans are mine now.");
                 accounts.get(number - 1).createTransaction("0", "Dollar",
-                        "Delete account without payback.");
+                                                           "Delete account without payback.");
                 CustomerDeletingFunction.deleteLoanAccountWithoutPayback(id);
             }
         }

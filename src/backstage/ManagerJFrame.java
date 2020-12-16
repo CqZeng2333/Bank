@@ -5,6 +5,11 @@
  */
 package backstage;
 
+import connect_database.ManagerFunction;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
 /**
  *
  * @author user
@@ -19,6 +24,73 @@ public class ManagerJFrame extends javax.swing.JFrame {
     public ManagerJFrame(Manager manager) {
         this.manager = manager;
         initComponents();
+        setCustomerList();
+        setDebtorList();
+        setTransactionList();
+
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setVisible(true);
+    }
+
+    private void setCustomerList() {
+        ArrayList<String> strings = new ArrayList<>();
+        for (int i = 0; i < manager.getCustomers().size(); i++) {
+            strings.add(manager.getCustomers().get(i).toString());
+        }
+        customerList.setModel(new javax.swing.AbstractListModel<String>() {
+            public int getSize() {
+                return strings.size();
+            }
+
+            public String getElementAt(int i) {
+                return strings.get(i);
+            }
+        });
+    }
+
+    private void setDebtorList() {
+        ArrayList<String> strings = new ArrayList<>();
+        ArrayList<Customer> customers = manager.getCustomers();
+        for (int i = 0; i < customers.size(); i++) {
+            if (customers.get(i).accounts.size() > 0) {
+                for (int j = 0; j < customers.get(i).accounts.size(); j++) {
+                    if (customers.get(i).accounts.get(j).accountType.equals(
+                            "LOAN")) {
+                        strings.add(
+                                customers.get(i).toString() + "\n" + customers.get(
+                                i).accounts.get(j).toString());
+                    }
+                }
+            }
+        }
+        debtorList.setModel(new javax.swing.AbstractListModel<String>() {
+            public int getSize() {
+                return strings.size();
+            }
+
+            public String getElementAt(int i) {
+                return strings.get(i);
+            }
+        });
+    }
+
+    public void setTransactionList() {
+        ArrayList<String> strings = new ArrayList<>();
+        List<String[]> records = ManagerFunction.searchTransactionToday();
+        for (int i = 0; i < Objects.requireNonNull(records).size(); i++) {
+            for (int j = 0; j < records.get(i).length; j++) {
+                strings.add(records.get(i)[j]);
+            }
+        }
+        transactionList.setModel(new javax.swing.AbstractListModel<String>() {
+            public int getSize() {
+                return strings.size();
+            }
+
+            public String getElementAt(int i) {
+                return strings.get(i);
+            }
+        });
     }
 
     /**
@@ -30,21 +102,208 @@ public class ManagerJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jButton2 = new javax.swing.JButton();
+        jScrollPane1 = new javax.swing.JScrollPane();
+        customerList = new javax.swing.JList<>();
+        jButton5 = new javax.swing.JButton();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        debtorList = new javax.swing.JList<>();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        transactionList = new javax.swing.JList<>();
+        nameTextField = new javax.swing.JTextField();
+        idTextField = new javax.swing.JTextField();
+        jLabel1 = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
+        errorLabel = new javax.swing.JLabel();
+        infoLabel = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
+        jLabel3 = new javax.swing.JLabel();
+        jButton3 = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jButton2.setText("Search(name):");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane1.setViewportView(customerList);
+
+        jButton5.setText("Search(ID):");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
+        jScrollPane2.setViewportView(debtorList);
+
+        jScrollPane3.setViewportView(transactionList);
+
+        nameTextField.setText(" ");
+
+        idTextField.setText(" ");
+        idTextField.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                idTextFieldActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setText("Debtors");
+
+        jLabel2.setText("Transaction Records");
+
+        errorLabel.setText(" ");
+
+        infoLabel.setText(" ");
+
+        jButton1.setText("Check Customer");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
+        jLabel3.setText("Customer Info:");
+
+        jButton3.setText("Manage Stocks");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton3)
+                        .addContainerGap(26, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(55, 55, 55)
+                                .addComponent(jLabel1))
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 183, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(36, 36, 36)
+                                .addComponent(jButton1)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jButton2)
+                                            .addComponent(jButton5)
+                                            .addComponent(jLabel3))
+                                        .addGap(10, 10, 10)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
+                                            .addComponent(idTextField)))
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(85, 85, 85)
+                                        .addComponent(jLabel2)))
+                                .addGap(0, 0, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(18, 18, 18)
+                                .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 161, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButton1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(nameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton5)
+                            .addComponent(idTextField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(10, 10, 10)
+                        .addComponent(jLabel3)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                .addComponent(errorLabel)
+                .addGap(29, 29, 29)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane2)
+                            .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 153, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButton3)
+                        .addGap(81, 81, 81))))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        this.setCustomerList();
+        String name = nameTextField.getText();
+        if (!Tool.is_alpha(name)) {
+            errorLabel.setText("Invalid name. A name should consist of letters.");
+        }
+        else {
+            int index = manager.findCustomerbyName(name);
+            if (index >= 0) {
+                customerList.setSelectedIndex(index);
+            }
+            else {
+                errorLabel.setText("Cannot find the customer named " + name);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void idTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idTextFieldActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_idTextFieldActionPerformed
+
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        this.setCustomerList();
+        String id = idTextField.getText();
+        if (!Tool.is_number(id)) {
+            errorLabel.setText("Invalid ID. ID should be a number.");
+        }
+        else {
+            int index = manager.findCustomerbyID(Integer.valueOf(id));
+            if (index >= 0) {
+                customerList.setSelectedIndex(index);
+            }
+            else {
+                errorLabel.setText("Cannot find the customer with ID = " + id);
+            }
+        }
+    }//GEN-LAST:event_jButton5ActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int index = customerList.getSelectedIndex();
+        String info = manager.getCustomerInfo(index);
+        infoLabel.setText(info);
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -80,11 +339,27 @@ public class ManagerJFrame extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ManagerJFrame().setVisible(true);
             }
         });
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JList<String> customerList;
+    private javax.swing.JList<String> debtorList;
+    private javax.swing.JLabel errorLabel;
+    private javax.swing.JTextField idTextField;
+    private javax.swing.JLabel infoLabel;
+    private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton5;
+    private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTextField nameTextField;
+    private javax.swing.JList<String> transactionList;
     // End of variables declaration//GEN-END:variables
 }
