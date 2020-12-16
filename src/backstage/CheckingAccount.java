@@ -51,10 +51,10 @@ public class CheckingAccount extends Account {
         System.out.println("Make a check will cost you 10 dollars.");
         boolean success= currency.sub("Dollar",(double)10,"1");
         if (success){
-        createTransaction("-1","Dollar","Make a check.");
+            createTransaction("-1","Dollar","Make a check.");
             //alter manager
             ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("1"));
-        //alter saving account
+            //alter saving account
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-1"));
             //start writing a check
             System.out.println("Here's your deposit:");
@@ -133,12 +133,14 @@ public class CheckingAccount extends Account {
     }
 
     public void createTransaction(String moneychange,String currencyType,String action){
-         Time time=new Time();
-         String str=time+ " Customer "+(customerID+1)+" in Checking account: "+action;
+        Time time=new Time();
+        String str=time+ " Customer "+(customerID+1)+" in Checking account: "+action;
         Transaction transaction=new Transaction(str,accountType,currencyType,currency.get(currencyType).toString(),moneychange,time.toString());
-         transactions.add(transaction);
-         //transaction in database
-         CustomerAddingFunction.addTransaction(customerID,accountType,currencyType,new BigDecimal(moneychange),currency.get(currencyType),time);
+        transactions.add(transaction);
+        //transaction in database
+        CustomerAddingFunction.addTransaction(customerID,accountType,currencyType,new BigDecimal(moneychange),currency.get(currencyType),time);
 
     }
 }
+
+ 
