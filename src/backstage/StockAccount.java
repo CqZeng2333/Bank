@@ -98,6 +98,7 @@ public class StockAccount extends Account {
                             } else {
                                 boolean success=currency.sub("Dollar",stockMoney.doubleValue(),"1");
                                 if (success){
+                                    createTransaction(stockMoney.multiply(TRANS).toString(),"Dollar","Transfer money to stock account.");
                                     CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",stockMoney.multiply(TRANS));
                                     if(this.stockBalance == null)
                                     {
