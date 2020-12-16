@@ -375,6 +375,7 @@ public class ManagerFunction {
 		}
 	}
 
+	/*
 	public static void main(String[] args) {
 		//System.out.println(ManagerFunction.searchAllStockList());
 		//ManagerFunction.searchAllCustomer();
@@ -386,4 +387,5 @@ public class ManagerFunction {
 		//System.out.println(ManagerFunction.searchManagerAccount("Dollar"));
 		//ManagerFunction.updateDailyInterest();
 	}
+	*/
 }

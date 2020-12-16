@@ -6,8 +6,6 @@ package connect_database;
 import java.math.BigDecimal;
 import java.sql.*;
 
-import backstage.Time;
-
 public class CustomerAlteringFunction {
     private final static Connection conn = Connector.getConn();
 
@@ -132,9 +130,11 @@ public class CustomerAlteringFunction {
         return 0;
     }
 
+    /*
     public static void main(String[] args) {
         //CustomerAlteringFunction.alterSavingAccount(1, "Dollar", new BigDecimal(3600));
         //CustomerAlteringFunction.alterCheckingAccount(1, "Dollar", new BigDecimal(100));
         //CustomerAlteringFunction.alterStockAccount(1, new BigDecimal(900));
     }
+    */
 }
