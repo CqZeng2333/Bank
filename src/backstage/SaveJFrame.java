@@ -16,14 +16,12 @@ import java.math.BigDecimal;
 public class SaveJFrame extends javax.swing.JFrame {
 
     private SavingAccount account;
-    private Customer customer;
 
     /**
      * Creates new form SaveJFrame
      */
-    public SaveJFrame(SavingAccount account, Customer customer) {
+    public SaveJFrame(SavingAccount account) {
         this.account = account;
-        this.customer = customer;
         initComponents();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -149,7 +147,7 @@ public class SaveJFrame extends javax.swing.JFrame {
         }
         else {
             account.save(type, cash);
-            CustomerAlteringFunction.alterSavingAccount(customer.getId(), type,
+            CustomerAlteringFunction.alterSavingAccount(account.customerID, type,
                                                         new BigDecimal(cash));
             account.createTransaction(cash, "Dollar",
                                       "Saving " + type + " " + cash + ".");
@@ -177,7 +175,7 @@ public class SaveJFrame extends javax.swing.JFrame {
                 BigDecimal sum = origin.add(sub);
                 account.createTransaction("-" + sum.toString(), "Dollar",
                                           "Withdraw dollars $" + sum.toString() + ".");
-                CustomerAlteringFunction.alterSavingAccount(customer.getId(),
+                CustomerAlteringFunction.alterSavingAccount(account.customerID,
                                                             type,
                                                             new BigDecimal(
                                                                     "-" + sum.toString()));

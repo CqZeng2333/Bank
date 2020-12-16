@@ -45,6 +45,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
         SavingButton = new javax.swing.JButton();
         LoanButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
+        jLabel1 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -73,30 +74,38 @@ public class CustomerJFrame extends javax.swing.JFrame {
 
         errorLabel.setText("        ");
 
+        jLabel1.setText("Accounts:");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(140, 140, 140)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 117, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(60, Short.MAX_VALUE)
+                .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(checkingButton)
-                        .addGap(27, 27, 27)
-                        .addComponent(SavingButton)
-                        .addGap(28, 28, 28)
-                        .addComponent(LoanButton))))
+                        .addComponent(jLabel1)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jScrollPane1))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 40, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(checkingButton)
+                                .addGap(27, 27, 27)
+                                .addComponent(SavingButton)
+                                .addGap(28, 28, 28)
+                                .addComponent(LoanButton)))))
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(43, 43, 43)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1))
                 .addGap(18, 18, 18)
                 .addComponent(errorLabel)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
@@ -104,7 +113,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
                     .addComponent(checkingButton)
                     .addComponent(SavingButton)
                     .addComponent(LoanButton))
-                .addGap(49, 49, 49))
+                .addGap(70, 70, 70))
         );
 
         pack();
@@ -154,7 +163,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
             if (accountID >= 0) {
                 new SaveJFrame(
                         (SavingAccount) customers.get(index).accounts.get(
-                                accountID), customers.get(index));
+                                accountID));
             }
             else {
                 errorLabel.setText("Failed to create Saving. Need more than $5.");
@@ -162,7 +171,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
         }
         else {
             new SaveJFrame((SavingAccount) customers.get(index).accounts.get(
-                    exist), customers.get(index));
+                    exist));
         }
     }//GEN-LAST:event_SavingButtonActionPerformed
 
@@ -172,7 +181,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
             int accountID = customers.get(index).createAccount("LOAN");
             if (accountID >= 0) {
                 new LoanJFrame((LoanAccount) customers.get(index).accounts.get(
-                        accountID), customers.get(index));
+                        accountID));
             }
             else {
                 errorLabel.setText("Failed to create Loan. Need more than $8.");
@@ -180,7 +189,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
         }
         else {
             new LoanJFrame((LoanAccount) customers.get(index).accounts.get(
-                    exist), customers.get(index));
+                    exist));
         }
     }//GEN-LAST:event_LoanButtonActionPerformed
 
@@ -247,6 +256,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> accountList;
     private javax.swing.JButton checkingButton;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     // End of variables declaration//GEN-END:variables
 }
