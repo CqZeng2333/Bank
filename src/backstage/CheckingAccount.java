@@ -80,7 +80,7 @@ public class CheckingAccount extends Account {
             else {
                 createTransaction(cash, type, "Successfully making a check.");
                 //alter saving account
-                CustomerAlteringFunction.alterSavingAccount(customerID, "Dollar",
+                CustomerAlteringFunction.alterSavingAccount(customerID, type,
                                                             new BigDecimal(
                                                                     "-" + cash));
                 return true;

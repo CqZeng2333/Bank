@@ -24,6 +24,21 @@ public class Customer extends User {
         return str;
     }
 
+    public int isthereAccount(String str) {
+        int accountID = -1;
+        for (int i = 0; i < accounts.size(); i++) {
+            if (accounts.get(i).accountType.equals(str)) {
+                accountID = i;
+                break;
+            }
+        }
+        if (accountID < 0) {
+            System.out.println(
+                    "You do not have " + str + " account. You can create one now.");
+        }
+        return accountID;
+    }
+
     public String printRecords() {
         String str = "";
         transactions.clear();

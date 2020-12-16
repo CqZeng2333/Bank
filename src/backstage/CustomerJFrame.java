@@ -150,23 +150,8 @@ public class CustomerJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public int isthereAccount(String str) {
-        int accountID = -1;
-        for (int i = 0; i < customer.accounts.size(); i++) {
-            if (customer.accounts.get(i).accountType.equals(str)) {
-                accountID = i;
-                break;
-            }
-        }
-        if (accountID < 0) {
-            errorLabel.setText(
-                    "You do not have " + str + " account. You can create one now.");
-        }
-        return accountID;
-    }
-
     private void checkingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkingButtonActionPerformed
-        int exist = isthereAccount("CHECKING");
+        int exist = customer.isthereAccount("CHECKING");
         if (exist < 0) {
             //create new account
             int accountID = customer.createAccount("CHECKING");
@@ -186,7 +171,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_checkingButtonActionPerformed
 
     private void SavingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SavingButtonActionPerformed
-        int exist = isthereAccount("SAVING");
+        int exist = customer.isthereAccount("SAVING");
         if (exist < 0) {
             errorLabel.setText("There is no saving account. Create a one first.");
         }
@@ -197,7 +182,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_SavingButtonActionPerformed
 
     private void LoanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoanButtonActionPerformed
-        int exist = isthereAccount("LOAN");
+        int exist = customer.isthereAccount("LOAN");
         if (exist < 0) {
             int accountID = customer.createAccount("LOAN");
             if (accountID >= 0) {
@@ -219,7 +204,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_refreshButtonActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        int exist = isthereAccount("SAVING");
+        int exist = customer.isthereAccount("SAVING");
         if (exist < 0) {
             SavingAccount savingAccount = new SavingAccount(customer.id,
                                                             customer.currency);

@@ -18,6 +18,7 @@ public class OpenSavingJFrame extends javax.swing.JFrame {
 
     private SavingAccount account;
     private Customer customer;
+    private boolean createAccount; //the creation should only happen once, so we need to track whether the creation is successful
 
     /**
      * Creates new form OpenSavingJFrame
@@ -25,6 +26,7 @@ public class OpenSavingJFrame extends javax.swing.JFrame {
     public OpenSavingJFrame(Customer customer, SavingAccount account) {
         this.account = account;
         this.customer = customer;
+        this.createAccount = false;
         initComponents();
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -93,37 +95,44 @@ public class OpenSavingJFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        String cash = saveTextField.getText();
-        if (!Tool.is_number(cash)) {
-            errorLabel.setText("Invalid save input. Please input a number.");
+        if (createAccount) {
+            errorLabel.setText("There is already a saving account.");
         }
         else {
-            account.save("Dollar", cash);
-            boolean success = account.currency.sub("Dollar", 5, "1");
-            if (success) {
-                //alter manager
-                ManagerFunction.alterManagerAccount("Dollar",
-                                                    new BigDecimal("5"));
-                //add saving account in database
-                CustomerAddingFunction.addSavingAccount(account.customerID);
-                BigDecimal cs = new BigDecimal(cash);
-                cs = cs.subtract(new BigDecimal("5"));
-                CustomerAlteringFunction.alterSavingAccount(account.customerID,
-                                                            "Dollar",
-                                                            cs);
-                account.createTransaction("-5", "Dollar", "Open Saving account.");
-                customer.accounts.add(account);
-                errorLabel.setText(
-                        "Successfully create saving account with a charge of $5.");
+            String cash = saveTextField.getText();
+            if (!Tool.is_number(cash)) {
+                errorLabel.setText("Invalid save input. Please input a number.");
             }
             else {
-                errorLabel.setText(
-                        "You don't have $5. Fail to open saving account.");
-                account.createTransaction("0", "Dollar",
-                                          "Failed to open saving account.");
-                account.currency.sub("Dollar", Double.parseDouble(cash), "1");
+                account.save("Dollar", cash);
+                boolean success = account.currency.sub("Dollar", 5, "1");
+                if (success) {
+                    //alter manager
+                    ManagerFunction.alterManagerAccount("Dollar",
+                                                        new BigDecimal("5"));
+                    //add saving account in database
+                    CustomerAddingFunction.addSavingAccount(account.customerID);
+                    BigDecimal cs = new BigDecimal(cash);
+                    cs = cs.subtract(new BigDecimal("5"));
+                    CustomerAlteringFunction.alterSavingAccount(
+                            account.customerID,
+                            "Dollar",
+                            cs);
+                    account.createTransaction("-5", "Dollar",
+                                              "Open Saving account.");
+                    customer.accounts.add(account);
+                    errorLabel.setText(
+                            "Successfully create saving account with a charge of $5.");
+                    createAccount = true;
+                }
+                else {
+                    errorLabel.setText(
+                            "You don't have $5. Fail to open saving account.");
+                    account.createTransaction("0", "Dollar",
+                                              "Failed to open saving account.");
+                    account.currency.sub("Dollar", Double.parseDouble(cash), "1");
+                }
             }
-
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
