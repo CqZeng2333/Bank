@@ -56,6 +56,18 @@ public abstract class Account {
         }
 
     }
+    public String save(String type) {
+        System.out.println("How much would you save this time?");
+        Scanner money = new Scanner(System.in);
+        String cash = money.nextLine();
+        while (!Tool.is_number(cash)) {
+            System.out.println("Invalid input. Please input a number.");
+            cash = money.nextLine();
+        }
+        currency.add(type, Double.parseDouble(cash), "1");
+        return cash;
+        }
+
 
     public String save(String type, String cash) {
         //assert cash is a number
