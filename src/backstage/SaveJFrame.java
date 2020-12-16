@@ -156,8 +156,8 @@ public class SaveJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        String type = saveComboBox.getSelectedItem().toString();
-        String cashStr = saveTextField.getText();
+        String type = withdrawComboBox.getSelectedItem().toString();
+        String cashStr = withdrawTextField.getText();
         if (!Tool.is_number(cashStr)) {
             errorLabel.setText("Invalid withdraw input. Please input a number.");
         }

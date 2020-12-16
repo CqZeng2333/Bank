@@ -211,7 +211,8 @@ public class LoginJFrame extends javax.swing.JFrame {
                                                          customer.pwd);
             customers.add(customer);
             customer.setId(cid); //cid is the index of this customer in arraylist
-            new CustomerJFrame(customers.get(cid));
+            int index = cid - 1;
+            new CustomerJFrame(customers.get(index));
         }
     }//GEN-LAST:event_newuserButtonActionPerformed
 

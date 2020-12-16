@@ -45,6 +45,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
         errorLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         refreshButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -82,6 +83,13 @@ public class CustomerJFrame extends javax.swing.JFrame {
             }
         });
 
+        jButton1.setText("Open Saving Account");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -91,23 +99,30 @@ public class CustomerJFrame extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(refreshButton)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(9, 9, 9)
-                                .addComponent(jLabel1)))
-                        .addGap(18, 18, 18)
-                        .addComponent(jScrollPane1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 40, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkingButton)
-                                .addGap(27, 27, 27)
-                                .addComponent(SavingButton)
-                                .addGap(28, 28, 28)
-                                .addComponent(LoanButton)))))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(refreshButton)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jLabel1)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 40, Short.MAX_VALUE)
+                                .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jButton1)
+                        .addGap(41, 41, 41)
+                        .addComponent(SavingButton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addComponent(checkingButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LoanButton)
+                .addGap(105, 105, 105))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -121,12 +136,15 @@ public class CustomerJFrame extends javax.swing.JFrame {
                         .addComponent(refreshButton)))
                 .addGap(18, 18, 18)
                 .addComponent(errorLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(SavingButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkingButton)
-                    .addComponent(SavingButton)
                     .addComponent(LoanButton))
-                .addGap(70, 70, 70))
+                .addGap(39, 39, 39))
         );
 
         pack();
@@ -170,15 +188,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
     private void SavingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SavingButtonActionPerformed
         int exist = isthereAccount("SAVING");
         if (exist < 0) {
-            int accountID = customer.createAccount("SAVING");
-            if (accountID >= 0) {
-                new SaveJFrame(
-                        (SavingAccount) customer.accounts.get(
-                                accountID));
-            }
-            else {
-                errorLabel.setText("Failed to create Saving. Need more than $5.");
-            }
+            errorLabel.setText("There is no saving account. Create a one first.");
         }
         else {
             new SaveJFrame((SavingAccount) customer.accounts.get(exist));
@@ -207,6 +217,18 @@ public class CustomerJFrame extends javax.swing.JFrame {
     private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
         this.setAccountList(customer.getAccounts());
     }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int exist = isthereAccount("SAVING");
+        if (exist < 0) {
+            SavingAccount savingAccount = new SavingAccount(customer.id,
+                                                            customer.currency);
+            new OpenSavingJFrame(customer, savingAccount);
+        }
+        else {
+            errorLabel.setText("There is already a saving account.");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void setAccountList(ArrayList<Account> accounts) {
         ArrayList<String> strings = new ArrayList<String>();
@@ -271,6 +293,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> accountList;
     private javax.swing.JButton checkingButton;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JButton refreshButton;
