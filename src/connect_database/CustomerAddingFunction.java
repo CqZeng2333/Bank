@@ -328,7 +328,7 @@ public class CustomerAddingFunction {
             stmt.execute("UPDATE STOCK_ACCOUNT SET MONEY_AMOUNT = "+total_Price.toPlainString()+
                     " WHERE ID = "+accountID+";");
             
-            CustomerAddingFunction.addTransaction(customerID, "STOCK", "Dollar", new BigDecimal(0).subtract(price.multiply(new BigDecimal(holding_number))), total_Price, new Time());
+            //CustomerAddingFunction.addTransaction(customerID, "STOCK", "Dollar", new BigDecimal(0).subtract(price.multiply(new BigDecimal(holding_number))), total_Price, new Time());
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
