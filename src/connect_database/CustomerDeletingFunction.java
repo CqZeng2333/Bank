@@ -112,7 +112,7 @@ public class CustomerDeletingFunction {
 	            	rset = stmt.executeQuery("SELECT * FROM LOAN_ACCOUNT WHERE CUSTOMER_ID  = "+customerID+";");
 	            	rset.next();
 	            	BigDecimal total_amount = rset.getBigDecimal("MONEY_AMOUNT");
-	                stmt.execute("UPDATE LOAN_ACCOUNT SET MONEY_AMOUNT = "+total_amount.subtract(loan_amount).toPlainString()+" WHERE ID = "+customerID+";");
+	                stmt.execute("UPDATE LOAN_ACCOUNT SET MONEY_AMOUNT = "+total_amount.subtract(loan_amount).toPlainString()+" WHERE CUSTOMER_ID = "+customerID+";");
 	                //CustomerAddingFunction.addTransaction(customerID, "LOAN", "Dollar", new BigDecimal(0).subtract(loan_amount), total_amount.subtract(loan_amount), new Time());
             	}
                 return 0;
@@ -168,7 +168,7 @@ public class CustomerDeletingFunction {
 	public static void main(String[] args) {
 		//CustomerDeletingFunction.deleteSavingAccount(2);
 		//CustomerDeletingFunction.deleteCheckingAccount(2);
-		//CustomerDeletingFunction.deleteOneLoan(2, 1);
+		CustomerDeletingFunction.deleteOneLoan(4, 4);
 		//CustomerDeletingFunction.deleteOneStock(1, 1);
 	}
 }
