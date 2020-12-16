@@ -40,7 +40,7 @@ public abstract class Account {
         return accountID;
     }
 
-    public String save(String type,BigDecimal least) {
+    public String save(String type, BigDecimal least) {
         System.out.println("How much would you save this time?");
         Scanner money = new Scanner(System.in);
         String cash = money.nextLine();
@@ -48,14 +48,16 @@ public abstract class Account {
             System.out.println("Invalid input. Please input a number.");
             cash = money.nextLine();
         }
-        if (least.compareTo(new BigDecimal(cash))<=0){
+        if (least.compareTo(new BigDecimal(cash)) <= 0) {
             currency.add(type, Double.parseDouble(cash), "1");
             return cash;
-        }else {
+        }
+        else {
             return "";
         }
 
     }
+
     public String save(String type) {
         System.out.println("How much would you save this time?");
         Scanner money = new Scanner(System.in);
@@ -66,8 +68,7 @@ public abstract class Account {
         }
         currency.add(type, Double.parseDouble(cash), "1");
         return cash;
-        }
-
+    }
 
     public String save(String type, String cash) {
         //assert cash is a number
@@ -104,7 +105,35 @@ public abstract class Account {
             return str;
         }
     }
-    public String[] withdraw(String type,BigDecimal least,BigDecimal most) {
+
+    public String[] withdraw(String cash, String type, BigDecimal least,
+                             BigDecimal most) {
+        String[] str = new String[2];
+        str[0] = "";
+        str[1] = "";
+
+        BigDecimal cap = currency.get(type);
+        BigDecimal capadd = cap.subtract(new BigDecimal(cash));
+        if (least.compareTo(new BigDecimal(cash)) <= 0 && capadd.compareTo(most) >= 0) {
+            boolean success = currency.sub(type, Double.parseDouble(cash),
+                                           "1.02");
+            BigDecimal subsum = new BigDecimal(cash);
+            subsum = subsum.multiply(new BigDecimal("0.02"));
+            if (!success) {
+                return str;
+            }
+            else {
+                str[0] = cash;
+                str[1] = subsum.toString();
+                return str;
+            }
+        }
+        else {
+            return str;
+        }
+    }
+
+    public String[] withdraw(String type, BigDecimal least, BigDecimal most) {
         String[] str = new String[2];
         str[0] = "";
         str[1] = "";
@@ -119,11 +148,11 @@ public abstract class Account {
             System.out.println("Invalid input. Please input a number.");
             cash = money.nextLine();
         }
-        BigDecimal cap=currency.get(type);
-        BigDecimal capadd=cap.subtract(new BigDecimal(cash));
-        if (least.compareTo(new BigDecimal(cash))<=0&&capadd.compareTo(most)>=0){
+        BigDecimal cap = currency.get(type);
+        BigDecimal capadd = cap.subtract(new BigDecimal(cash));
+        if (least.compareTo(new BigDecimal(cash)) <= 0 && capadd.compareTo(most) >= 0) {
             boolean success = currency.sub(type, Double.parseDouble(cash),
-                    "1.02");
+                                           "1.02");
             BigDecimal subsum = new BigDecimal(cash);
             subsum = subsum.multiply(new BigDecimal("0.02"));
             if (!success) {
@@ -134,7 +163,8 @@ public abstract class Account {
                 str[1] = subsum.toString();
                 return str;
             }
-        }else {
+        }
+        else {
             return str;
         }
 

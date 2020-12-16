@@ -1,88 +1,96 @@
 package backstage;
 
 public class Transaction {
-     String info;
-     String moneyChange;
 
-     public String getBalance() {
-          return balance;
-     }
+    String info;
+    String moneyChange;
 
-     public void setBalance(String balance) {
-          this.balance = balance;
-     }
+    public String getBalance() {
+        return balance;
+    }
 
-     String balance;
+    public void setBalance(String balance) {
+        this.balance = balance;
+    }
 
-     public String getMoneyChange() {
-          return moneyChange;
-     }
+    String balance;
 
-     public void setMoneyChange(String moneyChange) {
-          this.moneyChange = moneyChange;
-     }
+    public String getMoneyChange() {
+        return moneyChange;
+    }
 
-     Transaction(String str,String accountType,String currencyType,String moneychange,String currentBalance,String time){
-          setInfo(str);
-          setAccountType(accountType);
-          setCurrencyType(currencyType);
-          setBalance(currentBalance);
-          setTime(time);
-          setMoneyChange(moneychange);
-     }
+    public void setMoneyChange(String moneyChange) {
+        this.moneyChange = moneyChange;
+    }
 
-     public int getCustomerID() {
-          return customerID;
-     }
+    Transaction(String str, String accountType, String currencyType,
+                String moneychange, String currentBalance, String time) {
+        setInfo(str);
+        setAccountType(accountType);
+        setCurrencyType(currencyType);
+        setBalance(currentBalance);
+        setTime(time);
+        setMoneyChange(moneychange);
+    }
 
-     public void setCustomerID(int customerID) {
-          this.customerID = customerID;
-     }
+    public int getCustomerID() {
+        return customerID;
+    }
 
-     public String getAccountType() {
-          return accountType;
-     }
+    public void setCustomerID(int customerID) {
+        this.customerID = customerID;
+    }
 
-     public void setAccountType(String accountType) {
-          this.accountType = accountType;
-     }
+    public String getAccountType() {
+        return accountType;
+    }
 
-     public String getCurrencyType() {
-          return currencyType;
-     }
+    public void setAccountType(String accountType) {
+        this.accountType = accountType;
+    }
 
-     public void setCurrencyType(String currencyType) {
-          this.currencyType = currencyType;
-     }
+    public String getCurrencyType() {
+        return currencyType;
+    }
 
-     public Currency getCurrentCurrency() {
-          return currentCurrency;
-     }
+    public void setCurrencyType(String currencyType) {
+        this.currencyType = currencyType;
+    }
 
-     public void setCurrentCurrency(Currency currentCurrency) {
-          this.currentCurrency = currentCurrency;
-     }
+    public Currency getCurrentCurrency() {
+        return currentCurrency;
+    }
 
-     Currency currentCurrency;
-     int customerID;
-     String accountType;
-     String currencyType;
+    public void setCurrentCurrency(Currency currentCurrency) {
+        this.currentCurrency = currentCurrency;
+    }
 
-     public String getTime() {
-          return time;
-     }
+    Currency currentCurrency;
+    int customerID;
+    String accountType;
+    String currencyType;
 
-     public void setTime(String time) {
-          this.time = time;
-     }
+    public String getTime() {
+        return time;
+    }
 
-     String time;
-     Transaction(){
+    public void setTime(String time) {
+        this.time = time;
+    }
 
-     }
-     //1, "STOCK", "Dollar", new BigDecimal(-100), new BigDecimal(800), new Time()
-     public String toString(){
-         return customerID+" "+accountType+" "+moneyChange+" "+currentCurrency+" "+time;
-     }
-     public void setInfo(String str){info=str;}
+    String time;
+
+    Transaction() {
+
+    }
+    //1, "STOCK", "Dollar", new BigDecimal(-100), new BigDecimal(800), new Time()
+
+    public String toString() {
+        //return customerID+" "+accountType+" "+moneyChange+" "+currentCurrency+" "+time;
+        return accountType + " " + moneyChange + " " + time;
+    }
+
+    public void setInfo(String str) {
+        info = str;
+    }
 }
