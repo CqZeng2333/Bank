@@ -59,14 +59,8 @@ public class CheckingAccount extends Account {
         }
     }
 
-    //check if the account has more then $1 to create a checking account
-    public boolean canCreateCheck() {
-        boolean success = currency.sub("Dollar", (double) 1, "1");
-        return success;
-    }
-
     public boolean checkMoney(String type, String cash) {
-        boolean success = canCreateCheck();
+        boolean success = currency.sub("Dollar", (double) 1, "1");
         if (success) {
             createTransaction("-1", "Dollar", "Make a check.");
             //alter manager
@@ -102,8 +96,8 @@ public class CheckingAccount extends Account {
     }
 
     public boolean checkMoney() {
-        System.out.println("Make a check will cost you 10 dollars.");
-        boolean success = currency.sub("Dollar", (double) 10, "1");
+        System.out.println("Make a check will cost you 1 dollar.");
+        boolean success = currency.sub("Dollar", (double) 1, "1");
         if (success) {
             createTransaction("-1", "Dollar", "Make a check.");
             //alter manager

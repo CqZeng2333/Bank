@@ -96,22 +96,17 @@ public class CheckJFrame extends javax.swing.JFrame {
             errorLabel.setText("Invalid input cash number.");
         }
         else {
-            boolean canCheck = account.canCreateCheck();
-            if (!canCheck) {
-                errorLabel.setText("Failed to make a check. Need more than $1.");
+            boolean success = account.checkMoney(type, cashStr);
+            if (success) {
+                errorLabel.setText(
+                        "Successfully make a check of " + cashStr + " " + type + ".");
             }
             else {
-                boolean success = account.checkMoney(type, cashStr);
-                if (success) {
-                    errorLabel.setText(
-                            "Successfully make a check of " + cashStr + " " + type + ".");
-                }
-                else {
-                    errorLabel.setText(
-                            "Fail to make a check of " + cashStr + " " + type + ". Check your savings."
-                    );
-                }
+                errorLabel.setText(
+                        "Fail to make a check. Check your savings."
+                );
             }
+
         }
     }//GEN-LAST:event_checkMoneyButtonActionPerformed
 

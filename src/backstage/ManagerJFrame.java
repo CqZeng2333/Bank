@@ -76,6 +76,7 @@ public class ManagerJFrame extends javax.swing.JFrame {
 
     public void setTransactionList() {
         ArrayList<String> strings = new ArrayList<>();
+        //records: {customer_ID, customer_name, account_type, currency_type, money_changed, current_balance, time}
         List<String[]> records = ManagerFunction.searchTransactionToday();
         for (int i = 0; i < Objects.requireNonNull(records).size(); i++) {
             for (int j = 0; j < records.get(i).length; j++) {
