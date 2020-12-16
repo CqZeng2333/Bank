@@ -5,10 +5,7 @@ import connect_database.CustomerSearchingFunction;
 import connect_database.ManagerFunction;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Bank {
     static ArrayList<Customer> customers = new ArrayList<>();
@@ -47,7 +44,7 @@ public class Bank {
             List<String[]> existaccounts=ManagerFunction.searchAllCustomerAccount();
             //{customer_ID, customer_name, account_type, currency_type, money_amount}
         for (int i = 0; i < customers.size(); i++) {
-            int sc = 0, cc = 0, lc = 0;
+            int sc = 0, cc = 0, lc = 0,kc=0;
             for (int j = 0; j < Objects.requireNonNull(existaccounts).size(); j++) {
                 if (customers.get(i).id == Integer.parseInt(existaccounts.get(j)[0])) {
                     if (existaccounts.get(j)[2].equals("SAVING") && sc == 0) {
@@ -64,6 +61,11 @@ public class Bank {
                         LoanAccount loanAccount = new LoanAccount(customers.get(i).id, customers.get(i).currency);
                         lc = 1;
                         customers.get(i).accounts.add(loanAccount);
+                    }
+                    if (existaccounts.get(j)[2].equals("STOCK") && kc == 0) {
+                        StockAccount stockAccount = new StockAccount(customers.get(i).id, customers.get(i).currency);
+                        kc = 1;
+                        customers.get(i).accounts.add(stockAccount);
                     }
                 }
             }
@@ -204,10 +206,10 @@ public class Bank {
             }
         }
         System.out.println("Choose an action you wanna take: ");
-        System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. exit");
+        System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. stock 6. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>5)){
+        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>6)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
@@ -252,6 +254,16 @@ public class Bank {
                 customers.get(index).removeAccount();
                 break;
             case 5:
+                exist = isthereAccount(index, "STOCK");
+                if (exist < 0) {
+                    int accountID = customers.get(index).createAccount("STOCK");
+                    if (accountID >= 0) {
+                        ((StockAccount) customers.get(index).accounts.get(accountID)).Menu();}
+                } else {
+                    ((StockAccount) customers.get(index).accounts.get(exist)).Menu();
+                }
+                break;
+            case 6:
                 System.out.println("Bye bye!");
                 userend = false;
                 break;
@@ -260,10 +272,10 @@ public class Bank {
     }
     public static void managerMenu(){
         System.out.println("Choose an action you wanna take: ");
-        System.out.println("1. check all the customers 2. search for one customer 3. check for debtors 4. transactions records 5. check money 6. exit");
+        System.out.println("1. check all the customers 2. search for one customer 3. check for debtors 4. transactions records 5. check money 6. stocks 7. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>6)){
+        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>7)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
@@ -321,6 +333,69 @@ public class Bank {
                 System.out.println("You own pounds: "+ManagerFunction.searchManagerAccount("Pound"));
                 break;
             case 6:
+                System.out.println("1. check all stocks 2. add new stocks 3. change stock price");
+                Scanner choice2=new Scanner(System.in);
+                String num2=choice2.nextLine();
+                while(!Tool.is_number(num2)||!Tool.in_range(num2,1,9)||(Integer.parseInt(num2)<1)||(Integer.parseInt(num2)>3)){
+                    System.out.println("Invalid input. Input again.");
+                    num2=choice2.nextLine();
+                }
+                int number2=Integer.parseInt(num2);
+                if (number2==1){
+                    List<String[]> stocklist=ManagerFunction.searchAllStockList();
+                    for (int i=0;i<stocklist.size();i++){
+                        System.out.println(Arrays.toString(stocklist.get(i)));
+                    }
+                }else if (number2==2){
+                    Scanner name=new Scanner(System.in);
+                    System.out.println("Please enter the stock's name: ");
+                    String sname=name.nextLine();
+                    while (!Tool.in_range(sname,4,10)){
+                        System.out.println("Invalid name. A name should has legal length.");
+                        sname=name.nextLine();
+                    }
+                    Scanner pri=new Scanner(System.in);
+                    System.out.println("Please enter the stock's price: ");
+                    String spri=pri.nextLine();
+                    while (!Tool.is_number(spri)){
+                        System.out.println("Invalid input. Please input again.");
+                        spri=pri.nextLine();
+                    }
+                    ManagerFunction.addStock(sname,new BigDecimal(spri));
+                }else if(number2==3){
+                    List<String[]> stocklist=ManagerFunction.searchAllStockList();
+                    for (int i=0;i<stocklist.size();i++){
+                        System.out.println(Arrays.toString(stocklist.get(i)));
+                    }
+                    System.out.println("Input the id of the stock you want to make a change.");
+                    Scanner numb=new Scanner(System.in);
+                    System.out.println("Please enter the stock's price: ");
+                    String snum=numb.nextLine();
+                    while (!Tool.is_number(snum)){
+                        System.out.println("Invalid input. Please input again.");
+                        snum=numb.nextLine();
+                    }
+                    int succ=-1;
+                    while (succ<0) {
+                        for (int i = 0; i < stocklist.size(); i++) {
+                            if (snum.equals(stocklist.get(i)[0])) {
+                                succ = Integer.parseInt(snum);
+                                break;
+                            }
+                        }
+                    }
+                    Scanner pri=new Scanner(System.in);
+                    System.out.println("Please enter the stock's new price: ");
+                    String spri=pri.nextLine();
+                    while (!Tool.is_number(spri)){
+                        System.out.println("Invalid input. Please input again.");
+                        spri=pri.nextLine();
+                    }
+                    ManagerFunction.alterStockPrice(succ,new BigDecimal(spri));
+
+                }
+                break;
+            case 7:
                 System.out.println("Bye bye!");
                 userend = false;
                 break;

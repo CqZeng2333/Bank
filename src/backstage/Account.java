@@ -83,13 +83,14 @@ public abstract class Account {
         System.out.println(
                 "Please take care that we will charge you 2% service charges.");
         System.out.println("Here's your deposit:");
-        currency.print();
+        System.out.println(currency.print());
         Scanner money = new Scanner(System.in);
         String cash = money.nextLine();
         while (!Tool.is_number(cash)) {
             System.out.println("Invalid input. Please input a number.");
             cash = money.nextLine();
         }
+
         boolean success = currency.sub(type, Double.parseDouble(cash),
                                        "1.02");
         BigDecimal subsum = new BigDecimal(cash);
@@ -102,6 +103,41 @@ public abstract class Account {
             str[1] = subsum.toString();
             return str;
         }
+    }
+    public String[] withdraw(String type,BigDecimal least,BigDecimal most) {
+        String[] str = new String[2];
+        str[0] = "";
+        str[1] = "";
+        System.out.println("How much cash would you take this time?");
+        System.out.println(
+                "Please take care that we will charge you 2% service charges.");
+        System.out.println("Here's your deposit:");
+        System.out.println(currency.print());
+        Scanner money = new Scanner(System.in);
+        String cash = money.nextLine();
+        while (!Tool.is_number(cash)) {
+            System.out.println("Invalid input. Please input a number.");
+            cash = money.nextLine();
+        }
+        BigDecimal cap=currency.get(type);
+        BigDecimal capadd=cap.subtract(new BigDecimal(cash));
+        if (least.compareTo(new BigDecimal(cash))<=0&&capadd.compareTo(most)>=0){
+            boolean success = currency.sub(type, Double.parseDouble(cash),
+                    "1.02");
+            BigDecimal subsum = new BigDecimal(cash);
+            subsum = subsum.multiply(new BigDecimal("0.02"));
+            if (!success) {
+                return str;
+            }
+            else {
+                str[0] = cash;
+                str[1] = subsum.toString();
+                return str;
+            }
+        }else {
+            return str;
+        }
+
     }
 
     public String[] withdraw(String type, String cash) {

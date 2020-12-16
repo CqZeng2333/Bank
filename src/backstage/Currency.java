@@ -84,7 +84,7 @@ public class Currency {
         } else {
             BigDecimal subNum = new BigDecimal(Double.toString(value));
             subNum=subNum.multiply(new BigDecimal(str));
-            if (this.money.get(key).compareTo(subNum) == -1) {
+            if (this.money.get(key).compareTo(subNum) < 0) {
                 System.out.println("Your balance is not enough!");
                 }
                 else{

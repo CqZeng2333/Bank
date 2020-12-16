@@ -1,23 +1,24 @@
 package backstage;
 
-import connect_database.CustomerAddingFunction;
-import connect_database.CustomerAlteringFunction;
-import connect_database.ManagerFunction;
+import connect_database.*;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 public class StockAccount extends Account {
-    private ArrayList<Stock>stocks;
-    private HashMap<Stock,Integer>ownStocks=new HashMap<>(5);
     public final static BigDecimal LEASTMONEY = new BigDecimal("1000");
     public final static BigDecimal LEASTBALANCE = new BigDecimal("2500");
     private BigDecimal stockBalance;
+    public final static BigDecimal TRANS=new BigDecimal("-1");
     StockAccount(int id,Currency currency){
         super(id,currency);
         accountType="STOCK";
+        if (CustomerSearchingFunction.searchStockMoneyAmount(customerID)!=null){
+            stockBalance=CustomerSearchingFunction.searchStockMoneyAmount(customerID);
+        }else {
+            stockBalance=null;
+        }
+
     }
     //5000
 //1000
@@ -35,19 +36,22 @@ public class StockAccount extends Account {
             boolean success=currency.sub("Dollar",5,"1");
             if (success){
                 while (true){
-                String cash=save("Dollar",LEASTMONEY);
-                if (cash.equals("")){
+                String[] cash=withdraw("Dollar",LEASTMONEY,LEASTBALANCE);
+                if (cash[0].equals("")){
                     System.out.println("You should save more than 1000 dollars to initialize this account!");
                 }else {
                     //alter manager
                     ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("5"));
                     //add saving account in database
                     CustomerAddingFunction.addStockAccount(customerID);
+                    BigDecimal cap=new BigDecimal(cash[0]);
+                    cap=cap.add(new BigDecimal(cash[1]));
                     CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-5"));
-                    CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-"+cash));
-                    CustomerAlteringFunction.alterStockAccount(customerID,new BigDecimal(cash));
+                    CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-"+cap.toString()));
+                    CustomerAlteringFunction.alterStockAccount(customerID,new BigDecimal(cash[0]));
+                    ManagerFunction.alterManagerAccount("Dollar",new BigDecimal(cash[1]));
                     createTransaction("-5","Dollar","Open Stock account.");
-                    createTransaction(cash,"Dollar","Stock account capital.");
+                    createTransaction(cap.toString(),"Dollar","Stock account capital.");
                     return true;
                 }
                 }
@@ -60,28 +64,23 @@ public class StockAccount extends Account {
         }
     }
 
-    public void Menu(Customer customer){
+    public void Menu(){
         System.out.println("0. save money to the stock account");
         System.out.println("1. See all stocks");
         System.out.println("2. buy a stock");
         System.out.println("3. sell a stock");
-        System.out.println("4. see the current open positions");
-        System.out.println("5. see the realized and unrealized profit");
+        /*System.out.println("4. see the current open positions");
+        System.out.println("5. see the realized and unrealized profit");*/
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)){
+        while ((!Tool.is_number(num)) || !Tool.in_range(num, 1, 9) || (Integer.parseInt(num) < 0) || (Integer.parseInt(num) > 5)) {
             System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
+            num = choice.nextLine();
         }
-        int number=Integer.parseInt(num);
-        while (number<0||number>5){
-            System.out.println("Invalid input. Input again.");
-            num=choice.nextLine();
-            number=Integer.parseInt(num);
-        }
+        int number = Integer.parseInt(num);
         switch (number){
             case 0:
-                System.out.println("You have to save over 1000 dollars, and you must maintain a $2500.00 balance");
+                System.out.println("You have to save over 1000 dollars, and you must maintain a $2500.00 balance in your saving account.");
                 boolean flag = true;
                 Scanner save = new Scanner(System.in);
                 while(flag) {
@@ -93,17 +92,23 @@ public class StockAccount extends Account {
                         if (stockMoney.compareTo(LEASTMONEY) != 1) {
                             System.out.println("You have to save over 1000 dollars one time!Try again");
                         } else {
-                            if (Account.currency.get("Dollar").compareTo(stockMoney.add(LEASTBALANCE)) == -1) {
-                                System.out.println("You have to have at least 2500 dollars balance in saving account! Try again");
+                            if (currency.get("Dollar").compareTo(stockMoney.add(LEASTBALANCE)) == -1) {
+                                System.out.println("You have to have at least 2500 dollars balance in saving account!");
+                                flag=false;
                             } else {
-                                Account.currency.sub("Dollar",stockMoney.doubleValue(),"1");
-                                if(this.stockBalance == null)
-                                {
-                                    this.stockBalance = stockMoney;
-                                }
-                                else
-                                {
-                                    this.stockBalance = this.stockBalance.add(stockMoney);
+                                boolean success=currency.sub("Dollar",stockMoney.doubleValue(),"1");
+                                if (success){
+                                    CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",stockMoney.multiply(TRANS));
+                                    if(this.stockBalance == null)
+                                    {
+                                        this.stockBalance = stockMoney;
+                                        CustomerAlteringFunction.alterStockAccount(customerID,stockMoney);
+                                    }
+                                    else
+                                    {
+                                        this.stockBalance = this.stockBalance.add(stockMoney);
+                                        CustomerAlteringFunction.alterStockAccount(customerID,stockMoney);
+                                    }
                                 }
                                 flag = false;
                             }
@@ -113,24 +118,34 @@ public class StockAccount extends Account {
                 break;
 
             case 1:
-                for (int i = 0; i < stocks.size(); i++)
-                {
-                    System.out.println(stocks.get(i));
+                if (CustomerSearchingFunction.searchStockList(customerID)!=null){
+                    List<String[]> stockList=CustomerSearchingFunction.searchStockList(customerID);
+                    for (int i=0;i<stockList.size();i++){
+                        System.out.println(Arrays.toString(stockList.get(i)));
+                    }
+                }else {
+                    System.out.println("You don't have stocks.");
                 }
+
                 break;
 
             case 2:
+                List<String[]> stocklist=ManagerFunction.searchAllStockList();
+                for (int i=0;i<stocklist.size();i++){
+                    System.out.println(Arrays.toString(stocklist.get(i)));
+                }
                 System.out.println("What's the stock and what's the number you want to buy?");
                 System.out.println("Please enter the stock ID at first:");
                 Scanner id = new Scanner(System.in);
                 int stockId = id.nextInt();
                 id.nextLine();
-                while(checkID(stockId)==-1){
+                int index=checkID(stockId,stocklist);
+                while(index==-1){
                     System.out.println("This stock doesn't exist! Try again");
                     stockId = id.nextInt();
                     id.nextLine();
                 }
-                Stock currentStock = stocks.get(checkID(stockId));
+                Stock currentStock = new Stock(Integer.parseInt(stocklist.get(index)[0]),stocklist.get(index)[1],new BigDecimal(stocklist.get(index)[2]));
                 System.out.println("You choose:"+stockId);
                 System.out.println("What's the number you want to buy?");
                 Scanner sc = new Scanner(System.in);
@@ -142,47 +157,63 @@ public class StockAccount extends Account {
                         System.out.println("Invalid input. Try again.");
                     }
                     else{
-                        BigDecimal payMoney = currentStock.getStockPrice().multiply(new BigDecimal(stockNum));
+                        BigDecimal payMoney = currentStock.getOriginprice().multiply(new BigDecimal(stockNum));
                         if (stockBalance!=null && payMoney.compareTo(stockBalance)>0)
                         {
                             System.out.println("You do not have enough balance!");
                         }
                         else
                         {
-                            System.out.println("You have buy this stock successfully!");
+                            System.out.println("You have bought this stock successfully!");
                             flag2 = false;
                             this.stockBalance = this.stockBalance.subtract(payMoney);
-                            //需要加上判断原来有没有买这个股票
-                            if (this.ownStocks.get(currentStock)==null)
-                            {
-                                this.ownStocks.put(currentStock,stockNum);
-                            }
-                            else
-                            {
-                                this.ownStocks.put(currentStock,this.ownStocks.get(currentStock)+stockNum);
-                            }
-
+                            createTransaction("-"+payMoney.toString(),"Dollar","Buy stocks.");
+                            CustomerAlteringFunction.alterStockAccount(customerID,payMoney.multiply(TRANS));
+                            CustomerAddingFunction.addStockOwnership(customerID,stockId,currentStock.getOriginprice(),stockNum);
                         }
                     }
                 }
                 break;
 
             case 3:
+                List<String[]> cusStocklist=CustomerSearchingFunction.searchStockList(customerID);
+                if (cusStocklist!=null){
+                for (int i=0;i<cusStocklist.size();i++){
+                    System.out.println(Arrays.toString(cusStocklist.get(i)));
+                }
+                System.out.println("What's the stock you want to sell?");
+                System.out.println("Please enter the stock ID at first:");
+                Scanner id1 = new Scanner(System.in);
+                int stockId1 = id1.nextInt();
+                id1.nextLine();
+                int index1=checkID(stockId1,cusStocklist);
+                while(index1==-1){
+                    System.out.println("This stock doesn't exist! Try again");
+                    stockId1 = id1.nextInt();
+                    id1.nextLine();
+                }
+                CustomerDeletingFunction.deleteOneStock(customerID,Integer.parseInt(cusStocklist.get(index1)[0]));
+                BigDecimal ori=new BigDecimal(cusStocklist.get(index1)[2]);
+                BigDecimal cur=new BigDecimal(cusStocklist.get(index1)[3]);
+                BigDecimal profit=(cur.subtract(ori)).multiply(new BigDecimal(cusStocklist.get(index1)[4]));
+                CustomerAlteringFunction.alterStockAccount(customerID,profit);
+                stockBalance=stockBalance.add(profit);
+                createTransaction(profit.toString(),"Dollar","Sell stocks.");}
+                else {
+                    System.out.println("You don't have stocks.");
+                }
                 break;
 
-            case 4:
-                break;
-
-
-
+     /*       case 4:
+                break;*/
 
         }
 
     }
 
-    public int checkID(int id){
-        for (int i = 0; i < stocks.size(); i++){
-            if (id == stocks.get(i).getId())
+    public int checkID(int id,List<String[]> stocklist){
+        for (int i = 0; i < stocklist.size(); i++){
+            if (id == Integer.parseInt(stocklist.get(i)[0]))
             {
                 return i;
             }
@@ -190,22 +221,17 @@ public class StockAccount extends Account {
         return -1;
     }
 
-
+    //String str,String accountType,String currencyType,String moneychange,String currentBalance,Time time
     public void createTransaction(String moneychange,String currencyType,String action){
         Time time=new Time();
         String str=time+ " Customer "+(customerID+1)+" in Stock account: "+action;
-        Transaction transaction=new Transaction();
-        transaction.setInfo(str);
-        transaction.setAccountType(accountType);
-        transaction.setCurrencyType(currencyType);
-        transaction.setCurrentCurrency(Account.currency);
-        transaction.setCustomerID(customerID);
-        transaction.setTime(time);
-        transaction.setMoneyChange(moneychange);
+        Transaction transaction=new Transaction(str,accountType,currencyType,currency.get(currencyType).toString(),moneychange,time.toString());
         transactions.add(transaction);
+        //transaction in database
+        CustomerAddingFunction.addTransaction(customerID,accountType,currencyType,new BigDecimal(moneychange),currency.get(currencyType),time);
     }
 
-    public static void main(String[] args) {
+/*    public static void main(String[] args) {
         System.out.println("Hi");
         Stock test1 = new Stock(1,"first",new BigDecimal("1000"));
         Stock test2 = new Stock(2,"second",new BigDecimal("500"));
@@ -221,7 +247,7 @@ public class StockAccount extends Account {
         while (flag) {
             testStock.Menu(user);
         }
-    }
+    }*/
 
 
 }
