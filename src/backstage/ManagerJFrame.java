@@ -57,7 +57,7 @@ public class ManagerJFrame extends javax.swing.JFrame {
                     if (customers.get(i).accounts.get(j).accountType.equals(
                             "LOAN")) {
                         strings.add(
-                                customers.get(i).toString() + "\n" + customers.get(
+                                customers.get(i).toString() + " " + customers.get(
                                 i).accounts.get(j).toString());
                     }
                 }
@@ -79,9 +79,11 @@ public class ManagerJFrame extends javax.swing.JFrame {
         //records: {customer_ID, customer_name, account_type, currency_type, money_changed, current_balance, time}
         List<String[]> records = ManagerFunction.searchTransactionToday();
         for (int i = 0; i < Objects.requireNonNull(records).size(); i++) {
-            for (int j = 0; j < records.get(i).length; j++) {
-                strings.add(records.get(i)[j]);
-            }
+            strings.add(
+                    "ID: " + records.get(i)[0] + " Name: " + records.get(i)[1] + " Change: " + records.get(
+                    i)[2] + " " + records.get(i)[3] + " " + records.get(i)[4]
+                    + " Balance: " + records.get(i)[5] + " " + records.get(i)[6]);
+
         }
         transactionList.setModel(new javax.swing.AbstractListModel<String>() {
             public int getSize() {
@@ -116,9 +118,10 @@ public class ManagerJFrame extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         errorLabel = new javax.swing.JLabel();
-        infoLabel = new javax.swing.JLabel();
         jButton1 = new javax.swing.JButton();
         jLabel3 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        infoTextArea = new javax.swing.JTextArea();
         jButton3 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -143,9 +146,6 @@ public class ManagerJFrame extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(transactionList);
 
-        nameTextField.setText(" ");
-
-        idTextField.setText(" ");
         idTextField.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 idTextFieldActionPerformed(evt);
@@ -158,8 +158,6 @@ public class ManagerJFrame extends javax.swing.JFrame {
 
         errorLabel.setText(" ");
 
-        infoLabel.setText(" ");
-
         jButton1.setText("Check Customer");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -169,7 +167,16 @@ public class ManagerJFrame extends javax.swing.JFrame {
 
         jLabel3.setText("Customer Info:");
 
-        jButton3.setText("Manage Stocks");
+        infoTextArea.setColumns(20);
+        infoTextArea.setRows(5);
+        jScrollPane4.setViewportView(infoTextArea);
+
+        jButton3.setText("Manage Stock");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,9 +189,9 @@ public class ManagerJFrame extends javax.swing.JFrame {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(33, 33, 33)
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 215, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
+                        .addGap(26, 26, 26)
                         .addComponent(jButton3)
-                        .addContainerGap(26, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -196,9 +203,12 @@ public class ManagerJFrame extends javax.swing.JFrame {
                                 .addComponent(jButton1)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(85, 85, 85)
+                                .addComponent(jLabel2))
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jButton2)
                                             .addComponent(jButton5)
@@ -207,17 +217,11 @@ public class ManagerJFrame extends javax.swing.JFrame {
                                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                             .addComponent(nameTextField, javax.swing.GroupLayout.DEFAULT_SIZE, 139, Short.MAX_VALUE)
                                             .addComponent(idTextField)))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(85, 85, 85)
-                                        .addComponent(jLabel2)))
-                                .addGap(0, 0, Short.MAX_VALUE))
-                            .addGroup(layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 272, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))))
+                                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 342, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                        .addGap(0, 65, Short.MAX_VALUE))))
             .addGroup(layout.createSequentialGroup()
                 .addGap(32, 32, 32)
-                .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 411, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 464, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -240,8 +244,8 @@ public class ManagerJFrame extends javax.swing.JFrame {
                         .addGap(10, 10, 10)
                         .addComponent(jLabel3)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(infoLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 39, Short.MAX_VALUE)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(errorLabel)
                 .addGap(29, 29, 29)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -256,7 +260,7 @@ public class ManagerJFrame extends javax.swing.JFrame {
                         .addContainerGap())
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButton3)
-                        .addGap(81, 81, 81))))
+                        .addGap(79, 79, 79))))
         );
 
         pack();
@@ -303,8 +307,12 @@ public class ManagerJFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int index = customerList.getSelectedIndex();
         String info = manager.getCustomerInfo(index);
-        infoLabel.setText(info);
+        infoTextArea.setText(info);
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -349,7 +357,7 @@ public class ManagerJFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> debtorList;
     private javax.swing.JLabel errorLabel;
     private javax.swing.JTextField idTextField;
-    private javax.swing.JLabel infoLabel;
+    private javax.swing.JTextArea infoTextArea;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
@@ -360,6 +368,7 @@ public class ManagerJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextField nameTextField;
     private javax.swing.JList<String> transactionList;
     // End of variables declaration//GEN-END:variables
