@@ -54,8 +54,6 @@ public class CheckJFrame extends javax.swing.JFrame {
 
         currencyComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Dollar", "RMB", "Pound" }));
 
-        cashTextField.setText(" ");
-
         jLabel1.setText("Make a check will charge you $1.");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
