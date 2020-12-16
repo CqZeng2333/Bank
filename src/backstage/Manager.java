@@ -60,7 +60,7 @@ public class Manager extends User {
                         System.out.println(
                                 (j + 1) + " " + customers.get(i).accounts.get(j).accountType);
                     }
-                    customers.get(i).currency.print();
+                    customers.get(i).currency.toString();
                 }
                 return;
             }
@@ -81,7 +81,7 @@ public class Manager extends User {
                         System.out.println(
                                 (j + 1) + " " + customers.get(i).accounts.get(j).accountType);
                     }
-                    customers.get(i).currency.print();
+                    customers.get(i).currency.toString();
                 }
                 return;
             }

@@ -13,17 +13,15 @@ import java.util.ArrayList;
  */
 public class CustomerJFrame extends javax.swing.JFrame {
 
-    private int index; //the customer index
-    private ArrayList<Customer> customers;
+    private Customer customer;
 
     /**
      * Creates new form MainJFrame
      */
-    public CustomerJFrame(ArrayList<Customer> customers, int index) {
-        this.customers = customers;
-        this.index = index;
+    public CustomerJFrame(Customer customer) {
+        this.customer = customer;
         initComponents();
-        ArrayList<Account> accounts = customers.get(index).getAccounts();
+        ArrayList<Account> accounts = customer.getAccounts();
         setAccountList(accounts);
 
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -46,6 +44,8 @@ public class CustomerJFrame extends javax.swing.JFrame {
         LoanButton = new javax.swing.JButton();
         errorLabel = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
+        refreshButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,6 +76,20 @@ public class CustomerJFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Accounts:");
 
+        refreshButton.setText("Refresh");
+        refreshButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                refreshButtonActionPerformed(evt);
+            }
+        });
+
+        jButton1.setText("Open Saving Account");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,20 +98,31 @@ public class CustomerJFrame extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jScrollPane1))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 40, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(checkingButton)
-                                .addGap(27, 27, 27)
-                                .addComponent(SavingButton)
-                                .addGap(28, 28, 28)
-                                .addComponent(LoanButton)))))
-                .addContainerGap())
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(refreshButton)
+                                    .addGroup(layout.createSequentialGroup()
+                                        .addGap(9, 9, 9)
+                                        .addComponent(jLabel1)))
+                                .addGap(18, 18, 18)
+                                .addComponent(jScrollPane1))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGap(0, 40, Short.MAX_VALUE)
+                                .addComponent(errorLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 340, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addContainerGap())
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(19, 19, 19)
+                        .addComponent(jButton1)
+                        .addGap(41, 41, 41)
+                        .addComponent(SavingButton)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(76, 76, 76)
+                .addComponent(checkingButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(LoanButton)
+                .addGap(105, 105, 105))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -105,45 +130,34 @@ public class CustomerJFrame extends javax.swing.JFrame {
                 .addGap(22, 22, 22)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel1))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabel1)
+                        .addGap(41, 41, 41)
+                        .addComponent(refreshButton)))
                 .addGap(18, 18, 18)
                 .addComponent(errorLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 22, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButton1)
+                    .addComponent(SavingButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(checkingButton)
-                    .addComponent(SavingButton)
                     .addComponent(LoanButton))
-                .addGap(70, 70, 70))
+                .addGap(39, 39, 39))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    public int isthereAccount(int id, String str) {
-        Customer customer = customers.get(id);
-        int accountID = -1;
-        for (int i = 0; i < customer.accounts.size(); i++) {
-            if (customer.accounts.get(i).accountType.equals(str)) {
-                accountID = i;
-                break;
-            }
-        }
-        if (accountID < 0) {
-            errorLabel.setText(
-                    "You do not have " + str + " account. You can create one now.");
-        }
-        return accountID;
-    }
-
     private void checkingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkingButtonActionPerformed
-        int exist = isthereAccount(index, "CHECKING");
+        int exist = customer.isthereAccount("CHECKING");
         if (exist < 0) {
             //create new account
-            int accountID = customers.get(index).createAccount("CHECKING");
+            int accountID = customer.createAccount("CHECKING");
             if (accountID >= 0) {
-                new CheckJFrame(
-                        (CheckingAccount) customers.get(index).accounts.get(
-                                accountID), customers.get(index));
+                new CheckJFrame((CheckingAccount) customer.accounts.get(
+                        accountID), customer);
             }
             else {
                 errorLabel.setText("Failed to create Saving. Need more than $5.");
@@ -151,36 +165,28 @@ public class CustomerJFrame extends javax.swing.JFrame {
         }
         else {
             //account already exist
-            new CheckJFrame((CheckingAccount) customers.get(index).accounts.get(
-                    exist), customers.get(index));
+            new CheckJFrame((CheckingAccount) customer.accounts.get(exist),
+                            customer);
         }
     }//GEN-LAST:event_checkingButtonActionPerformed
 
     private void SavingButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_SavingButtonActionPerformed
-        int exist = isthereAccount(index, "SAVING");
+        int exist = customer.isthereAccount("SAVING");
         if (exist < 0) {
-            int accountID = customers.get(index).createAccount("SAVING");
-            if (accountID >= 0) {
-                new SaveJFrame(
-                        (SavingAccount) customers.get(index).accounts.get(
-                                accountID));
-            }
-            else {
-                errorLabel.setText("Failed to create Saving. Need more than $5.");
-            }
+            errorLabel.setText("There is no saving account. Create a one first.");
         }
         else {
-            new SaveJFrame((SavingAccount) customers.get(index).accounts.get(
-                    exist));
+            new SaveJFrame((SavingAccount) customer.accounts.get(exist));
+            this.setAccountList(customer.accounts);
         }
     }//GEN-LAST:event_SavingButtonActionPerformed
 
     private void LoanButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_LoanButtonActionPerformed
-        int exist = isthereAccount(index, "LOAN");
+        int exist = customer.isthereAccount("LOAN");
         if (exist < 0) {
-            int accountID = customers.get(index).createAccount("LOAN");
+            int accountID = customer.createAccount("LOAN");
             if (accountID >= 0) {
-                new LoanJFrame((LoanAccount) customers.get(index).accounts.get(
+                new LoanJFrame((LoanAccount) customer.accounts.get(
                         accountID));
             }
             else {
@@ -188,16 +194,32 @@ public class CustomerJFrame extends javax.swing.JFrame {
             }
         }
         else {
-            new LoanJFrame((LoanAccount) customers.get(index).accounts.get(
+            new LoanJFrame((LoanAccount) customer.accounts.get(
                     exist));
         }
     }//GEN-LAST:event_LoanButtonActionPerformed
+
+    private void refreshButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_refreshButtonActionPerformed
+        this.setAccountList(customer.getAccounts());
+    }//GEN-LAST:event_refreshButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        int exist = customer.isthereAccount("SAVING");
+        if (exist < 0) {
+            SavingAccount savingAccount = new SavingAccount(customer.id,
+                                                            customer.currency);
+            new OpenSavingJFrame(customer, savingAccount);
+        }
+        else {
+            errorLabel.setText("There is already a saving account.");
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private void setAccountList(ArrayList<Account> accounts) {
         ArrayList<String> strings = new ArrayList<String>();
         for (Account account : accounts) {
             strings.add(
-                    "(" + account.getAccountType() + ")" + " " + account.getCurrency());
+                    "(" + account.getAccountType() + ")" + " " + account.getCurrency().toString());
         }
         accountList.setModel(new javax.swing.AbstractListModel<String>() {
             public int getSize() {
@@ -256,7 +278,9 @@ public class CustomerJFrame extends javax.swing.JFrame {
     private javax.swing.JList<String> accountList;
     private javax.swing.JButton checkingButton;
     private javax.swing.JLabel errorLabel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JButton refreshButton;
     // End of variables declaration//GEN-END:variables
 }

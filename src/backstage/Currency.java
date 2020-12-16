@@ -34,7 +34,7 @@ public class Currency {
         this.money = money;
     }
 
-    public String print() {
+    public String toString() {
         String str="";
         for(String entry : money.keySet()) {
             BigDecimal value = money.get(entry);
@@ -74,7 +74,7 @@ public class Currency {
             this.money.put(key,this.money.get(key).add(addNum));
             System.out.println("Successfully save "+key+" "+addNum+"!");
             System.out.println("Now your deposit: ");
-            System.out.println(print());
+            System.out.println(toString());
         }
     }
 
@@ -91,7 +91,7 @@ public class Currency {
                 this.money.put(key,this.money.get(key).subtract(subNum));
                 System.out.println("Successfully withdraw "+key+" "+subNum+"!");
                 System.out.println("Now your deposit: ");
-                System.out.println(print());
+                System.out.println(toString());
                 success=true;
                     }
                }
