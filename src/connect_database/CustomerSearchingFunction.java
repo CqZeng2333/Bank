@@ -143,7 +143,7 @@ public class CustomerSearchingFunction {
 	}
 	
 	/*
-	 * Get the total loan list for customer
+	 * Get the total loan list for a specific customer
 	 * Input customer ID
 	 * Return List object, each one a String[] {loan_record_ID, loan_amount, collateral_name}
 	 * Return a zero-size list if no loan
@@ -217,7 +217,7 @@ public class CustomerSearchingFunction {
 	}
 	
 	/*
-	 * Get the total stock list for customer
+	 * Get the total stock list owned by a specific customer
 	 * Input customer ID
 	 * Return List object, each one a String[] {stock_record_ID, stock_name, stock_original_price, stock_current_price, stock_holding_number}
 	 * Return a zero-size list if no stock
@@ -263,7 +263,7 @@ public class CustomerSearchingFunction {
 	}
 	
 	/*
-	 * Get all the transaction list for customer
+	 * Get all the transaction list for a specific customer
 	 * Input customer ID
 	 * Return List object, each one a String[] {account_type, currency_type, money_changed, current_balance, time}
 	 * Return a zero-size list if no transaction
@@ -299,6 +299,7 @@ public class CustomerSearchingFunction {
         return null;
 	}
 	
+	/*
 	public static void main(String[] args) {
 		//System.out.println(CustomerSearchingFunction.searchCheckingMoneyAmount(1, "RMB"));
 		//System.out.println(CustomerSearchingFunction.searchLoanMoneyAmount(2));
@@ -308,4 +309,5 @@ public class CustomerSearchingFunction {
 		//System.out.println(CustomerSearchingFunction.searchTransaction(2));
 		//System.out.println(CustomerSearchingFunction.customerLogin("second_customer", "111111"));
 	}
+	*/
 }

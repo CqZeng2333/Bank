@@ -382,6 +382,7 @@ public class CustomerAddingFunction {
         return 0;
     }
     
+    /*
     public static void main(String[] args) {
         //CustomerAddingFunction.addCustomer("second_customer", "111111");
         //CustomerAddingFunction.addSavingAccount(2);
@@ -391,5 +392,5 @@ public class CustomerAddingFunction {
         //CustomerAddingFunction.addLoan(2, new BigDecimal(80), new Collateral("car", new BigDecimal(100), "Dollar"));
         //CustomerAddingFunction.addStockOwnership(1, 1, new BigDecimal(10), 10);
         //CustomerAddingFunction.addTransaction(1, "STOCK", "Dollar", new BigDecimal(-100), new BigDecimal(800), new Time());
-    }
+    }*/
 }

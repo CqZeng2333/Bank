@@ -6,8 +6,6 @@ package connect_database;
 import java.math.BigDecimal;
 import java.sql.*;
 
-import backstage.Time;
-
 public class CustomerDeletingFunction {
 	private final static Connection conn = Connector.getConn();
 	
@@ -90,7 +88,6 @@ public class CustomerDeletingFunction {
 	/*
 	 * Delete the loan record with paying back the loan for customer
 	 * The corresponding collateral is removed from the bank
-	 * Also add the corresponding transaction
 	 * Input customer ID, loan_record_id
 	 * Return 0 if success, -1 not success(no customer or no loan account)
 	 */
@@ -127,7 +124,6 @@ public class CustomerDeletingFunction {
 	/*
 	 * Delete one stock record for customer
 	 * The corresponding money is added to the stock account
-	 * Also add the corresponding transaction
 	 * Input customer ID, stock_record_id
 	 * Return 0 if success, -1 not success(no customer or no loan account)
 	 */
@@ -165,10 +161,12 @@ public class CustomerDeletingFunction {
         return -1;
 	}
 	
+	/*
 	public static void main(String[] args) {
 		//CustomerDeletingFunction.deleteSavingAccount(2);
 		//CustomerDeletingFunction.deleteCheckingAccount(2);
-		CustomerDeletingFunction.deleteOneLoan(4, 4);
+		//CustomerDeletingFunction.deleteOneLoan(4, 4);
 		//CustomerDeletingFunction.deleteOneStock(1, 1);
 	}
+	*/
 }
