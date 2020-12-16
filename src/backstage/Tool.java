@@ -20,6 +20,6 @@ public class Tool {
         if (str == null) {
             return false;
         }
-        return str.matches("^[0-9]+") && (str.length() < 10);
+        return str.matches("^[0-9]+") && (str.length() < 9);
     }
 }
