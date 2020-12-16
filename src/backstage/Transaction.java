@@ -81,7 +81,8 @@ public class Transaction {
 
      }
      public String toString(){
-         return info;
+          //{account_type, currency_type, money_changed, current_balance, time}
+          return accountType+" "+currencyType+" "+moneyChange+" "+balance+" "+time;
      }
      public void setInfo(String str){info=str;}
 }

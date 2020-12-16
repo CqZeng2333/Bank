@@ -13,7 +13,7 @@ public class CheckingAccount extends Account {
         accountType="CHECKING";
     }
     public boolean initAccount(){
-        System.out.println("Welcome! You will start checking your current deposit and transaction records here, starting today.");
+        System.out.println("Welcome! You will make checks here, starting today.");
         System.out.println("Opening this count will charge you 5 dollars. Make sure you have created the saving count and save at least 5 dollars in it.");
         System.out.println("Although you can use 3 types of currency in our bank(Dollar, RMB and Pound), you need to pay dollars this time.");
         if (currency.get("Dollar").compareTo(new BigDecimal(5)) < 0){
@@ -35,48 +35,102 @@ public class CheckingAccount extends Account {
         }
     }
     public void Menu(Customer customer){
-        System.out.println("1. Check money 2. Check transactions 3. Exit");
+        System.out.println("1. Make a check 2. Exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>3)){
+        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>2)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
         int number=Integer.parseInt(num);
         if (number==1){
             checkMoney();
-        }else if (number==2){
-            checkRecords(customer);
         }else return;
     }
     public void checkMoney(){
-        System.out.println("This costs you 1 dollars.");
+        System.out.println("Make a check will cost you 1 dollars.");
         boolean success= currency.sub("Dollar",(double)1,"1");
         if (success){
-        createTransaction("-1","Dollar","Checking money.");
+        createTransaction("-1","Dollar","Make a check.");
             //alter manager
             ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("1"));
         //alter saving account
-            CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-1"));}else {
-            System.out.println("Failed to check deposit due to lack of dollars.");
-            createTransaction("0","Dollar","Failed checking money.");
+            CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-1"));
+            //start writing a check
+            System.out.println("Here's your deposit:");
+            currency.print();
+            System.out.println("Choose a currency type you want to trade: 1. Dollar 2. RMB 3. Pound");
+            Scanner choice1 = new Scanner(System.in);
+            String num1 = choice1.nextLine();
+            while ((!Tool.is_number(num1)) || !Tool.in_range(num1, 1, 9) || (Integer.parseInt(num1) < 1) || (Integer.parseInt(num1) > 3)) {
+                System.out.println("Invalid input. Input again.");
+                num1 = choice1.nextLine();
+            }
+            int number1 = Integer.parseInt(num1);
+            if (number1 == 1) {
+                System.out.println("How much cash would this check value? Please make sure that you don't write checks bigger than your deposit.");
+                Scanner money = new Scanner(System.in);
+                String cash = money.nextLine();
+                while (!Tool.is_number(cash)) {
+                    System.out.println("Invalid input. Please input a number.");
+                    cash = money.nextLine();
+                }
+                success = currency.sub("Dollar", Double.parseDouble(cash), "1");
+                /*BigDecimal subsum=new BigDecimal(cash);
+                subsum=subsum.multiply(new BigDecimal("0.02"));*/
+                if (!success) {
+                    createTransaction("0","Dollar","Failed to make a check.");
+                }
+                else {
+                    createTransaction(cash,"Dollar","Successfully making a check.");
+                    //alter saving account
+                    CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-"+cash));
+                }
+            }else if (number1==2){
+                System.out.println("How much cash would this check value? Please make sure that you don't write checks bigger than your deposit.");
+                Scanner money = new Scanner(System.in);
+                String cash = money.nextLine();
+                while (!Tool.is_number(cash)) {
+                    System.out.println("Invalid input. Please input a number.");
+                    cash = money.nextLine();
+                }
+                success = currency.sub("RMB", Double.parseDouble(cash), "1");
+                /*BigDecimal subsum=new BigDecimal(cash);
+                subsum=subsum.multiply(new BigDecimal("0.02"));*/
+                if (!success) {
+                    createTransaction("0","RMB","Failed to make a check.");
+                }
+                else {
+                    createTransaction(cash,"RMB","Successfully making a check.");
+                    //alter saving account
+                    CustomerAlteringFunction.alterSavingAccount(customerID,"RMB",new BigDecimal("-"+cash));
+                }
+            }else {
+                System.out.println("How much cash would this check value? Please make sure that you don't write checks bigger than your deposit.");
+                Scanner money = new Scanner(System.in);
+                String cash = money.nextLine();
+                while (!Tool.is_number(cash)) {
+                    System.out.println("Invalid input. Please input a number.");
+                    cash = money.nextLine();
+                }
+                success = currency.sub("Pound", Double.parseDouble(cash), "1");
+                /*BigDecimal subsum=new BigDecimal(cash);
+                subsum=subsum.multiply(new BigDecimal("0.02"));*/
+                if (!success) {
+                    createTransaction("0", "Pound", "Failed to make a check.");
+                } else {
+                    createTransaction(cash, "Pound", "Successfully making a check.");
+                    //alter saving account
+                    CustomerAlteringFunction.alterSavingAccount(customerID, "Pound", new BigDecimal("-" + cash));
+                }
+            }
         }
-    }
-    public void checkRecords(Customer customer){
-        System.out.println("This costs you 2 dollars.");
-        boolean success= currency.sub("Dollar",(double)2,"1");
-        if (success){
-            customer.printRecords();
-            //alter manager
-            ManagerFunction.alterManagerAccount("Dollar",new BigDecimal("2"));
-        createTransaction("-2","Dollar","Checking transactions.");
-        //alter saving account
-            CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-2"));}
         else {
-            System.out.println("Failed to check records due to lack of dollars.");
-            createTransaction("0","Dollar","Failed checking transactions.");
+            System.out.println("Failed to make a checking due to lack of dollars.");
+            createTransaction("0","Dollar","Failed to make a check.");
         }
     }
+
     public void createTransaction(String moneychange,String currencyType,String action){
          Time time=new Time();
          String str=time+ " Customer "+(customerID+1)+" in Checking account: "+action;

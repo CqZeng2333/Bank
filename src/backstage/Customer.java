@@ -33,7 +33,9 @@ public class Customer extends User {
                 System.out.println(transactions.get(i));
             }
         }
-    }}
+    }
+
+    }
     public int removeAccount(){
         System.out.println("Dear customer "+name+":");
         System.out.println("Deleting an account will charge you 5 dollars.");
