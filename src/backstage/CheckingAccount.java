@@ -58,7 +58,7 @@ public class CheckingAccount extends Account {
             CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-1"));
             //start writing a check
             System.out.println("Here's your deposit:");
-            currency.print();
+            currency.toString();
             System.out.println("Choose a currency type you want to trade: 1. Dollar 2. RMB 3. Pound");
             Scanner choice1 = new Scanner(System.in);
             String num1 = choice1.nextLine();

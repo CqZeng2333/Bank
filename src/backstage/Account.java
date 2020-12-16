@@ -83,7 +83,7 @@ public abstract class Account {
         System.out.println(
                 "Please take care that we will charge you 2% service charges.");
         System.out.println("Here's your deposit:");
-        currency.print();
+        currency.toString();
         Scanner money = new Scanner(System.in);
         String cash = money.nextLine();
         while (!Tool.is_number(cash)) {

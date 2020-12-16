@@ -159,17 +159,16 @@ public class LoginJFrame extends javax.swing.JFrame {
     private void managerLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_managerLoginButtonActionPerformed
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
-        if (validInput(username, password)) {
-            int login = ManagerFunction.managerLogin(username, password);
-            if (login == 0) {
-                bankManager = new Manager(username, password);
-                bankManager.setCustomers(customers);
-                new ManagerJFrame(bankManager);
-            }
-            else {
-                errorLabel.setText("Wrong name or password.");
-            }
+        int login = ManagerFunction.managerLogin(username, password);
+        if (login == 0) {
+            bankManager = new Manager(username, password);
+            bankManager.setCustomers(customers);
+            new ManagerJFrame(bankManager);
         }
+        else {
+            errorLabel.setText("Wrong name or password.");
+        }
+
     }//GEN-LAST:event_managerLoginButtonActionPerformed
 
     private void customerLoginButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_customerLoginButtonActionPerformed
@@ -188,7 +187,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                         index = i;
                     }
                 }
-                new CustomerJFrame(customers, index);
+                new CustomerJFrame(customers.get(index));
             }
         }
     }//GEN-LAST:event_customerLoginButtonActionPerformed
@@ -212,7 +211,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                                                          customer.pwd);
             customers.add(customer);
             customer.setId(cid); //cid is the index of this customer in arraylist
-            new CustomerJFrame(customers, cid);
+            new CustomerJFrame(customers.get(cid));
         }
     }//GEN-LAST:event_newuserButtonActionPerformed
 
