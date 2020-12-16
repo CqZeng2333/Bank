@@ -206,7 +206,7 @@ public class Bank {
             }
         }
         System.out.println("Choose an action you wanna take: ");
-        System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. stock 6. exit");
+        System.out.println("1. check 2. save/withdraw 3. loan 4. delete accounts 5. stock 6. transaction records 7. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
         while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>6)){
@@ -264,6 +264,17 @@ public class Bank {
                 }
                 break;
             case 6:
+                System.out.println("This costs you 10 dollars.");
+                boolean success=customers.get(index).currency.sub("Dollar",10,"1");
+                if (!success){
+                    System.out.println("You don't have enough money to check the records.");
+                }else {
+                for (int i=0;i<customers.get(index).transactions.size();i++){
+                    System.out.println(customers.get(index).transactions.get(i));
+                }
+                }
+                break;
+            case 7:
                 System.out.println("Bye bye!");
                 userend = false;
                 break;

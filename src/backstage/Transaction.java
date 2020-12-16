@@ -80,8 +80,9 @@ public class Transaction {
      Transaction(){
 
      }
+     //1, "STOCK", "Dollar", new BigDecimal(-100), new BigDecimal(800), new Time()
      public String toString(){
-         return info;
+         return customerID+" "+accountType+" "+moneyChange+" "+currentCurrency+" "+time;
      }
      public void setInfo(String str){info=str;}
 }

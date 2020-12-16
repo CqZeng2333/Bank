@@ -23,7 +23,6 @@ public class Customer extends User {
         String str = "ID: " + id + " Name: " + name;
         return str;
     }
-
     public int isthereAccount(String str) {
         int accountID = -1;
         for (int i = 0; i < accounts.size(); i++) {
@@ -37,31 +36,6 @@ public class Customer extends User {
                     "You do not have " + str + " account. You can create one now.");
         }
         return accountID;
-    }
-
-    public String printRecords() {
-        String str = "";
-        transactions.clear();
-        if (accounts.size() == 0) {
-            System.out.println("No accounts have been made.");
-            str += "No accounts have been made.";
-        }
-        else {
-            for (int i = 0; i < accounts.size(); i++) {
-                transactions.addAll(accounts.get(i).transactions);
-            }
-            if (transactions.size() == 0) {
-                System.out.println("No transactions have been made.");
-                str += "No transactions have been made.";
-            }
-            else {
-                for (int i = 0; i < transactions.size(); i++) {
-                    System.out.println(transactions.get(i));
-                    str += transactions.get(i) + "\n";
-                }
-            }
-        }
-        return str;
     }
 
     public int removeAccount() {
