@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 2020-12-16 04:17:14
+-- Generation Time: 2020-12-16 06:36:03
 -- 服务器版本： 5.7.14
 -- PHP Version: 5.6.25
 
@@ -96,7 +96,8 @@ INSERT INTO `customer` (`ID`, `NAME`, `PASSWORD`, `SAVING_ID`, `CHECKING_ID`, `L
 (6, 'atiredtester', '66666666', 19, -1, -1, -1),
 (7, 'verytired', '88888888', 13, -1, -1, -1),
 (8, 'tiredagain', '77777777', 16, -1, -1, -1),
-(9, 'newone', '11111111', -1, -1, -1, -1);
+(9, 'newone', '11111111', -1, -1, -1, -1),
+(10, 'newnew', '111111', -1, -1, -1, -1);
 
 -- --------------------------------------------------------
 
@@ -116,9 +117,9 @@ CREATE TABLE `loan` (
 --
 
 INSERT INTO `loan` (`ID`, `ACCOUNT_ID`, `COLLATERAL_ID`, `LOAN_AMOUNT`) VALUES
-(4, 3, 4, '225.00'),
-(2, 2, 2, '80.00'),
-(3, 2, 3, '80.00');
+(4, 3, 4, '226.14'),
+(2, 2, 2, '80.24'),
+(3, 2, 3, '80.24');
 
 -- --------------------------------------------------------
 
@@ -138,9 +139,9 @@ CREATE TABLE `loan_account` (
 
 INSERT INTO `loan_account` (`ID`, `CUSTOMER_ID`, `MONEY_AMOUNT`) VALUES
 (1, 1, '0.00'),
-(2, 2, '160.00'),
-(3, 4, '2345570.00'),
-(4, 5, '450.00');
+(2, 2, '160.48'),
+(3, 4, '2352613.75'),
+(4, 5, '451.35');
 
 -- --------------------------------------------------------
 
@@ -151,15 +152,16 @@ INSERT INTO `loan_account` (`ID`, `CUSTOMER_ID`, `MONEY_AMOUNT`) VALUES
 CREATE TABLE `manager` (
   `ID` int(11) NOT NULL,
   `NAME` varchar(16) NOT NULL,
-  `PASSWORD` varchar(16) NOT NULL
+  `PASSWORD` varchar(16) NOT NULL,
+  `LAST_UPDATE_DATE` date NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- 转存表中的数据 `manager`
 --
 
-INSERT INTO `manager` (`ID`, `NAME`, `PASSWORD`) VALUES
-(1, 'admin', '000000');
+INSERT INTO `manager` (`ID`, `NAME`, `PASSWORD`, `LAST_UPDATE_DATE`) VALUES
+(1, 'admin', '000000', '2020-12-16');
 
 -- --------------------------------------------------------
 
@@ -178,7 +180,7 @@ CREATE TABLE `manager_account` (
 --
 
 INSERT INTO `manager_account` (`ID`, `CURRENCY_TYPE`, `MONEY_AMOUNT`) VALUES
-(1, 'Dollar', '99999935'),
+(1, 'Dollar', '99999938'),
 (2, 'RMB', '100000000'),
 (3, 'Pound', '100000000');
 
@@ -206,7 +208,7 @@ INSERT INTO `saving_account` (`ID`, `CUSTOMER_ID`, `CURRENCY_TYPE`, `MONEY_AMOUN
 (5, 5, 'RMB', '0.00'),
 (4, 5, 'Dollar', '41.00'),
 (6, 5, 'Pound', '0.00'),
-(7, 4, 'Dollar', '300404.00'),
+(7, 4, 'Dollar', '300551.23'),
 (8, 4, 'RMB', '100.00'),
 (9, 4, 'Pound', '2.00'),
 (10, 3, 'Dollar', '0.00'),
@@ -336,7 +338,9 @@ INSERT INTO `transaction` (`ID`, `CUSTOMER_ID`, `ACCOUNT_ID`, `ACCOUNT_TYPE`, `C
 (27, 4, 7, 'SAVING', 'Dollar', '100.00', '300179.00', '2020-12-16 11:57:59'),
 (28, 4, 3, 'LOAN', 'Dollar', '225.00', '300404.00', '2020-12-16 12:01:51'),
 (29, 6, 19, 'SAVING', 'Dollar', '-5.00', '95.00', '2020-12-16 12:09:28'),
-(30, 6, 19, 'SAVING', 'Dollar', '100.00', '95.00', '2020-12-16 12:15:35');
+(30, 6, 19, 'SAVING', 'Dollar', '100.00', '95.00', '2020-12-16 12:15:35'),
+(31, 4, 4, 'CHECKING', 'Dollar', '-1.00', '300403.00', '2020-12-16 12:32:18'),
+(32, 4, 4, 'CHECKING', 'Dollar', '-2.00', '300401.00', '2020-12-16 12:32:26');
 
 --
 -- Indexes for dumped tables

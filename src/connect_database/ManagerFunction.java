@@ -4,6 +4,8 @@
 package connect_database;
 import java.math.BigDecimal;
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,6 +33,28 @@ public class ManagerFunction {
 		return -1;
 	}
 
+	/*
+	 * Get the money amount in manager account
+	 * Input currency type{"Dollar", "RMB", "Pound"}
+	 * Return money_amount if success
+	 * Return null if fail
+	 */
+	public static BigDecimal searchManagerAccount(String currency_type) {
+		try {
+			Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			ResultSet rset;
+
+			rset = stmt.executeQuery("SELECT * FROM MANAGER_ACCOUNT;");
+			if (rset.next()) {
+				if (rset.getString("CURRENCY_TYPE").equals(currency_type)) return rset.getBigDecimal("MONEY_AMOUNT");
+			}
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return null;
+		}
+		return null;
+	}
+	
 	/*
 	 * Alter the balance with changedAmount in manager account according to currency type
 	 * Input currency_type, changed money amount
@@ -302,7 +326,53 @@ public class ManagerFunction {
 	 * and 0.1% interest charged to loan accounts
 	 */
 	public static int updateDailyInterest() {
-		return 0;
+		try {
+			Statement stmt1 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			Statement stmt2 = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
+			ResultSet rset1;
+
+			// count days between last update day and now
+			// and update the last_update_day to now
+			int sum_day = 0; // days between last update day and now
+			rset1 = stmt1.executeQuery("SELECT * FROM MANAGER;");
+			if (rset1.next()) {
+				String last_update_date = rset1.getDate("LAST_UPDATE_DATE").toString();
+				Period period = Period.between(LocalDate.parse(last_update_date), LocalDate.now());
+				sum_day = period.getDays() + period.getMonths() * 30 + period.getYears() * 365;
+				stmt1.execute("UPDATE MANAGER SET LAST_UPDATE_DATE = \'"+LocalDate.now().toString()+"\';");
+			}
+			
+			for (int i = 0; i < sum_day; i++) {
+				// update interest for saving
+				rset1 = stmt1.executeQuery("SELECT * FROM SAVING_ACCOUNT WHERE MONEY_AMOUNT >= 5000;");
+				while (rset1.next()) {
+					int accountID = rset1.getInt("ID");
+					BigDecimal old_amount = rset1.getBigDecimal("MONEY_AMOUNT");
+					stmt2.execute("UPDATE SAVING_ACCOUNT SET MONEY_AMOUNT = "+old_amount.multiply(new BigDecimal(1.0001)).toPlainString()
+							+" WHERE ID = "+accountID+";");
+				}
+				
+				// update interest for loan
+				rset1 = stmt1.executeQuery("SELECT * FROM LOAN;");
+				while (rset1.next()) {
+					int loanID = rset1.getInt("ID");
+					BigDecimal old_amount = rset1.getBigDecimal("LOAN_AMOUNT");
+					stmt2.execute("UPDATE LOAN SET LOAN_AMOUNT = "+old_amount.multiply(new BigDecimal(1.001)).toPlainString()
+							+" WHERE ID = "+loanID+";");
+				}
+				rset1 = stmt1.executeQuery("SELECT * FROM LOAN_ACCOUNT;");
+				while (rset1.next()) {
+					int accountID = rset1.getInt("ID");
+					BigDecimal old_amount = rset1.getBigDecimal("MONEY_AMOUNT");
+					stmt2.execute("UPDATE LOAN_ACCOUNT SET MONEY_AMOUNT = "+old_amount.multiply(new BigDecimal(1.001)).toPlainString()
+							+" WHERE ID = "+accountID+";");
+				}
+			}
+			return 0;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return -1;
+		}
 	}
 
 	public static void main(String[] args) {
@@ -313,5 +383,7 @@ public class ManagerFunction {
 		//ManagerFunction.addStock("S&P 500", new BigDecimal(15));
 		//ManagerFunction.alterStockPrice(2, new BigDecimal(18));
 		//ManagerFunction.alterManagerAccount("Dollar", new BigDecimal(100));
+		//System.out.println(ManagerFunction.searchManagerAccount("Dollar"));
+		//ManagerFunction.updateDailyInterest();
 	}
 }
