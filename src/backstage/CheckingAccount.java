@@ -47,7 +47,7 @@ public class CheckingAccount extends Account {
             checkMoney();
         }else return;
     }
-    public void checkMoney(){
+    public boolean checkMoney(){
         System.out.println("Make a check will cost you 1 dollars.");
         boolean success= currency.sub("Dollar",(double)1,"1");
         if (success){
@@ -129,6 +129,7 @@ public class CheckingAccount extends Account {
             System.out.println("Failed to make a checking due to lack of dollars.");
             createTransaction("0","Dollar","Failed to make a check.");
         }
+        return success;
     }
 
     public void createTransaction(String moneychange,String currencyType,String action){
