@@ -96,7 +96,7 @@ public class Manager extends User {
             info += "\nAccounts: \n";
             for (int j = 0; j < customers.get(i).accounts.size(); j++) {
                 Account account = customers.get(i).accounts.get(j);
-                info += (j + 1) + ". " + account.accountType + account.toString() + " \n";
+                info += (j + 1) + ". " + account.accountType + " " + account.toString() + " \n";
             }
         }
         return info;

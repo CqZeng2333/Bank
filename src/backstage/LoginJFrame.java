@@ -164,6 +164,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             bankManager = new Manager(username, password);
             bankManager.setCustomers(customers);
             new ManagerJFrame(bankManager);
+            this.dispose();
         }
         else {
             errorLabel.setText("Wrong name or password.");
@@ -188,6 +189,7 @@ public class LoginJFrame extends javax.swing.JFrame {
                     }
                 }
                 new CustomerJFrame(customers.get(index));
+                this.dispose();
             }
         }
     }//GEN-LAST:event_customerLoginButtonActionPerformed
@@ -204,7 +206,6 @@ public class LoginJFrame extends javax.swing.JFrame {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
         if (validInput(username, password)) {
-            this.dispose();
             Customer customer = new Customer(username, password);
             //new customer in database
             int cid = CustomerAddingFunction.addCustomer(customer.name,
@@ -213,6 +214,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             customer.setId(cid); //cid is the index of this customer in arraylist
             int index = cid - 1;
             new CustomerJFrame(customers.get(index));
+            this.dispose();
         }
     }//GEN-LAST:event_newuserButtonActionPerformed
 
