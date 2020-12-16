@@ -98,12 +98,11 @@ public class CustomerAlteringFunction {
 	*/
 
     /*
-     * Alter the balance in stock account according to currency type
-     * Also create according transaction
-     * Input customer ID, new money amount
+     * Alter the balance with changedAmount in stock account according to currency type
+     * Input customer ID, changed money amount
      * Return 0 if success, -1 not success(no customer or no stock account)
      */
-    public static int alterStockAccount(int customerID, BigDecimal newAmount) {
+    public static int alterStockAccount(int customerID, BigDecimal changedAmount) {
         try {
             Statement stmt = conn.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,ResultSet.CONCUR_UPDATABLE);
             ResultSet rset;
@@ -122,7 +121,7 @@ public class CustomerAlteringFunction {
             if (rset.next()) {
                 old_amount = rset.getBigDecimal("MONEY_AMOUNT");
             }
-            stmt.execute("UPDATE STOCK_ACCOUNT SET MONEY_AMOUNT = "+newAmount.toPlainString()+
+            stmt.execute("UPDATE STOCK_ACCOUNT SET MONEY_AMOUNT = "+old_amount.add(changedAmount).toPlainString()+
                     " WHERE ID = "+accountID+";");
 
             //CustomerAddingFunction.addTransaction(customerID, "STOCK", "Dollar", newAmount.subtract(old_amount), newAmount, new Time());
