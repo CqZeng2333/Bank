@@ -22,9 +22,8 @@ public class Bank {
             userMenu();}
     }
     public static void getExistUser(){
+        customers=new ArrayList<>();
         List<String[]> existcustomers = ManagerFunction.searchAllCustomer();
-
-
         //id loop
         for (int i = 0; i < Objects.requireNonNull(existcustomers).size(); i++) {
                 Customer customer = new Customer(Integer.parseInt(existcustomers.get(i)[0]));
@@ -43,28 +42,6 @@ public class Bank {
                 if (CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Pound")!=null){
                     customers.get(i).currency.getMoney().put("Pound",CustomerSearchingFunction.searchSavingMoneyAmount(customers.get(i).id,"Pound"));
                 }
-/*                int index = -1;
-                for (int k = 0; k < customers.get(i).accounts.size(); k++) {
-                    if (customers.get(i).accounts.get(k).accountType.equals("SAVING")) {
-                        index = k;
-                        break;
-                    }
-                }
-                for (int j = 0; j < Objects.requireNonNull(existcustomers).size(); j++) {
-                    if (customers.get(i).id == Integer.parseInt(existcustomers.get(j)[0])) {
-                        if (index >= 0) {
-                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Dollar")) {
-                                customers.get(i).accounts.get(index).currency.getMoney().put("Dollar", new BigDecimal(existcustomers.get(j)[4]));
-                            }
-                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("RMB")) {
-                                customers.get(i).accounts.get(index).currency.getMoney().put("RMB", new BigDecimal(existcustomers.get(j)[4]));
-                            }
-                            if (existcustomers.get(j)[2].equals("SAVING") && existcustomers.get(j)[3].equals("Pound")) {
-                                customers.get(i).accounts.get(index).currency.getMoney().put("Pound", new BigDecimal(existcustomers.get(j)[4]));
-                            }
-                        }
-                    }
-                }*/
             }
         //account loop
             List<String[]> existaccounts=ManagerFunction.searchAllCustomerAccount();
@@ -206,7 +183,9 @@ public class Bank {
             }
             int login = ManagerFunction.managerLogin(name, pwd);
             if (login == 0) {
+                ManagerFunction.updateDailyInterest();
                 bankManager = new Manager(name, pwd);
+                getExistUser();
                 bankManager.setCustomers(customers);
                 while (userend) {
                     managerMenu();
@@ -281,10 +260,10 @@ public class Bank {
     }
     public static void managerMenu(){
         System.out.println("Choose an action you wanna take: ");
-        System.out.println("1. check all the customers 2. search for one customer 3. check for debtors 4. transactions records 5. exit");
+        System.out.println("1. check all the customers 2. search for one customer 3. check for debtors 4. transactions records 5. check money 6. exit");
         Scanner choice=new Scanner(System.in);
         String num=choice.nextLine();
-        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>5)){
+        while(!Tool.is_number(num)||!Tool.in_range(num,1,9)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>6)){
             System.out.println("Invalid input. Input again.");
             num=choice.nextLine();
         }
@@ -327,7 +306,6 @@ public class Bank {
                 bankManager.printLoan();
                 break;
             case 4:
-                //System.out.println(ManagerFunction.searchTransactionToday());
                 List<String[]> records=ManagerFunction.searchTransactionToday();
                 for (int i = 0; i< Objects.requireNonNull(records).size(); i++){
                     for (int j=0;j<records.get(i).length;j++){
@@ -337,6 +315,12 @@ public class Bank {
                 }
                 break;
             case 5:
+                System.out.println("You can check your fortune here. Are you rich enough to maintain your bank?");
+                System.out.println("You own dollars: "+ManagerFunction.searchManagerAccount("Dollar"));
+                System.out.println("You own RMBs: "+ManagerFunction.searchManagerAccount("RMB"));
+                System.out.println("You own pounds: "+ManagerFunction.searchManagerAccount("Pound"));
+                break;
+            case 6:
                 System.out.println("Bye bye!");
                 userend = false;
                 break;

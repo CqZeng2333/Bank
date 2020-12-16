@@ -40,7 +40,7 @@ public abstract class Account {
         return accountID;
     }
 
-    public String save(String type) {
+    public String save(String type,BigDecimal least) {
         System.out.println("How much would you save this time?");
         Scanner money = new Scanner(System.in);
         String cash = money.nextLine();
@@ -48,8 +48,13 @@ public abstract class Account {
             System.out.println("Invalid input. Please input a number.");
             cash = money.nextLine();
         }
-        currency.add(type, Double.parseDouble(cash), "1");
-        return cash;
+        if (least.compareTo(new BigDecimal(cash))<=0){
+            currency.add(type, Double.parseDouble(cash), "1");
+            return cash;
+        }else {
+            return "";
+        }
+
     }
 
     public String save(String type, String cash) {
