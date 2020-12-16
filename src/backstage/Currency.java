@@ -34,8 +34,13 @@ public class Currency {
         this.money = money;
     }
 
-    public void print() {
-        System.out.println(this.money);
+    public String print() {
+        String str="";
+        for(String entry : money.keySet()) {
+            BigDecimal value = money.get(entry);
+            str+=entry + ":" + value+" ";
+        }
+        return str;
     }
     public boolean is_empty(){
         for (HashMap.Entry<String, BigDecimal> entry : money.entrySet()) {
@@ -69,7 +74,7 @@ public class Currency {
             this.money.put(key,this.money.get(key).add(addNum));
             System.out.println("Successfully save "+key+" "+addNum+"!");
             System.out.println("Now your deposit: ");
-            print();
+            System.out.println(print());
         }
     }
 
@@ -86,7 +91,7 @@ public class Currency {
                 this.money.put(key,this.money.get(key).subtract(subNum));
                 System.out.println("Successfully withdraw "+key+" "+subNum+"!");
                 System.out.println("Now your deposit: ");
-                print();
+                System.out.println(print());
                 success=true;
                     }
                }
@@ -94,38 +99,12 @@ public class Currency {
     }
 
 /*public static void main(String[] args) {
-        *//*HashMap m1 = new HashMap<String, BigDecimal>();
+        HashMap m1 = new HashMap<String, BigDecimal>();
         BigDecimal zero = new BigDecimal("-50");
         zero=zero.multiply(new BigDecimal(5));
         m1.put("Dollar",zero);
         System.out.println(m1);
-        Currency m3 = new Currency();
-        m3.print();
-        m3.add("RMB",100);
-        m3.print();*//*
-     System.out.println("1. Save money 2. Withdraw money 3. Exit");
-     Scanner choice=new Scanner(System.in);
-     String num=choice.nextLine();
-     while(!Tool.is_number(num)||(Integer.parseInt(num)<1)||(Integer.parseInt(num)>3)){
-         System.out.println("Invalid input. Input again.");
-         num=choice.nextLine();
-     }
-     int number=Integer.parseInt(num);
-     if (number==1){
-         System.out.println("1. Dollar 2. RMB 3. Pound");
-         Scanner choice1=new Scanner(System.in);
-         String num1=choice1.nextLine();
-         while((!Tool.is_number(num1))||(Integer.parseInt(num1)<1)||(Integer.parseInt(num1)>3)){
-             System.out.println("Invalid input. Input again.");
-             num1=choice1.nextLine();
-         }
-         int number1=Integer.parseInt(num1);
-         if (number1==1){
-             System.out.println("yes");
-         }
-     }else {
-         System.out.println("no");
-     }
+
 
     }*/
 }

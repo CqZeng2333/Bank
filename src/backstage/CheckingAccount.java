@@ -48,8 +48,8 @@ public class CheckingAccount extends Account {
         }else return;
     }
     public boolean checkMoney(){
-        System.out.println("Make a check will cost you 1 dollars.");
-        boolean success= currency.sub("Dollar",(double)1,"1");
+        System.out.println("Make a check will cost you 10 dollars.");
+        boolean success= currency.sub("Dollar",(double)10,"1");
         if (success){
         createTransaction("-1","Dollar","Make a check.");
             //alter manager
