@@ -40,6 +40,10 @@ public class CheckingAccount extends Account {
         }
     }
 
+    public String toString() {
+        return "Account Created";
+    }
+
     public void Menu(Customer customer) {
         System.out.println("1. Make a check 2. Exit");
         Scanner choice = new Scanner(System.in);

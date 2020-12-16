@@ -219,7 +219,7 @@ public class CustomerJFrame extends javax.swing.JFrame {
         ArrayList<String> strings = new ArrayList<String>();
         for (Account account : accounts) {
             strings.add(
-                    "(" + account.getAccountType() + ")" + " " + account.getCurrency().toString());
+                    "(" + account.getAccountType() + ")" + " " + account.toString());
         }
         accountList.setModel(new javax.swing.AbstractListModel<String>() {
             public int getSize() {

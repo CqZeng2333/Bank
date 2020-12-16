@@ -93,11 +93,11 @@ public class Manager extends User {
         String info = "";
         info += customers.get(i);
         if (customers.get(i).accounts.size() > 0) {
-            info += "\nAccounts:";
+            info += "\nAccounts: \n";
             for (int j = 0; j < customers.get(i).accounts.size(); j++) {
-                info += "\n" + (j + 1) + " " + customers.get(i).accounts.get(j).accountType;
+                Account account = customers.get(i).accounts.get(j);
+                info += (j + 1) + ". " + account.accountType + " " + account.toString() + " \n";
             }
-            info += "\n" + customers.get(i).currency.toString();
         }
         return info;
     }

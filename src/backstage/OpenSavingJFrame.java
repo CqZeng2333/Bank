@@ -18,7 +18,7 @@ public class OpenSavingJFrame extends javax.swing.JFrame {
 
     private SavingAccount account;
     private Customer customer;
-    private boolean createAccount; //the creation should only happen once, so we need to track whether the creation is successful
+    private boolean createAccount; //keep track of whether the creation is successful
 
     /**
      * Creates new form OpenSavingJFrame

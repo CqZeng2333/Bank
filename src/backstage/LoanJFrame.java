@@ -248,6 +248,7 @@ public class LoanJFrame extends javax.swing.JFrame {
                                                        Integer.parseInt(
                                                                loanlist.get(
                                                                        index)[0]));
+                this.setLoanList();
             }
             else {
                 account.createTransaction("0", "Dollar",
