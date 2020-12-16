@@ -44,7 +44,8 @@ public class StockAccount extends Account {
                     //add saving account in database
                     CustomerAddingFunction.addStockAccount(customerID);
                     CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-5"));
-                    CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal(cash));
+                    CustomerAlteringFunction.alterSavingAccount(customerID,"Dollar",new BigDecimal("-"+cash));
+                    CustomerAlteringFunction.alterStockAccount(customerID,new BigDecimal(cash));
                     createTransaction("-5","Dollar","Open Stock account.");
                     createTransaction(cash,"Dollar","Stock account capital.");
                     return true;
