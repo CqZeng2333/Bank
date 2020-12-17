@@ -184,7 +184,7 @@ public class StockJFrame extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int index = stockList.getSelectedIndex();
-        //int index = account.checkID(stockId, stocklist);
+        int stockID = index + 1;
         if (index >= 0) {
             Stock currentStock = new Stock(Integer.parseInt(stocklist.get(
                     index)[0]), stocklist.get(index)[1], new BigDecimal(
@@ -211,7 +211,7 @@ public class StockJFrame extends javax.swing.JFrame {
                     CustomerAlteringFunction.alterStockAccount(
                             account.customerID, payMoney.multiply(TRANS));
                     CustomerAddingFunction.addStockOwnership(account.customerID,
-                                                             index,
+                                                             stockID,
                                                              currentStock.getOriginprice(),
                                                              stockNum);
                     this.setMyStockList();
