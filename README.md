@@ -16,10 +16,5 @@
 
 ### Compile and Run
 * Download the project
-* Open the command line in directory [backstage](./src/backstage)
-* Use the following commands
-```sh
-javac LoginJFrame.java
-java LoginJFrame
-```
-to compile and run the project. 
+* The main function is in [LoginJFrame.java](./src/backstage/LoginJFrame.java)
+
