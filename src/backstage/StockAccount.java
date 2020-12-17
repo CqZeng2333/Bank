@@ -21,7 +21,6 @@ public class StockAccount extends Account {
         else {
             stockBalance = null;
         }
-
     }
 
     public BigDecimal getStockBalance() {
@@ -110,7 +109,7 @@ public class StockAccount extends Account {
         String num = choice.nextLine();
         while ((!Tool.is_number(num)) || !Tool.in_range(num, 1, 9) || (Integer.parseInt(
                                                                        num) < 0) || (Integer.parseInt(
-                                                                                     num) > 5)) {
+                                                                                     num) > 3)) {
             System.out.println("Invalid input. Input again.");
             num = choice.nextLine();
         }
