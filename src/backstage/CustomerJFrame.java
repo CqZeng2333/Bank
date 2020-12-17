@@ -1,7 +1,10 @@
 package backstage;
 
+import connect_database.CustomerAlteringFunction;
 import connect_database.CustomerDeletingFunction;
+import java.math.BigDecimal;
 import java.util.ArrayList;
+
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -298,6 +301,8 @@ public class CustomerJFrame extends javax.swing.JFrame {
         else {
             errorLabel.setText(
                     "Successfully check records with a charge of $10.");
+            CustomerAlteringFunction.alterSavingAccount(customer.id, "Dollar",
+                                                        new BigDecimal("-10"));
             new CustomerTransactionJFrame(customer);
         }
     }//GEN-LAST:event_jButton2ActionPerformed
