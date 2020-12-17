@@ -1,5 +1,7 @@
 # Bank
 > A virtual bank system implemented with Java
+>
+>
 > Authors: Annan Miao, Chuqian Zeng, Qingyang Xu
 
 ## Requirement
