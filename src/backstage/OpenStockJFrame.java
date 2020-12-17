@@ -5,6 +5,9 @@
  */
 package backstage;
 
+import backstage.Customer;
+import backstage.StockAccount;
+import backstage.Tool;
 import static backstage.StockAccount.LEASTBALANCE;
 import static backstage.StockAccount.LEASTMONEY;
 import connect_database.CustomerAddingFunction;

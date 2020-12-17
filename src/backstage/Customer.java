@@ -23,6 +23,7 @@ public class Customer extends User {
         String str = "ID: " + id + " Name: " + name;
         return str;
     }
+
     public int isthereAccount(String str) {
         int accountID = -1;
         for (int i = 0; i < accounts.size(); i++) {
@@ -183,12 +184,14 @@ public class Customer extends User {
             else {
                 accounts.add(loanAccount);
             }
-        }else if (str.equals("STOCK")){
-            StockAccount stockAccount=new StockAccount(id,currency);
-            boolean success=stockAccount.initAccount();
-            if (!success){
+        }
+        else if (str.equals("STOCK")) {
+            StockAccount stockAccount = new StockAccount(id, currency);
+            boolean success = stockAccount.initAccount();
+            if (!success) {
                 return -1;
-            }else {
+            }
+            else {
                 accounts.add(stockAccount);
             }
         }

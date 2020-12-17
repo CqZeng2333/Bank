@@ -5,6 +5,10 @@
  */
 package backstage;
 
+import backstage.CheckingAccount;
+import backstage.Customer;
+import backstage.Tool;
+
 /**
  *
  * @author user

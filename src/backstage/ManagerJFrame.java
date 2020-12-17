@@ -5,6 +5,9 @@
  */
 package backstage;
 
+import backstage.Customer;
+import backstage.Manager;
+import backstage.Tool;
 import connect_database.ManagerFunction;
 import java.util.ArrayList;
 import java.util.List;

@@ -5,6 +5,9 @@
  */
 package backstage;
 
+import backstage.Collateral;
+import backstage.LoanAccount;
+import backstage.Tool;
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerAlteringFunction;
 import connect_database.CustomerDeletingFunction;
