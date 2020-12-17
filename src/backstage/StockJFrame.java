@@ -5,9 +5,6 @@
  */
 package backstage;
 
-import backstage.Stock;
-import backstage.StockAccount;
-import backstage.Tool;
 import static backstage.StockAccount.TRANS;
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerAlteringFunction;
@@ -188,35 +185,37 @@ public class StockJFrame extends javax.swing.JFrame {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         int index = stockList.getSelectedIndex();
         //int index = account.checkID(stockId, stocklist);
-
-        Stock currentStock = new Stock(Integer.parseInt(stocklist.get(
-                index)[0]), stocklist.get(index)[1], new BigDecimal(
-                                       stocklist.get(index)[2]));
-        String stockNumStr = buyTextField.getText();
-        if (!Tool.is_number(stockNumStr)) {
-            errorLabel.setText("Invalid input number.");
-        }
-        else {
-            int stockNum = Integer.valueOf(stockNumStr);
-            BigDecimal payMoney = currentStock.getOriginprice().multiply(
-                    new BigDecimal(stockNum));
-            if (account.getStockBalance() != null && payMoney.compareTo(
-                    account.getStockBalance()) > 0) {
-                errorLabel.setText("You do not have enough balance!");
+        if (index >= 0) {
+            Stock currentStock = new Stock(Integer.parseInt(stocklist.get(
+                    index)[0]), stocklist.get(index)[1], new BigDecimal(
+                                           stocklist.get(index)[2]));
+            String stockNumStr = buyTextField.getText();
+            if (!Tool.is_number(stockNumStr)) {
+                errorLabel.setText("Invalid input number.");
             }
             else {
-                errorLabel.setText("You have bought this stock successfully!");
-                account.setStockBalance(account.getStockBalance().subtract(
-                        payMoney));
-                account.createTransaction("-" + payMoney.toString(),
-                                          "Dollar", "Buy stocks.");
-                CustomerAlteringFunction.alterStockAccount(
-                        account.customerID, payMoney.multiply(TRANS));
-                CustomerAddingFunction.addStockOwnership(account.customerID,
-                                                         index,
-                                                         currentStock.getOriginprice(),
-                                                         stockNum);
-                this.setMyStockList();
+                int stockNum = Integer.valueOf(stockNumStr);
+                BigDecimal payMoney = currentStock.getOriginprice().multiply(
+                        new BigDecimal(stockNum));
+                if (account.getStockBalance() != null && payMoney.compareTo(
+                        account.getStockBalance()) > 0) {
+                    errorLabel.setText("You do not have enough balance!");
+                }
+                else {
+                    errorLabel.setText(
+                            "You have bought this stock successfully!");
+                    account.setStockBalance(account.getStockBalance().subtract(
+                            payMoney));
+                    account.createTransaction("-" + payMoney.toString(),
+                                              "Dollar", "Buy stocks.");
+                    CustomerAlteringFunction.alterStockAccount(
+                            account.customerID, payMoney.multiply(TRANS));
+                    CustomerAddingFunction.addStockOwnership(account.customerID,
+                                                             index,
+                                                             currentStock.getOriginprice(),
+                                                             stockNum);
+                    this.setMyStockList();
+                }
             }
         }
 
