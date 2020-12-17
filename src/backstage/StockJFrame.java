@@ -228,9 +228,8 @@ public class StockJFrame extends javax.swing.JFrame {
                                                     Integer.parseInt(
                                                             cusStocklist.get(
                                                                     index)[0]));
-            BigDecimal ori = new BigDecimal(cusStocklist.get(index)[2]);
             BigDecimal cur = new BigDecimal(cusStocklist.get(index)[3]);
-            BigDecimal profit = (cur.subtract(ori)).multiply(
+            BigDecimal profit = (cur).multiply(
                     new BigDecimal(cusStocklist.get(index)[4]));
             CustomerAlteringFunction.alterStockAccount(account.customerID,
                                                        profit);

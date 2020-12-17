@@ -263,9 +263,9 @@ public class StockAccount extends Account {
                                                             Integer.parseInt(
                                                                     cusStocklist.get(
                                                                             index1)[0]));
-                    BigDecimal ori = new BigDecimal(cusStocklist.get(index1)[2]);
+                    //BigDecimal ori = new BigDecimal(cusStocklist.get(index1)[2]);
                     BigDecimal cur = new BigDecimal(cusStocklist.get(index1)[3]);
-                    BigDecimal profit = (cur.subtract(ori)).multiply(
+                    BigDecimal profit = (cur).multiply(
                             new BigDecimal(cusStocklist.get(index1)[4]));
                     CustomerAlteringFunction.alterStockAccount(customerID,
                                                                profit);
