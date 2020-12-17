@@ -276,7 +276,7 @@ public class LoginJFrame extends javax.swing.JFrame {
             List<String[]> existaccounts = ManagerFunction.searchAllCustomerAccount();
             //{customer_ID, customer_name, account_type, currency_type, money_amount}
             for (int i = 0; i < customers.size(); i++) {
-                int sc = 0, cc = 0, lc = 0;
+                int sc = 0, cc = 0, lc = 0, kc = 0;
                 for (int j = 0; j < Objects.requireNonNull(existaccounts).size(); j++) {
                     if (customers.get(i).id == Integer.parseInt(
                             existaccounts.get(j)[0])) {
@@ -300,6 +300,13 @@ public class LoginJFrame extends javax.swing.JFrame {
                                     customers.get(i).currency);
                             lc = 1;
                             customers.get(i).accounts.add(loanAccount);
+                        }
+                        if (existaccounts.get(j)[2].equals("STOCK") && kc == 0) {
+                            StockAccount stockAccount = new StockAccount(
+                                    customers.get(i).id,
+                                    customers.get(i).currency);
+                            kc = 1;
+                            customers.get(i).accounts.add(stockAccount);
                         }
                     }
                 }

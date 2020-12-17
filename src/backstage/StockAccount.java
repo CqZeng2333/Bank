@@ -96,7 +96,7 @@ public class StockAccount extends Account {
     }
 
     public String toString() {
-        return "Account Created";
+        return this.stockBalance.toString();
     }
 
     public void Menu() {

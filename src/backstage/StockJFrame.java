@@ -221,7 +221,7 @@ public class StockJFrame extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         int index = myStockList.getSelectedIndex();
-        if (index > 0) {
+        if (index >= 0) {
             CustomerDeletingFunction.deleteOneStock(account.customerID,
                                                     Integer.parseInt(
                                                             cusStocklist.get(

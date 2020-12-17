@@ -325,20 +325,29 @@ public class CustomerJFrame extends javax.swing.JFrame {
         ArrayList<Account> accounts = customer.getAccounts();
         assert index <= accounts.size() - 1;
         if (accounts.get(index).accountType.equals("SAVING")) {
-            boolean success = accounts.get(index).currency.sub("Dollar", 5,
-                                                               "1");
-            if (success) {
-                errorLabel.setText(
-                        "Successfully delete your saving account with charge of $5.");
-                accounts.get(index).createTransaction("-5", "Dollar",
-                                                      "Delete account.");
-                CustomerDeletingFunction.deleteSavingAccount(customer.id);
-                accounts.remove(index);
+            boolean isempty = accounts.get(index).currency.is_empty();
+            if (isempty) {
+                boolean success = accounts.get(index).currency.sub("Dollar",
+                                                                   5, "1");
+                if (success) {
+                    errorLabel.setText(
+                            "Successfully delete your saving account!");
+                    accounts.get(index).createTransaction("-5", "Dollar",
+                                                          "Delete account.");
+                    CustomerDeletingFunction.deleteSavingAccount(customer.id);
+                    accounts.remove(index);
+                }
+                else {
+                    errorLabel.setText("You don't have enough money.");
+                    accounts.get(index).createTransaction("0", "Dollar",
+                                                          "Failed to delete account.");
+                }
             }
             else {
-                errorLabel.setText("Successfully delete your saving account.");
-                CustomerDeletingFunction.deleteSavingAccount(customer.id);
-                accounts.remove(index);
+                errorLabel.setText(
+                        "Please withdraw all your money first. (Leave 5 dollars for deleting account)");
+                accounts.get(index).createTransaction("0", "Dollar",
+                                                      "Failed to delete account.");
             }
         }
         else if (accounts.get(index).accountType.equals("CHECKING")) {
