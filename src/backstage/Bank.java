@@ -1,7 +1,6 @@
 package backstage;
 
 import connect_database.CustomerAddingFunction;
-import connect_database.CustomerAlteringFunction;
 import connect_database.CustomerSearchingFunction;
 import connect_database.ManagerFunction;
 import java.math.BigDecimal;
@@ -345,7 +344,6 @@ public class Bank {
                         System.out.println(
                                 customers.get(index).transactions.get(i));
                     }
-                    CustomerAlteringFunction.alterSavingAccount(id,"Dollar",new BigDecimal("-10"));
                 }
                 break;
             case 7:

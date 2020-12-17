@@ -1,14 +1,5 @@
 package backstage;
 
-import backstage.CheckingAccount;
-import backstage.Collateral;
-import backstage.Customer;
-import backstage.LoanAccount;
-import backstage.Manager;
-import backstage.SavingAccount;
-import backstage.StockAccount;
-import backstage.Tool;
-import backstage.Transaction;
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerSearchingFunction;
 import connect_database.ManagerFunction;
@@ -170,6 +161,7 @@ public class LoginJFrame extends javax.swing.JFrame {
         String password = passwordTextField.getText();
         int login = ManagerFunction.managerLogin(username, password);
         if (login == 0) {
+            ManagerFunction.updateDailyInterest();
             bankManager = new Manager(username, password);
             bankManager.setCustomers(customers);
             new ManagerJFrame(bankManager);
