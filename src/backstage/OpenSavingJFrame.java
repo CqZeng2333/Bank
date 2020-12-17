@@ -5,6 +5,9 @@
  */
 package backstage;
 
+import backstage.Customer;
+import backstage.SavingAccount;
+import backstage.Tool;
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerAlteringFunction;
 import connect_database.ManagerFunction;

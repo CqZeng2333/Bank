@@ -5,6 +5,9 @@
  */
 package backstage;
 
+import backstage.Stock;
+import backstage.StockAccount;
+import backstage.Tool;
 import static backstage.StockAccount.TRANS;
 import connect_database.CustomerAddingFunction;
 import connect_database.CustomerAlteringFunction;

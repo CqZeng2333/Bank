@@ -5,6 +5,8 @@
  */
 package backstage;
 
+import backstage.SavingAccount;
+import backstage.Tool;
 import connect_database.CustomerAlteringFunction;
 import connect_database.ManagerFunction;
 import java.math.BigDecimal;

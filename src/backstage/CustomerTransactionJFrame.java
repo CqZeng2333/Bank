@@ -5,6 +5,7 @@
  */
 package backstage;
 
+import backstage.Customer;
 import java.util.ArrayList;
 
 /**
