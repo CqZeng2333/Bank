@@ -299,14 +299,14 @@ public class StockAccount extends Account {
         Time time = new Time();
         String str = time + " Customer " + (customerID + 1) + " in Stock account: " + action;
         Transaction transaction = new Transaction(str, accountType, currencyType,
-                                                  currency.get(currencyType).toString(),
+                                                  stockBalance.toString(),
                                                   moneychange, time.toString());
         transactions.add(transaction);
         //transaction in database
         CustomerAddingFunction.addTransaction(customerID, accountType,
                                               currencyType, new BigDecimal(
                                                       moneychange),
-                                              currency.get(currencyType), time);
+                stockBalance, time);
     }
 
     /*    public static void main(String[] args) {
