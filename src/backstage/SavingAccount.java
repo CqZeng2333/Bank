@@ -77,17 +77,17 @@ public class SavingAccount extends Account {
                 CustomerAlteringFunction.alterSavingAccount(customerID, "Dollar",
                                                             new BigDecimal(cash));
                 createTransaction(cash, "Dollar",
-                                  "Saving dollars $" + cash + ".");
+                                  "Saving dollars " + cash + ".");
             }
             else if (number1 == 2) {
                 String cash = save("RMB");
-                createTransaction(cash, "RMB", "Saving RMBs ¥" + cash + ".");
+                createTransaction(cash, "RMB", "Saving RMBs " + cash + ".");
                 CustomerAlteringFunction.alterSavingAccount(customerID, "RMB",
                                                             new BigDecimal(cash));
             }
             else {
                 String cash = save("Pound");
-                createTransaction(cash, "Pound", "Saving pounds ￡" + cash + ".");
+                createTransaction(cash, "Pound", "Saving pounds " + cash + ".");
                 CustomerAlteringFunction.alterSavingAccount(customerID, "Pound",
                                                             new BigDecimal(cash));
             }
@@ -115,7 +115,7 @@ public class SavingAccount extends Account {
                     BigDecimal sub = new BigDecimal(cash[1]);
                     BigDecimal sum = origin.add(sub);
                     createTransaction("-" + sum.toString(), "Dollar",
-                                      "Withdraw dollars $" + sum.toString() + ".");
+                                      "Withdraw dollars " + sum.toString() + ".");
                     CustomerAlteringFunction.alterSavingAccount(customerID,
                                                                 "Dollar",
                                                                 new BigDecimal(
@@ -133,7 +133,7 @@ public class SavingAccount extends Account {
                     BigDecimal sub = new BigDecimal(cash[1]);
                     BigDecimal sum = origin.add(sub);
                     createTransaction("-" + sum.toString(), "RMB",
-                                      "Withdraw RMBs ¥" + sum.toString() + ".");
+                                      "Withdraw RMBs " + sum.toString() + ".");
                     CustomerAlteringFunction.alterSavingAccount(customerID,
                                                                 "RMB",
                                                                 new BigDecimal(
@@ -151,7 +151,7 @@ public class SavingAccount extends Account {
                     BigDecimal sub = new BigDecimal(cash[1]);
                     BigDecimal sum = origin.add(sub);
                     createTransaction("-" + sum.toString(), "Pound",
-                                      "Withdraw Pounds ￡" + sum.toString() + ".");
+                                      "Withdraw Pounds " + sum.toString() + ".");
                     CustomerAlteringFunction.alterSavingAccount(customerID,
                                                                 "Pound",
                                                                 new BigDecimal(
