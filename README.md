@@ -1,7 +1,6 @@
 # Bank
 > A virtual bank system implemented with Java
 >
->
 > Authors: Annan Miao, Chuqian Zeng, Qingyang Xu
 
 ## Requirement
@@ -18,9 +17,4 @@
 * Download the project
 * The main function is in [LoginJFrame.java](./src/backstage/LoginJFrame.java)
 >
->
->
->
->
->
-* More description in [project description](./presentation.pdf)
+More description in [project description](./presentation.pdf)
