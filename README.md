@@ -18,3 +18,4 @@
 * Download the project
 * The main function is in [LoginJFrame.java](./src/backstage/LoginJFrame.java)
 
+* More description in [project description](./presentation.pdf)
